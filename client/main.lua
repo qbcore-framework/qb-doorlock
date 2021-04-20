@@ -48,7 +48,7 @@ local maxDistance = 1.25
 
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(0)
+		Citizen.Wait(5)
 		local playerCoords, awayFromDoors = GetEntityCoords(PlayerPedId()), true
 
 		for k,doorID in ipairs(QB.Doors) do
@@ -63,7 +63,7 @@ Citizen.CreateThread(function()
 			if doorID.distance then
 				maxDistance = doorID.distance
 			end
-			if distance < 50 then
+			if distance < 5 then
 				awayFromDoors = false
 				if doorID.doors then
 					for _,v in ipairs(doorID.doors) do
