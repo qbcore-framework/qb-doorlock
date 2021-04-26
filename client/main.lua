@@ -118,8 +118,6 @@ Citizen.CreateThread(function()
 
 				DrawText3Ds(doorID.objCoords.x, doorID.objCoords.y, doorID.objCoords.z, displayText)
 
-				print(k)
-
 				if IsControlJustReleased(0, 38) then
 					if isAuthorized then
 						setDoorLocking(doorID, k)
