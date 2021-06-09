@@ -1,4 +1,6 @@
 QBCore = nil
+local closestDoorKey, closestDoorValue = nil, nil
+local maxDistance = 1.25
 
 Citizen.CreateThread(function()
 	while QBCore == nil do
@@ -7,11 +9,54 @@ Citizen.CreateThread(function()
 	end
 end)
 
-local closestDoorKey, closestDoorValue = nil, nil
+-- Events
+
+RegisterNetEvent('qb-doorlock:client:setState')
+AddEventHandler('qb-doorlock:client:setState', function(doorID, state)
+	QB.Doors[doorID].locked = state
+end)
+
+RegisterNetEvent('qb-doorlock:client:setDoors')
+AddEventHandler('qb-doorlock:client:setDoors', function(doorList)
+	QB.Doors = doorList
+end)
+
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    TriggerServerEvent("qb-doorlock:server:setupDoors")
+end)
+
+RegisterNetEvent('lockpicks:UseLockpick')
+AddEventHandler('lockpicks:UseLockpick', function()
+	local pos = GetEntityCoords(PlayerPedId())
+	QBCore.Functions.TriggerCallback('qb-radio:server:GetItem', function(hasItem)
+		for k, v in pairs(QB.Doors) do
+			local dist = #(pos - vector3(QB.Doors[k].textCoords.x, QB.Doors[k].textCoords.y, QB.Doors[k].textCoords.z))
+			if dist < 1.5 then
+				if QB.Doors[k].pickable then
+					if QB.Doors[k].locked then
+						if hasItem then
+							closestDoorKey, closestDoorValue = k, v
+							TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
+						else
+							QBCore.Functions.Notify("You Dont Have A Screwdriver Set", "error")
+						end
+					else
+						QBCore.Functions.Notify('The Door Is Not Locked', 'error', 2500)
+					end
+				else
+					QBCore.Functions.Notify('This Door Can Not Be Lockpicked', 'error', 2500)
+				end
+			end
+		end
+    end, "screwdriverset")
+end)
+
+-- Functions
 
 function DrawText3Ds(x, y, z, text)
 	SetTextScale(0.35, 0.35)
-    SetTextFont(4)
+    SetTextFont(1)
     SetTextProportional(1)
     SetTextColour(255, 255, 255, 215)
     SetTextEntry("STRING")
@@ -24,8 +69,62 @@ function DrawText3Ds(x, y, z, text)
     ClearDrawOrigin()
 end
 
+function lockpickFinish(success)
+    if success then
+		QBCore.Functions.Notify('Success!', 'success', 2500)
+		setDoorLocking(closestDoorValue, closestDoorKey)
+    else
+        QBCore.Functions.Notify('Failed', 'error', 2500)
+    end
+end
+
+function setDoorLocking(doorId, key)
+	doorId.locking = true
+	openDoorAnim()
+    SetTimeout(400, function()
+		doorId.locking = false
+		doorId.locked = not doorId.locked
+		TriggerServerEvent('qb-doorlock:server:updateState', key, doorId.locked)
+	end)
+end
+
+function loadAnimDict(dict)
+    while (not HasAnimDictLoaded(dict)) do
+        RequestAnimDict(dict)
+        Citizen.Wait(5)
+    end
+end
+
+function IsAuthorized(doorID)
+	local PlayerData = QBCore.Functions.GetPlayerData()
+
+	for _,job in pairs(doorID.authorizedJobs) do
+		if job == PlayerData.job.name or job == PlayerData.gang.name then
+			return true
+		end
+	end
+	
+	return false
+end
+
+function openDoorAnim()
+    loadAnimDict("anim@heists@keycard@") 
+    TaskPlayAnim( PlayerPedId(), "anim@heists@keycard@", "exit", 5.0, 1.0, -1, 16, 0, 0, 0, 0 )
+	SetTimeout(400, function()
+		ClearPedTasks(PlayerPedId())
+	end)
+end
+
+function round(num, numDecimalPlaces)
+	local mult = 10^(numDecimalPlaces or 0)
+	return math.floor(num * mult + 0.5) / mult
+end
+
+-- Threads
+
 Citizen.CreateThread(function()
 	while true do
+		Citizen.Wait(2500)
 		for key, doorID in ipairs(QB.Doors) do
 			if doorID.doors then
 				for k,v in ipairs(doorID.doors) do
@@ -39,12 +138,9 @@ Citizen.CreateThread(function()
 				end
 			end
 		end
-
-		Citizen.Wait(2500)
 	end
 end)
 
-local maxDistance = 1.25
 
 Citizen.CreateThread(function()
 	while true do
@@ -92,23 +188,23 @@ Citizen.CreateThread(function()
 
 				if isAuthorized then
 					if doorID.locked then
-						displayText = "~g~E~w~ - Locked"
+						displayText = "[~g~E~w~] - Locked"
 					elseif not doorID.locked then
-						displayText = "~g~E~w~ - Unlocked"
+						displayText = "[~g~E~w~] - Unlocked"
 					end
 				elseif not isAuthorized then
 					if doorID.locked then
-						displayText = "Locked"
+						displayText = "~r~Locked"
 					elseif not doorID.locked then
-						displayText = "Unlocked"
+						displayText = "~g~Unlocked"
 					end
 				end
 
 				if doorID.locking then
 					if doorID.locked then
-						displayText = "Unlocking.."
+						displayText = "~g~Unlocking.."
 					else
-						displayText = "Locking.."
+						displayText = "~r~Locking.."
 					end
 				end
 
@@ -121,6 +217,8 @@ Citizen.CreateThread(function()
 				if IsControlJustReleased(0, 38) then
 					if isAuthorized then
 						setDoorLocking(doorID, k)
+					else
+						QBCore.Functions.Notify('Not Authorized', 'error')
 					end
 				end
 			end
@@ -130,96 +228,4 @@ Citizen.CreateThread(function()
 			Citizen.Wait(1000)
 		end
 	end
-end)
-
-function round(num, numDecimalPlaces)
-	local mult = 10^(numDecimalPlaces or 0)
-	return math.floor(num * mult + 0.5) / mult
-end
-
-RegisterNetEvent('lockpicks:UseLockpick')
-AddEventHandler('lockpicks:UseLockpick', function()
-	local pos = GetEntityCoords(PlayerPedId())
-	QBCore.Functions.TriggerCallback('qb-radio:server:GetItem', function(hasItem)
-		for k, v in pairs(QB.Doors) do
-			local dist = #(pos - vector3(QB.Doors[k].textCoords.x, QB.Doors[k].textCoords.y, QB.Doors[k].textCoords.z))
-			if dist < 1.5 then
-				if QB.Doors[k].pickable then
-					if QB.Doors[k].locked then
-						if hasItem then
-							closestDoorKey, closestDoorValue = k, v
-							TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
-						else
-							QBCore.Functions.Notify("You Dont Have A Screwdriver Set", "error")
-						end
-					else
-						QBCore.Functions.Notify('The Door Is Not Locked', 'error', 2500)
-					end
-				else
-					QBCore.Functions.Notify('This Door Can Not Be Lockpicked', 'error', 2500)
-				end
-			end
-		end
-    end, "screwdriverset")
-end)
-
-function lockpickFinish(success)
-    if success then
-		QBCore.Functions.Notify('Success!', 'success', 2500)
-		setDoorLocking(closestDoorValue, closestDoorKey)
-    else
-        QBCore.Functions.Notify('Failed', 'error', 2500)
-    end
-end
-
-function setDoorLocking(doorId, key)
-	doorId.locking = true
-	openDoorAnim()
-    SetTimeout(400, function()
-		doorId.locking = false
-		doorId.locked = not doorId.locked
-		TriggerServerEvent('qb-doorlock:server:updateState', key, doorId.locked)
-	end)
-end
-
-function loadAnimDict(dict)
-    while (not HasAnimDictLoaded(dict)) do
-        RequestAnimDict(dict)
-        Citizen.Wait(5)
-    end
-end
-
-function IsAuthorized(doorID)
-	local PlayerData = QBCore.Functions.GetPlayerData()
-
-	for _,job in pairs(doorID.authorizedJobs) do
-		if job == PlayerData.job.name then
-			return true
-		end
-	end
-	
-	return false
-end
-
-function openDoorAnim()
-    loadAnimDict("anim@heists@keycard@") 
-    TaskPlayAnim( PlayerPedId(), "anim@heists@keycard@", "exit", 5.0, 1.0, -1, 16, 0, 0, 0, 0 )
-	SetTimeout(400, function()
-		ClearPedTasks(PlayerPedId())
-	end)
-end
-
-RegisterNetEvent('qb-doorlock:client:setState')
-AddEventHandler('qb-doorlock:client:setState', function(doorID, state)
-	QB.Doors[doorID].locked = state
-end)
-
-RegisterNetEvent('qb-doorlock:client:setDoors')
-AddEventHandler('qb-doorlock:client:setDoors', function(doorList)
-	QB.Doors = doorList
-end)
-
-RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
-AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-    TriggerServerEvent("qb-doorlock:server:setupDoors")
 end)
