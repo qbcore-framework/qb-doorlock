@@ -29,7 +29,7 @@ end)
 RegisterNetEvent('lockpicks:UseLockpick')
 AddEventHandler('lockpicks:UseLockpick', function()
 	local pos = GetEntityCoords(PlayerPedId())
-	QBCore.Functions.TriggerCallback('qb-radio:server:GetItem', function(hasItem)
+	QBCore.Functions.TriggerCallback('QBCore:HasItem', function(hasItem)
 		for k, v in pairs(QB.Doors) do
 			local dist = #(pos - vector3(QB.Doors[k].textCoords.x, QB.Doors[k].textCoords.y, QB.Doors[k].textCoords.z))
 			if dist < 1.5 then
