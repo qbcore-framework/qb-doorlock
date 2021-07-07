@@ -4,7 +4,7 @@ game 'gta5'
 description 'QB-Doorlock'
 version '1.0.0'
 
-server_scripts {
+shared_scripts {
 	'config.lua',
 	'@qb-core/import.lua'
 }
