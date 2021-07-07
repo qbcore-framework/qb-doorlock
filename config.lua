@@ -1129,8 +1129,8 @@ QB.Doors = {
 	-- Door 4
 	{
 		objName = 'v_ilev_gb_vaubar',
-		objCoords  = vector3(-2956.18, -335.76, 38.11),
-		textCoords = vector3(-2956.18, -335.76, 38.11),
+		objCoords  = vector3(-1208.12, -335.586, 37.759),
+		textCoords = vector3(-1208.12, -335.586, 37.759),
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
