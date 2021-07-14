@@ -117,16 +117,18 @@ end
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(2500)
-		for key, doorID in ipairs(QB.Doors) do
-			if doorID.doors then
-				for k,v in ipairs(doorID.doors) do
-					if not v.object or not DoesEntityExist(v.object) then
-						v.object = GetClosestObjectOfType(v.objCoords, 1.0, GetHashKey(v.objName), false, false, false)
+		for i = 1, #QB.Doors do
+			local current = QB.Doors[i]
+			if current.doors then
+				for a = 1, #current.doors do
+					local currentDoor = current.doors[a]
+					if not currentDoor.object or not DoesEntityExist(currentDoor.object) then
+						currentDoor.object = GetClosestObjectOfType(currentDoor.objCoords, 1.0, GetHashKey(currentDoor.objName), false, false, false)
 					end
 				end
 			else
-				if not doorID.object or not DoesEntityExist(doorID.object) then
-					doorID.object = GetClosestObjectOfType(doorID.objCoords, 1.0, GetHashKey(doorID.objName), false, false, false)
+				if not current.object or not DoesEntityExist(current.object) then
+					current.object = GetClosestObjectOfType(current.objCoords, 1.0, GetHashKey(current.objName), false, false, false)
 				end
 			end
 		end
@@ -139,76 +141,79 @@ Citizen.CreateThread(function()
 		Citizen.Wait(5)
 		local playerCoords, awayFromDoors = GetEntityCoords(PlayerPedId()), true
 
-		for k,doorID in ipairs(QB.Doors) do
+		for i = 1, #QB.Doors do
+			local current = QB.Doors[i]
 			local distance
 
-			if doorID.doors then
-				distance = #(playerCoords - doorID.doors[1].objCoords)
+			if current.doors then
+				distance = #(playerCoords - current.doors[1].objCoords)
 			else
-				distance = #(playerCoords - doorID.objCoords)
+				distance = #(playerCoords - current.objCoords)
 			end
 
-			if doorID.distance then
-				maxDistance = doorID.distance
+			if current.distance then
+				maxDistance = current.distance
 			end
-			if distance < 5 then
+
+			if distance < 10 then
 				awayFromDoors = false
-				if doorID.doors then
-					for _,v in ipairs(doorID.doors) do
-						FreezeEntityPosition(v.object, doorID.locked)
+				if current.doors then
+					for a = 1, #current.doors do
+						local currentDoor = current.doors[a]
+						FreezeEntityPosition(currentDoor.object, current.locked)
 
-						if doorID.locked and v.objYaw and GetEntityRotation(v.object).z ~= v.objYaw then
-							SetEntityRotation(v.object, 0.0, 0.0, v.objYaw, 2, true)
+						if current.locked and currentDoor.objYaw and GetEntityRotation(currentDoor.object).z ~= currentDoor.objYaw then
+							SetEntityRotation(currentDoor.object, 0.0, 0.0, currentDoor.objYaw, 2, true)
 						end
 					end
 				else
-					FreezeEntityPosition(doorID.object, doorID.locked)
+					FreezeEntityPosition(current.object, current.locked)
 
-					if doorID.locked and doorID.objYaw and GetEntityRotation(doorID.object).z ~= doorID.objYaw then
-						SetEntityRotation(doorID.object, 0.0, 0.0, doorID.objYaw, 2, true)
+					if current.locked and current.objYaw and GetEntityRotation(current.object).z ~= current.objYaw then
+						SetEntityRotation(current.object, 0.0, 0.0, current.objYaw, 2, true)
 					end
 				end
 			end
 
 			if distance < maxDistance then
 				awayFromDoors = false
-				if doorID.size then
-					size = doorID.size
+				if current.size then
+					size = current.size
 				end
 
-				local isAuthorized = IsAuthorized(doorID)
+				local isAuthorized = IsAuthorized(current)
 
 				if isAuthorized then
-					if doorID.locked then
+					if current.locked then
 						displayText = "[~g~E~w~] - Locked"
-					elseif not doorID.locked then
+					elseif not current.locked then
 						displayText = "[~g~E~w~] - Unlocked"
 					end
 				elseif not isAuthorized then
-					if doorID.locked then
+					if current.locked then
 						displayText = "~r~Locked"
-					elseif not doorID.locked then
+					elseif not current.locked then
 						displayText = "~g~Unlocked"
 					end
 				end
 
-				if doorID.locking then
-					if doorID.locked then
+				if current.locking then
+					if current.locked then
 						displayText = "~g~Unlocking.."
 					else
 						displayText = "~r~Locking.."
 					end
 				end
 
-				if doorID.objCoords == nil then
-					doorID.objCoords = doorID.textCoords
+				if current.objCoords == nil then
+					current.objCoords = current.textCoords
 				end
 
-				DrawText3Ds(doorID.objCoords.x, doorID.objCoords.y, doorID.objCoords.z, displayText)
+				DrawText3Ds(current.objCoords.x, current.objCoords.y, current.objCoords.z, displayText)
 
 				if IsControlJustReleased(0, 38) then
 					if isAuthorized then
-						setDoorLocking(doorID, k)
+						setDoorLocking(current, i)
 					else
 						QBCore.Functions.Notify('Not Authorized', 'error')
 					end
