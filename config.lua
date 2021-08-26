@@ -1,6 +1,74 @@
 QB = {}
 
 QB.Doors = {
+	--- door1 for pacific opened with security card B
+	{
+		objName = 'hei_v_ilev_bk_gate2_pris',
+		objCoords  = vector3(261.83, 221.39, 106.41),
+		textCoords = vector3(261.83, 221.39, 106.41),
+		authorizedJobs = { 'police' },
+		objYaw = -110.0,
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 1.5,
+		size = 2
+	},
+	--door2 for pacific opened with thermite right near the vault door
+	{
+		objName = 'hei_v_ilev_bk_safegate_pris',
+		objCoords  = vector3(252.98, 220.65, 101.8),
+		textCoords = vector3(252.98, 220.65, 101.8),
+		authorizedJobs = { 'police' },
+		objYaw = 160.0,
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 1.5,
+		size = 2
+	},
+	-- door3 for pacific opened with thermite after passing the door near vault
+	{
+		objName = 'hei_v_ilev_bk_safegate_pris',
+		objCoords  = vector3(261.68, 215.62, 101.81),
+		textCoords = vector3(261.68, 215.62, 101.81),
+		authorizedJobs = { 'police' },
+		objYaw = -110.0,
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 1.5,
+		size = 2
+	},
+
+	-- Paleto Door 1 opened with security card A
+	{
+		objName = 'v_ilev_cbankvaulgate01',
+		objCoords  = vector3(-105.77, 6472.59, 31.81),
+		textCoords = vector3(-105.77, 6472.59, 31.81),
+		objYaw = 45.0,
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 1.5,
+		size = 2
+	},
+	-- Paleto Door 2 opened with thermite
+	{
+		objName = 'v_ilev_cbankvaulgate02',
+		objCoords  = vector3(-106.26, 6476.01, 31.98),
+		textCoords = vector3(-105.5, 6475.08, 31.99),
+		objYaw = -45.0,
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 1.5,
+		size = 2
+	},
+	------------------------------------------Always add new doors below this line for your bank robberies to work!!!---------------------------------
+
 	{
 		textCoords = vector3(434.81, -981.93, 30.89),
 		authorizedJobs = { 'police' },
@@ -1034,18 +1102,7 @@ QB.Doors = {
 		size = 2
 	},
 	-- Second Door
-	{
-		objName = 'hei_v_ilev_bk_gate2_pris',
-		objCoords  = vector3(261.83, 221.39, 106.41),
-		textCoords = vector3(261.83, 221.39, 106.41),
-		authorizedJobs = { 'police' },
-		objYaw = -110.0,
-		locking = false,
-		locked = true,
-		pickable = false,
-		distance = 1.5,
-		size = 2
-	},
+	
 	-- Office to gate door
 	{
 		objName = 'v_ilev_bk_door',
@@ -1061,31 +1118,7 @@ QB.Doors = {
 	},
 
 	-- First safe Door
-	{
-		objName = 'hei_v_ilev_bk_safegate_pris',
-		objCoords  = vector3(252.98, 220.65, 101.8),
-		textCoords = vector3(252.98, 220.65, 101.8),
-		authorizedJobs = { 'police' },
-		objYaw = 160.0,
-		locking = false,
-		locked = true,
-		pickable = false,
-		distance = 1.5,
-		size = 2
-	},
-	-- Second safe Door
-	{
-		objName = 'hei_v_ilev_bk_safegate_pris',
-		objCoords  = vector3(261.68, 215.62, 101.81),
-		textCoords = vector3(261.68, 215.62, 101.81),
-		authorizedJobs = { 'police' },
-		objYaw = -110.0,
-		locking = false,
-		locked = true,
-		pickable = false,
-		distance = 1.5,
-		size = 2
-	},
+	
 
 	----------------
 	-- Fleeca Banks
@@ -1150,32 +1183,7 @@ QB.Doors = {
 		distance = 1.5,
 		size = 2
 	},
-	-- Paleto Door 1
-	{
-		objName = 'v_ilev_cbankvaulgate01',
-		objCoords  = vector3(-105.77, 6472.59, 31.81),
-		textCoords = vector3(-105.77, 6472.59, 31.81),
-		objYaw = 45.0,
-		authorizedJobs = { 'police' },
-		locking = false,
-		locked = true,
-		pickable = false,
-		distance = 1.5,
-		size = 2
-	},
-	-- Paleto Door 2
-	{
-		objName = 'v_ilev_cbankvaulgate02',
-		objCoords  = vector3(-106.26, 6476.01, 31.98),
-		textCoords = vector3(-105.5, 6475.08, 31.99),
-		objYaw = -45.0,
-		authorizedJobs = { 'police' },
-		locking = false,
-		locked = true,
-		pickable = false,
-		distance = 1.5,
-		size = 2
-	},
+
 	-----
 	-- Police front gate
 	-----
