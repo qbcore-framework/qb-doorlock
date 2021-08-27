@@ -439,7 +439,7 @@ QB.Doors = {
 			}
 		}
 	},	
-	-- Achterdeur links
+	-- Back door left
 	{
 		objName = 'v_ilev_rc_door2',
 		objYaw = 135.0,
@@ -451,7 +451,7 @@ QB.Doors = {
 		pickable = false,
 		distance = 2.0,
 	},
-	-- Achterdeur rechts
+	-- Back door right
 	{
 		objName = 'v_ilev_rc_door2',
 		objYaw = -45.0,
@@ -463,7 +463,7 @@ QB.Doors = {
 		pickable = false,
 		distance = 2.0,
 	},
-	-- Kleedkamer
+	-- Locker room
 	{
 		objName = 'v_ilev_rc_door2',
 		objYaw = -45.0,
@@ -475,7 +475,7 @@ QB.Doors = {
 		pickable = false,
 		distance = 2.0,
 	},	
-	-- Kleedkamer 2
+	-- Locker room 2
 	{
 		objName = 'v_ilev_rc_door2',
 		objYaw = 45.0,
@@ -487,7 +487,7 @@ QB.Doors = {
 		pickable = false,
 		distance = 2.0,
 	},	
-	-- Wapenkamer
+	-- Armory
 	{
 		objName = 'v_ilev_arm_secdoor',
 		objYaw = -135.0,
@@ -499,7 +499,7 @@ QB.Doors = {
 		pickable = false,
 		distance = 2.0,
 	},	
-	-- Verhoorkamer
+	-- Interrogation room
 	{
 		objName = 'v_ilev_arm_secdoor',
 		objYaw = 45.0,
@@ -511,7 +511,7 @@ QB.Doors = {
 		pickable = false,
 		distance = 2.0,
 	},
-	-- Entree cellen 1
+	-- Entrance cells 1
 	{
 		objName = 'v_ilev_ph_cellgate1',
 		objYaw = 45.0,
@@ -523,7 +523,7 @@ QB.Doors = {
 		pickable = false,
 		distance = 2.0,
 	},
-	-- Entree cellen 2
+	-- Entrance cells 2
 	{
 		objName = 'v_ilev_ph_cellgate1',
 		objYaw = 45.0,
@@ -535,7 +535,7 @@ QB.Doors = {
 		pickable = false,
 		distance = 2.0,
 	},	
-	-- Cel
+	-- Cell
 	{
 		objName = 'v_ilev_ph_cellgate1',
 		objYaw = 45.0,
@@ -547,7 +547,7 @@ QB.Doors = {
 		pickable = false,
 		distance = 2.0,
 	},						
-	-- Gang lockers (dubbele deuren)
+	-- Hallway (double doors)
 	{
 		textCoords = vector3(-442.09, 6011.93, 31.86523),
 		authorizedJobs = { 'police' },
@@ -569,7 +569,7 @@ QB.Doors = {
 			}
 		}
 	},	
-	-- Gang naar achterkant (dubbele deuren)
+	-- Hallway to the back (double doors)
 	{
 		textCoords = vector3(-448.67, 6007.52, 31.86523),
 		authorizedJobs = { 'police' },
@@ -1269,7 +1269,7 @@ QB.Doors = {
 	----------------
 	-- Pickle Rental
 	----------------
-	-- Voordeur 1
+	-- Front door 1
 	{
 		objName = 'apa_prop_apa_cutscene_doorb',
 		objCoords  = vector3(-21.71276, -1392.778, 29.63847),		
@@ -1282,7 +1282,7 @@ QB.Doors = {
 		distance = 2.5,
 		size = 2
 	},	
-	-- Voordeur 2
+	-- Front door 2
 	{
 		objName = 'apa_prop_apa_cutscene_doorb',
 		objCoords  = vector3(-32.67987, -1392.064, 29.63847),		
@@ -1295,7 +1295,7 @@ QB.Doors = {
 		distance = 2.5,
 		size = 2
 	},	
-	-- Deur naar kelder
+	-- Door to cellar
 	{
 		objName = 'apa_prop_apa_cutscene_doorb',
 		objCoords  = vector3(-24.22668, -1403.067, 29.63847),				
@@ -1308,7 +1308,7 @@ QB.Doors = {
 		distance = 1.5,
 		size = 2
 	},	
-	-- Achterdeur
+	-- Back door
 	{
 		objName = 'apa_prop_apa_cutscene_doorb',
 		objCoords  = vector3(-21.27107, -1406.845, 29.63847),			
@@ -1321,7 +1321,7 @@ QB.Doors = {
 		distance = 2.0,
 		size = 2
 	},		
-	-- Roldeur
+	-- Garage door
 	{
 		objName = 'prop_com_gar_door_01',
 		objCoords  = vector3(-21.04025, -1410.734, 30.51094),			
