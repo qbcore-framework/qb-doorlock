@@ -152,7 +152,45 @@ QB.Doors = {
 		distance = 1.5,
 		size = 2
 	},
+	
+	-- Prison Door 1
+	{
+		objName = 'prop_gate_prison_01',
+		objCoords  = vector3(1844.9, 2604.8, 44.6),
+		textCoords = vector3(1844.9, 2608.5, 48.0),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 13,
+		size = 2
+	},
+	-- Prison Door 2	
+	{
+		objName = 'prop_gate_prison_01',
+		objCoords  = vector3(1818.5, 2604.8, 44.6),
+		textCoords = vector3(1818.5, 2608.4, 48.0),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 13,
+		size = 2
+	},
+	-- Prison Door 3	
+	{
+		objName = 'prop_gate_prison_01',
+		objCoords = vector3(1799.237, 2616.303, 44.6),
+		textCoords = vector3(1795.941, 2616.969, 48.0),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 10,
+		size = 2
+	},
 	------------------------------------------Always add new doors below this line for your bank robberies to work!!!---------------------------------
+				------------------------------------------End Fixed Doors!!!---------------------------------
 	{
 		textCoords = vector3(434.81, -981.93, 30.89),
 		authorizedJobs = { 'police' },
@@ -667,41 +705,6 @@ QB.Doors = {
 				objCoords = vector3(-449.5656, 6008.538, 31.86523)		
 			}
 		}
-	},
-	-- Bolingbroke Penitentiary
-	-- Entrance (Two big gates)
-	{
-		objName = 'prop_gate_prison_01',
-		objCoords  = vector3(1844.9, 2604.8, 44.6),
-		textCoords = vector3(1844.9, 2608.5, 48.0),
-		authorizedJobs = { 'police' },
-		locking = false,
-		locked = true,
-		pickable = false,
-		distance = 13,
-		size = 2
-	},
-	{
-		objName = 'prop_gate_prison_01',
-		objCoords  = vector3(1818.5, 2604.8, 44.6),
-		textCoords = vector3(1818.5, 2608.4, 48.0),
-		authorizedJobs = { 'police' },
-		locking = false,
-		locked = true,
-		pickable = false,
-		distance = 13,
-		size = 2
-	},
-	{
-		objName = 'prop_gate_prison_01',
-		objCoords = vector3(1799.237, 2616.303, 44.6),
-		textCoords = vector3(1795.941, 2616.969, 48.0),
-		authorizedJobs = { 'police' },
-		locking = false,
-		locked = true,
-		pickable = false,
-		distance = 10,
-		size = 2
 	},
 	--outside doors
 	{
