@@ -233,7 +233,7 @@ Citizen.CreateThread(function()
 				DrawText3Ds(current.objCoords.x, current.objCoords.y, current.objCoords.z, displayText)
 
 				if IsControlJustReleased(0, 38) then
-					if IsAuthorized(current) then
+					if isAuthorized then
 						setDoorLocking(current, i)
 					else
 						QBCore.Functions.Notify('Not Authorized', 'error')
