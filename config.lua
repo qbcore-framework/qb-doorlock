@@ -40,7 +40,6 @@ QB.Doors = {
 		distance = 1.5,
 		size = 2
 	},
-
 	-- Paleto Door 1 opened with security card A
 	{
 		objName = 'v_ilev_cbankvaulgate01',
@@ -67,8 +66,131 @@ QB.Doors = {
 		distance = 1.5,
 		size = 2
 	},
+	-- First Pacific Door opened with lockpick
+	{
+		objName = 'hei_v_ilev_bk_gate_pris',			
+		objCoords  = vector3(257.41, 220.25, 106.4),
+		textCoords = vector3(257.41, 220.25, 106.4),
+		authorizedJobs = { 'police' },
+		objYaw = -20.0,
+		locking = false,
+		locked = true,
+		pickable = true,
+		distance = 1.5,
+		size = 2
+	},
+	-- Second Pacific Door opened with lockpick
+	{
+		objName = 'v_ilev_bk_door',
+		objCoords  = vector3(265.19, 217.84, 110.28),
+		textCoords = vector3(265.19, 217.84, 110.28),
+		authorizedJobs = { 'police' },
+		objYaw = -20.0,
+		locking = false,
+		locked = true,
+		pickable = true,
+		distance = 1.5,
+		size = 2
+	},	
+	-- Fleeca Door opened with lockpick
+	{
+		objName = 'v_ilev_gb_vaubar',
+		objCoords  = vector3(314.61, -285.82, 54.49),
+		textCoords = vector3(313.3, -285.45, 54.49),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = true,
+		distance = 1.5,
+		size = 2
+	},
+	-- Fleeca Door opened with lockpick
+	{
+		objName = 'v_ilev_gb_vaubar',
+		objCoords  = vector3(148.96, -1047.12, 29.7),
+		textCoords = vector3(148.96, -1047.12, 29.7),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = true,
+		distance = 1.5,
+		size = 2
+	},
+	-- Fleeca Door opened with lockpick
+	{
+		objName = 'v_ilev_gb_vaubar',
+		objCoords  = vector3(-351.7, -56.28, 49.38),
+		textCoords = vector3(-351.7, -56.28, 49.38),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = true,
+		distance = 1.5,
+		size = 2
+	},
+	-- Fleeca Door opened with lockpick
+	{
+		objName = 'v_ilev_gb_vaubar',
+		objCoords  = vector3(-1208.12, -335.586, 37.759),
+		textCoords = vector3(-1208.12, -335.586, 37.759),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = true,
+		distance = 1.5,
+		size = 2
+	},
+	-- Fleeca Door opened with lockpick
+	{
+		objName = 'v_ilev_gb_vaubar',
+		objCoords  = vector3(-2956.18, 483.96, 16.02),
+		textCoords = vector3(-2956.18, 483.96, 16.02),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = true,
+		distance = 1.5,
+		size = 2
+	},
+	
+	-- Prison Door 1
+	{
+		objName = 'prop_gate_prison_01',
+		objCoords  = vector3(1844.9, 2604.8, 44.6),
+		textCoords = vector3(1844.9, 2608.5, 48.0),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 13,
+		size = 2
+	},
+	-- Prison Door 2	
+	{
+		objName = 'prop_gate_prison_01',
+		objCoords  = vector3(1818.5, 2604.8, 44.6),
+		textCoords = vector3(1818.5, 2608.4, 48.0),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 13,
+		size = 2
+	},
+	-- Prison Door 3	
+	{
+		objName = 'prop_gate_prison_01',
+		objCoords = vector3(1799.237, 2616.303, 44.6),
+		textCoords = vector3(1795.941, 2616.969, 48.0),
+		authorizedJobs = { 'police' },
+		locking = false,
+		locked = true,
+		pickable = false,
+		distance = 10,
+		size = 2
+	},
 	------------------------------------------Always add new doors below this line for your bank robberies to work!!!---------------------------------
-
+				------------------------------------------End Fixed Doors!!!---------------------------------
 	{
 		textCoords = vector3(434.81, -981.93, 30.89),
 		authorizedJobs = { 'police' },
@@ -171,9 +293,7 @@ QB.Doors = {
 			}
 		}
 	},
-	--
 	-- Mission Row Cells
-	--
 	-- Main Cells
 	{
 		objName = 'v_ilev_ph_cellgate',
@@ -234,9 +354,7 @@ QB.Doors = {
 		pickable = false,
 		distance = 1.0,
 	},
-	--
 	-- Mission Row Back
-	--
 	-- Back (double doors)
 	{
 		textCoords = vector3(468.67, -1014.43, 26.48),
@@ -272,9 +390,7 @@ QB.Doors = {
 		distance = 14,
 		size = 2
 	},
-	--
 	-- Mission Row Extension
-	--
 	-- Briefing room
 	{
 		textCoords = vector3(455.86, -981.31, 26.86),
@@ -417,7 +533,6 @@ QB.Doors = {
 		pickable = false,
 		distance = 1.0,
 	},
-	
 	-- Bureau Paleto Bay
 	{
 		textCoords = vector3(-435.57, 6008.76, 27.98),
@@ -438,7 +553,7 @@ QB.Doors = {
 				objCoords = vector3(-434.6776, 6009.681, 28.13839)			
 			}
 		}
-	},	
+	},
 	-- Back door left
 	{
 		objName = 'v_ilev_rc_door2',
@@ -474,7 +589,7 @@ QB.Doors = {
 		locked = true,
 		pickable = false,
 		distance = 2.0,
-	},	
+	},
 	-- Locker room 2
 	{
 		objName = 'v_ilev_rc_door2',
@@ -486,7 +601,7 @@ QB.Doors = {
 		locked = true,
 		pickable = false,
 		distance = 2.0,
-	},	
+	},
 	-- Armory
 	{
 		objName = 'v_ilev_arm_secdoor',
@@ -498,7 +613,7 @@ QB.Doors = {
 		locked = true,
 		pickable = false,
 		distance = 2.0,
-	},	
+	},
 	-- Interrogation room
 	{
 		objName = 'v_ilev_arm_secdoor',
@@ -534,8 +649,8 @@ QB.Doors = {
 		locked = true,
 		pickable = false,
 		distance = 2.0,
-	},	
-	-- Cell
+	},
+	-- Cel
 	{
 		objName = 'v_ilev_ph_cellgate1',
 		objYaw = 45.0,
@@ -546,7 +661,7 @@ QB.Doors = {
 		locked = true,
 		pickable = false,
 		distance = 2.0,
-	},						
+	},
 	-- Hallway (double doors)
 	{
 		textCoords = vector3(-442.09, 6011.93, 31.86523),
@@ -568,7 +683,7 @@ QB.Doors = {
 				objCoords  = vector3(-442.8578, 6010.958, 31.86523)			
 			}
 		}
-	},	
+	},
 	-- Hallway to the back (double doors)
 	{
 		textCoords = vector3(-448.67, 6007.52, 31.86523),
@@ -590,46 +705,7 @@ QB.Doors = {
 				objCoords = vector3(-449.5656, 6008.538, 31.86523)		
 			}
 		}
-	},				
-	--
-	-- Bolingbroke Penitentiary
-	--
-	-- Entrance (Two big gates)
-	{
-		objName = 'prop_gate_prison_01',
-		objCoords  = vector3(1844.9, 2604.8, 44.6),
-		textCoords = vector3(1844.9, 2608.5, 48.0),
-		authorizedJobs = { 'police' },
-		locking = false,
-		locked = true,
-		pickable = false,
-		distance = 13,
-		size = 2
 	},
-	{
-		objName = 'prop_gate_prison_01',
-		objCoords  = vector3(1818.5, 2604.8, 44.6),
-		textCoords = vector3(1818.5, 2608.4, 48.0),
-		authorizedJobs = { 'police' },
-		locking = false,
-		locked = true,
-		pickable = false,
-		distance = 13,
-		size = 2
-	},
-	{
-		objName = 'prop_gate_prison_01',
-		objCoords = vector3(1799.237, 2616.303, 44.6),
-		textCoords = vector3(1795.941, 2616.969, 48.0),
-		authorizedJobs = { 'police' },
-		locking = false,
-		locked = true,
-		pickable = false,
-		distance = 10,
-		size = 2
-	},
-
-
 	--outside doors
 	{
 		objName = 'prop_fnclink_03gate5',
@@ -752,9 +828,7 @@ QB.Doors = {
 		distance = 2.5,
 		size = 2
 	},
-	--
 	-- Bolingbroke Extra
-	--
 	-- To Offices
 	{
 		objName = 'v_ilev_gtdoor',
@@ -768,7 +842,6 @@ QB.Doors = {
 		distance = 2.0,
 		size = 2
 	},
-
 	-- To Changingroom
 	{
 		objName = 'v_ilev_gtdoor',
@@ -835,9 +908,6 @@ QB.Doors = {
 		size = 2
 	},
 	-- To SecondCheckGate
-	
-	-- 58
-	-- X:1845.198 Y:2585.24 Z:46.09929
 	{
 		objName = 'v_ilev_gtdoor',
 		objYaw = 90.0,
@@ -1046,7 +1116,7 @@ QB.Doors = {
 				objCoords = vector3(1782, 2553, 50),	
 			}
 		}
-	},	
+	},
 	-- Gate To Work
 	{
 		objName = 'prison_prop_door2',
@@ -1085,108 +1155,7 @@ QB.Doors = {
 		distance = 2.0,
 		size = 2
 	},
-	----------------
-	-- Pacific Bank
-	----------------
-	-- First Door
-	{
-		objName = 'hei_v_ilev_bk_gate_pris',			
-		objCoords  = vector3(257.41, 220.25, 106.4),
-		textCoords = vector3(257.41, 220.25, 106.4),
-		authorizedJobs = { 'police' },
-		objYaw = -20.0,
-		locking = false,
-		locked = true,
-		pickable = true,
-		distance = 1.5,
-		size = 2
-	},
-	-- Second Door
-	
-	-- Office to gate door
-	{
-		objName = 'v_ilev_bk_door',
-		objCoords  = vector3(265.19, 217.84, 110.28),
-		textCoords = vector3(265.19, 217.84, 110.28),
-		authorizedJobs = { 'police' },
-		objYaw = -20.0,
-		locking = false,
-		locked = true,
-		pickable = true,
-		distance = 1.5,
-		size = 2
-	},
-
-	-- First safe Door
-	
-
-	----------------
-	-- Fleeca Banks
-	----------------
-	-- Door 1
-	{
-		objName = 'v_ilev_gb_vaubar',
-		objCoords  = vector3(314.61, -285.82, 54.49),
-		textCoords = vector3(313.3, -285.45, 54.49),
-		authorizedJobs = { 'police' },
-		locking = false,
-		locked = true,
-		pickable = true,
-		distance = 1.5,
-		size = 2
-	},
-	-- Door 2
-	{
-		objName = 'v_ilev_gb_vaubar',
-		objCoords  = vector3(148.96, -1047.12, 29.7),
-		textCoords = vector3(148.96, -1047.12, 29.7),
-		authorizedJobs = { 'police' },
-		locking = false,
-		locked = true,
-		pickable = true,
-		distance = 1.5,
-		size = 2
-	},
-	-- Door 3
-	{
-		objName = 'v_ilev_gb_vaubar',
-		objCoords  = vector3(-351.7, -56.28, 49.38),
-		textCoords = vector3(-351.7, -56.28, 49.38),
-		authorizedJobs = { 'police' },
-		locking = false,
-		locked = true,
-		pickable = true,
-		distance = 1.5,
-		size = 2
-	},
-	-- Door 4
-	{
-		objName = 'v_ilev_gb_vaubar',
-		objCoords  = vector3(-1208.12, -335.586, 37.759),
-		textCoords = vector3(-1208.12, -335.586, 37.759),
-		authorizedJobs = { 'police' },
-		locking = false,
-		locked = true,
-		pickable = true,
-		distance = 1.5,
-		size = 2
-	},
-	-- Door 5
-	{
-		objName = 'v_ilev_gb_vaubar',
-		objCoords  = vector3(-2956.18, 483.96, 16.02),
-		textCoords = vector3(-2956.18, 483.96, 16.02),
-		authorizedJobs = { 'police' },
-		locking = false,
-		locked = true,
-		pickable = true,
-		distance = 1.5,
-		size = 2
-	},
-
-	-----
 	-- Police front gate
-	-----
 	{
 		objName = 'prop_facgate_07b',
 		objYaw = -90.0,
@@ -1199,9 +1168,7 @@ QB.Doors = {
 		distance = 20,
 		size = 2
 	},
-	-----
 	-- Luxury Cars
-	-----
 	-- Entrance Doors 
 	{
 		textCoords = vector3(-803.0223, -223.8222, 37.87975),
@@ -1223,7 +1190,7 @@ QB.Doors = {
 				objCoords = vector3(-801.9622, -224.5203, 37.87975)			
 			}
 		}
-	},	
+	},
 	-- Side Entrance Doors 
 	{
 		textCoords = vector3(-777.1855, -244.0013, 37.333889),
@@ -1245,7 +1212,7 @@ QB.Doors = {
 				objCoords = vector3(-776.1591, -243.5013, 37.33388)				
 			}
 		}
-	},	
+	},
 	-- Garage Doors
 	{
 		textCoords = vector3(-768.1264, -238.9737, 37.43247),
@@ -1265,10 +1232,8 @@ QB.Doors = {
 				objCoords = vector3(-765.6217, -237.9405, 37.43247) 		
 			}
 		}
-	},		
-	----------------
+	},
 	-- Pickle Rental
-	----------------
 	-- Front door 1
 	{
 		objName = 'apa_prop_apa_cutscene_doorb',
@@ -1281,7 +1246,7 @@ QB.Doors = {
 		pickable = false,
 		distance = 2.5,
 		size = 2
-	},	
+	},
 	-- Front door 2
 	{
 		objName = 'apa_prop_apa_cutscene_doorb',
@@ -1294,7 +1259,7 @@ QB.Doors = {
 		pickable = false,
 		distance = 2.5,
 		size = 2
-	},	
+	},
 	-- Door to cellar
 	{
 		objName = 'apa_prop_apa_cutscene_doorb',
@@ -1307,7 +1272,7 @@ QB.Doors = {
 		pickable = false,
 		distance = 1.5,
 		size = 2
-	},	
+	},
 	-- Back door
 	{
 		objName = 'apa_prop_apa_cutscene_doorb',
@@ -1320,7 +1285,7 @@ QB.Doors = {
 		pickable = false,
 		distance = 2.0,
 		size = 2
-	},		
+	},
 	-- Garage door
 	{
 		objName = 'prop_com_gar_door_01',
