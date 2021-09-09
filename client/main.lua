@@ -1,7 +1,7 @@
 local closestDoorKey, closestDoorValue = nil, nil
 local maxDistance = 1.25
-PlayerGang = {}
-PlayerJob = {}
+local PlayerGang = {}
+local PlayerJob = {}
 local doorFound = false
 -- Events
 
