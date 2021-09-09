@@ -1,11 +1,43 @@
 local closestDoorKey, closestDoorValue = nil, nil
 local maxDistance = 1.25
-
+PlayerGang = {}
+PlayerJob = {}
+local doorFound = false
 -- Events
+
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    TriggerServerEvent("qb-doorlock:server:setupDoors")
+	PlayerJob = QBCore.Functions.GetPlayerData().job
+	PlayerGang = QBCore.Functions.GetPlayerData().gang
+end)
 
 RegisterNetEvent('qb-doorlock:client:setState')
 AddEventHandler('qb-doorlock:client:setState', function(doorID, state)
 	QB.Doors[doorID].locked = state
+	local current = QB.Doors[doorID]
+	if current.doors then
+		for a = 1, #current.doors do
+			local currentDoor = current.doors[a]
+			if not currentDoor.object or not DoesEntityExist(currentDoor.object) then
+				currentDoor.object = GetClosestObjectOfType(currentDoor.objCoords, 1.0, GetHashKey(currentDoor.objName), false, false, false)
+			end
+			FreezeEntityPosition(currentDoor.object, current.locked)
+
+			if current.locked and currentDoor.objYaw and GetEntityRotation(currentDoor.object).z ~= currentDoor.objYaw then
+				SetEntityRotation(currentDoor.object, 0.0, 0.0, currentDoor.objYaw, 2, true)
+			end
+		end
+	else
+		if not current.object or not DoesEntityExist(current.object) then
+			current.object = GetClosestObjectOfType(current.objCoords, 1.0, GetHashKey(current.objName), false, false, false)
+		end
+		FreezeEntityPosition(current.object, current.locked)
+
+		if current.locked and current.objYaw and GetEntityRotation(current.object).z ~= current.objYaw then
+			SetEntityRotation(current.object, 0.0, 0.0, current.objYaw, 2, true)
+		end
+	end
 end)
 
 RegisterNetEvent('qb-doorlock:client:setDoors')
@@ -13,9 +45,14 @@ AddEventHandler('qb-doorlock:client:setDoors', function(doorList)
 	QB.Doors = doorList
 end)
 
-RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
-AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-    TriggerServerEvent("qb-doorlock:server:setupDoors")
+RegisterNetEvent('QBCore:Client:OnGangUpdate')
+AddEventHandler('QBCore:Client:OnGangUpdate', function(GangInfo)
+    PlayerGang = GangInfo
+end)
+
+RegisterNetEvent('QBCore:Client:OnJobUpdate')
+AddEventHandler('QBCore:Client:OnJobUpdate', function(jobInfo)
+	PlayerJob = jobInfo
 end)
 
 RegisterNetEvent('lockpicks:UseLockpick')
@@ -48,7 +85,7 @@ end)
 
 function DrawText3Ds(x, y, z, text)
 	SetTextScale(0.35, 0.35)
-    SetTextFont(1)
+    SetTextFont(4)
     SetTextProportional(1)
     SetTextColour(255, 255, 255, 215)
     SetTextEntry("STRING")
@@ -88,10 +125,8 @@ function loadAnimDict(dict)
 end
 
 function IsAuthorized(doorID)
-	local PlayerData = QBCore.Functions.GetPlayerData()
-
 	for _,job in pairs(doorID.authorizedJobs) do
-		if job == PlayerData.job.name or job == PlayerData.gang.name then
+		if job == PlayerJob.name or job == PlayerGang.name then
 			return true
 		end
 	end
@@ -116,31 +151,9 @@ end
 
 Citizen.CreateThread(function()
 	while true do
-		Citizen.Wait(2500)
-		for i = 1, #QB.Doors do
-			local current = QB.Doors[i]
-			if current.doors then
-				for a = 1, #current.doors do
-					local currentDoor = current.doors[a]
-					if not currentDoor.object or not DoesEntityExist(currentDoor.object) then
-						currentDoor.object = GetClosestObjectOfType(currentDoor.objCoords, 1.0, GetHashKey(currentDoor.objName), false, false, false)
-					end
-				end
-			else
-				if not current.object or not DoesEntityExist(current.object) then
-					current.object = GetClosestObjectOfType(current.objCoords, 1.0, GetHashKey(current.objName), false, false, false)
-				end
-			end
-		end
-	end
-end)
-
-
-Citizen.CreateThread(function()
-	while true do
-		Citizen.Wait(5)
+		Citizen.Wait(0)
 		local playerCoords, awayFromDoors = GetEntityCoords(PlayerPedId()), true
-
+		
 		for i = 1, #QB.Doors do
 			local current = QB.Doors[i]
 			local distance
@@ -155,11 +168,14 @@ Citizen.CreateThread(function()
 				maxDistance = current.distance
 			end
 
-			if distance < 10 then
+			if distance < 3.0 and not doorFound then
 				awayFromDoors = false
 				if current.doors then
 					for a = 1, #current.doors do
 						local currentDoor = current.doors[a]
+						if not currentDoor.object or not DoesEntityExist(currentDoor.object) then
+							currentDoor.object = GetClosestObjectOfType(currentDoor.objCoords, 1.0, GetHashKey(currentDoor.objName), false, false, false)
+						end
 						FreezeEntityPosition(currentDoor.object, current.locked)
 
 						if current.locked and currentDoor.objYaw and GetEntityRotation(currentDoor.object).z ~= currentDoor.objYaw then
@@ -167,6 +183,9 @@ Citizen.CreateThread(function()
 						end
 					end
 				else
+					if not current.object or not DoesEntityExist(current.object) then
+						current.object = GetClosestObjectOfType(current.objCoords, 1.0, GetHashKey(current.objName), false, false, false)
+					end
 					FreezeEntityPosition(current.object, current.locked)
 
 					if current.locked and current.objYaw and GetEntityRotation(current.object).z ~= current.objYaw then
@@ -177,6 +196,7 @@ Citizen.CreateThread(function()
 
 			if distance < maxDistance then
 				awayFromDoors = false
+				doorFound = true
 				if current.size then
 					size = current.size
 				end
@@ -188,6 +208,7 @@ Citizen.CreateThread(function()
 						displayText = "[~g~E~w~] - Locked"
 					elseif not current.locked then
 						displayText = "[~g~E~w~] - Unlocked"
+
 					end
 				elseif not isAuthorized then
 					if current.locked then
@@ -222,7 +243,9 @@ Citizen.CreateThread(function()
 		end
 
 		if awayFromDoors then
+			doorFound = false
 			Citizen.Wait(1000)
 		end
 	end
 end)
+
