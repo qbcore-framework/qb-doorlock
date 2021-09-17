@@ -205,16 +205,16 @@ Citizen.CreateThread(function()
 
 				if isAuthorized then
 					if current.locked then
-						displayText = "[~g~E~w~] - Locked"
+						displayText = "[~g~E~w~] - Locked " ..i
 					elseif not current.locked then
-						displayText = "[~g~E~w~] - Unlocked"
+						displayText = "[~g~E~w~] - Unlocked "..i
 
 					end
 				elseif not isAuthorized then
 					if current.locked then
-						displayText = "~r~Locked"
+						displayText = "~r~Locked "..i
 					elseif not current.locked then
-						displayText = "~g~Unlocked"
+						displayText = "~g~Unlocked "..i
 					end
 				end
 
