@@ -1,7 +1,6 @@
+local PlayerGang, PlayerJob = {}, {}
 local closestDoorKey, closestDoorValue = nil, nil
 local maxDistance = 1.25
-local PlayerGang = {}
-local PlayerJob = {}
 local doorFound = false
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
@@ -147,8 +146,6 @@ function round(num, numDecimalPlaces)
 	local mult = 10^(numDecimalPlaces or 0)
 	return math.floor(num * mult + 0.5) / mult
 end
-
--- Threads
 
 Citizen.CreateThread(function()
 	while true do
