@@ -3,7 +3,6 @@ local maxDistance = 1.25
 local PlayerGang = {}
 local PlayerJob = {}
 local doorFound = false
--- Events
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
@@ -125,13 +124,15 @@ function loadAnimDict(dict)
 end
 
 function IsAuthorized(doorID)
-	for _,job in pairs(doorID.authorizedJobs) do
-		if job == PlayerJob.name or job == PlayerGang.name then
-			return true
-		end
-	end
-	
-	return false
+    for _, job in pairs(doorID.authorizedJobs.jobs) do
+        if PlayerJob.name == job.name and PlayerJob.grade.level >= job.grade then
+            return true
+        elseif PlayerGang.name == job.name and Playergang.grade.level >= job.grade then
+            return true
+        end
+    end
+
+    return false
 end
 
 function openDoorAnim()
