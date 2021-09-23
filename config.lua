@@ -10,7 +10,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -30,7 +30,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -50,7 +50,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -71,7 +71,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -91,7 +91,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -110,7 +110,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -130,7 +130,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -150,7 +150,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -169,7 +169,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -188,7 +188,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -207,7 +207,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -226,7 +226,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -245,7 +245,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -264,7 +264,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -283,7 +283,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -301,7 +301,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -331,7 +331,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -350,7 +350,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -369,7 +369,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -388,7 +388,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -407,7 +407,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -423,7 +423,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -455,7 +455,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -474,7 +474,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -493,7 +493,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -512,7 +512,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -531,7 +531,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -548,7 +548,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -579,7 +579,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -597,7 +597,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -628,7 +628,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -647,7 +647,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -666,7 +666,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -685,7 +685,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -704,7 +704,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -723,7 +723,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -742,7 +742,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -761,7 +761,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -780,7 +780,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -799,7 +799,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -815,7 +815,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -846,7 +846,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -865,7 +865,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -884,7 +884,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -903,7 +903,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -922,7 +922,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -941,7 +941,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -960,7 +960,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -979,7 +979,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -998,7 +998,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1014,7 +1014,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1042,7 +1042,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1072,7 +1072,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1090,7 +1090,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1108,7 +1108,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1126,7 +1126,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1144,7 +1144,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1162,7 +1162,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1180,7 +1180,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1198,7 +1198,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1216,7 +1216,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1234,7 +1234,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1252,7 +1252,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1273,7 +1273,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1293,7 +1293,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1313,7 +1313,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1333,7 +1333,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1353,7 +1353,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1373,7 +1373,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1393,7 +1393,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1413,7 +1413,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1433,7 +1433,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1452,7 +1452,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1468,7 +1468,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1495,7 +1495,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1525,7 +1525,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1544,7 +1544,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1563,7 +1563,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1579,7 +1579,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1610,7 +1610,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1630,7 +1630,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1650,7 +1650,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1666,7 +1666,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1697,7 +1697,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1717,7 +1717,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1736,7 +1736,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1756,7 +1756,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 }
             }
         },
@@ -1774,7 +1774,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 },
                 {
                     name = "cardealer",
@@ -1806,7 +1806,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 },
                 {
                     name = "cardealer",
@@ -1838,7 +1838,7 @@ QB.Doors = {
             jobs = {
                 {
                     name = "police",
-                    grade = 1
+                    grade = 0
                 },
                 {
                     name = "cardealer",
