@@ -126,7 +126,7 @@ function IsAuthorized(doorID)
     for _, job in pairs(doorID.authorizedJobs.jobs) do
         if PlayerJob.name == job.name and PlayerJob.grade.level >= job.grade then
             return true
-        elseif PlayerGang.name == job.name and Playergang.grade.level >= job.grade then
+        elseif PlayerGang.name == job.name and PlayerGang.grade.level >= job.grade then
             return true
         end
     end
