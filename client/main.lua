@@ -117,7 +117,7 @@ end
 function loadAnimDict(dict)
     while (not HasAnimDictLoaded(dict)) do
         RequestAnimDict(dict)
-        Citizen.Wait(5)
+        Wait(5)
     end
 end
 
@@ -243,7 +243,7 @@ CreateThread(function()
 
 		if awayFromDoors then
 			doorFound = false
-			Citizen.Wait(1000)
+			Wait(1000)
 		end
 	end
 end)
