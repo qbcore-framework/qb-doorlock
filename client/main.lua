@@ -127,15 +127,19 @@ function loadAnimDict(dict)
 end
 
 function IsAuthorized(doorID)
-	for _, job in pairs(doorID.authorizedJobs) do
-		if job == PlayerJob.name then
-			return true
+	if doorID.authorizedJobs then
+		for _, job in pairs(doorID.authorizedJobs) do
+			if job == PlayerJob.name then
+				return true
+			end
 		end
 	end
 
-	for _, gang in pairs(doorID.authorizedGangs) do
-		if gang == PlayerGang.name then
-			return true
+	if doorID.authorizedGangs then
+		for _, gang in pairs(doorID.authorizedGangs) do
+			if gang == PlayerGang.name then
+				return true
+			end
 		end
 	end
 
