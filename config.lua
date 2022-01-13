@@ -218,8 +218,8 @@ QB.Doors = {
 	{
 		objName = 'gabz_mrpd_door_05',
 		objYaw = 177.9,
-		objCoords  = vector3(440.5, -988.2, 30.8),
-		textCoords = vector3(440.5, -988.2, 30.8),
+		objCoords  = vector3(440.5, -986.2, 30.8),
+		textCoords = vector3(440.5, -986.2, 30.8),
 		authorizedJobs = { 'police' },
 		locking = false,
 		locked = true,
