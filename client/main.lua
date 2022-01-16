@@ -127,6 +127,11 @@ function loadAnimDict(dict)
 end
 
 function IsAuthorized(doorID)
+
+	if PlayerData == nil then
+        PlayerData = QBCore.Functions.GetPlayerData()
+    end
+	
 	if doorID.authorizedJobs then
 		for _, job in pairs(doorID.authorizedJobs) do
 			if job == PlayerJob.name then
@@ -138,6 +143,14 @@ function IsAuthorized(doorID)
 	if doorID.authorizedGangs then
 		for _, gang in pairs(doorID.authorizedGangs) do
 			if gang == PlayerGang.name then
+				return true
+			end
+		end
+	end
+
+	if doorID.authorizedCitizenID then
+		for _, id in pairs(doorID.authorizedCitizenID) do
+			if id == PlayerData.citizenid then
 				return true
 			end
 		end
