@@ -1,9 +1,14 @@
 local Translations = {
     error = {
-        not_authorized = "Geen toegang"
+        not_authorized = "Geen toegang",
+        lockpick_fail = "Mislukt",
+        screwdriverset_not_found = "Je hebt geen gereedschapskist",
+        door_not_locked = "De deur is niet vergrendeld",
+        door_not_lockpickable = "Deze deur kan niet worden gelockpicked"
     },
-    success = {},
-    info = {},
+    success = {
+        lockpick_success = "Success"
+    },
     general = {
         locking = "~r~Vergrendelen..",
         unlocking = "~g~Ontgrendelen..",
