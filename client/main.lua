@@ -8,29 +8,29 @@ local doorFound = false
 
 local function DrawText3Ds(x, y, z, text)
 	SetTextScale(0.35, 0.35)
-    SetTextFont(4)
-    SetTextProportional(1)
-    SetTextColour(255, 255, 255, 215)
-    SetTextEntry("STRING")
-    SetTextCentre(true)
-    AddTextComponentString(text)
-    SetDrawOrigin(x,y,z, 0)
-    DrawText(0.0, 0.0)
-    local factor = (string.len(text)) / 370
-    DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
-    ClearDrawOrigin()
+	SetTextFont(4)
+	SetTextProportional(1)
+	SetTextColour(255, 255, 255, 215)
+	SetTextEntry("STRING")
+	SetTextCentre(true)
+	AddTextComponentString(text)
+	SetDrawOrigin(x,y,z, 0)
+	DrawText(0.0, 0.0)
+	local factor = (string.len(text)) / 370
+	DrawRect(0.0, 0.0+0.0125, 0.017+ factor, 0.03, 0, 0, 0, 75)
+	ClearDrawOrigin()
 end
 
 local function loadAnimDict(dict)
 	RequestAnimDict(dict)
-    while not HasAnimDictLoaded(dict) do
-        Wait(0)
-    end
+	while not HasAnimDictLoaded(dict) do
+		Wait(0)
+	end
 end
 
 local function openDoorAnim()
-    loadAnimDict("anim@heists@keycard@")
-    TaskPlayAnim(PlayerPedId(), "anim@heists@keycard@", "exit", 5.0, 1.0, -1, 16, 0, 0, 0, 0)
+	loadAnimDict("anim@heists@keycard@")
+	TaskPlayAnim(PlayerPedId(), "anim@heists@keycard@", "exit", 5.0, 1.0, -1, 16, 0, 0, 0, 0)
 	SetTimeout(400, function()
 		ClearPedTasks(PlayerPedId())
 	end)
@@ -39,7 +39,7 @@ end
 local function setDoorLocking(doorId, key)
 	doorId.locking = true
 	openDoorAnim()
-    SetTimeout(400, function()
+	SetTimeout(400, function()
 		doorId.locking = false
 		doorId.locked = not doorId.locked
 		TriggerServerEvent('qb-doorlock:server:updateState', key, doorId.locked)
@@ -47,12 +47,12 @@ local function setDoorLocking(doorId, key)
 end
 
 local function lockpickFinish(success)
-    if success then
+	if success then
 		QBCore.Functions.Notify(Lang:t("success.lockpick_success"), 'success', 2500)
 		setDoorLocking(closestDoorValue, closestDoorKey)
-    else
-        QBCore.Functions.Notify(Lang:t("error.lockpick_fail"), 'error', 2500)
-    end
+	else
+		QBCore.Functions.Notify(Lang:t("error.lockpick_fail"), 'error', 2500)
+	end
 end
 
 local function IsAuthorized(doorID)
@@ -100,7 +100,7 @@ end
 -- Events
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
-    TriggerServerEvent("qb-doorlock:server:setupDoors")
+	TriggerServerEvent("qb-doorlock:server:setupDoors")
 	PlayerData = QBCore.Functions.GetPlayerData()
 end)
 
@@ -119,7 +119,6 @@ RegisterNetEvent('qb-doorlock:client:setState', function(doorID, state)
 				currentDoor.object = GetClosestObjectOfType(currentDoor.objCoords, 1.0, doorHash, false, false, false)
 			end
 			FreezeEntityPosition(currentDoor.object, current.locked)
-
 			if current.locked and currentDoor.objYaw and GetEntityRotation(currentDoor.object).z ~= currentDoor.objYaw then
 				SetEntityRotation(currentDoor.object, 0.0, 0.0, currentDoor.objYaw, 2, true)
 			end
@@ -134,7 +133,6 @@ RegisterNetEvent('qb-doorlock:client:setState', function(doorID, state)
 			end
 		end
 		FreezeEntityPosition(current.object, current.locked)
-
 		if current.locked and current.objYaw and GetEntityRotation(current.object).z ~= current.objYaw then
 			SetEntityRotation(current.object, 0.0, 0.0, current.objYaw, 2, true)
 		end
@@ -203,7 +201,6 @@ CreateThread(function()
 							currentDoor.object = GetClosestObjectOfType(currentDoor.objCoords, 1.0, doorHash, false, false, false)
 						end
 						FreezeEntityPosition(currentDoor.object, current.locked)
-
 						if current.locked and currentDoor.objYaw and GetEntityRotation(currentDoor.object).z ~= currentDoor.objYaw then
 							SetEntityRotation(currentDoor.object, 0.0, 0.0, currentDoor.objYaw, 2, true)
 						end
@@ -214,7 +211,6 @@ CreateThread(function()
 						current.object = GetClosestObjectOfType(current.objCoords, 1.0, doorHash, false, false, false)
 					end
 					FreezeEntityPosition(current.object, current.locked)
-
 					if current.locked and current.objYaw and GetEntityRotation(current.object).z ~= current.objYaw then
 						SetEntityRotation(current.object, 0.0, 0.0, current.objYaw, 2, true)
 					end
