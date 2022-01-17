@@ -1,6 +1,23 @@
 # qb-doorlock
 Doorlock Script For QB-Core
 
+Example of a configuration:
+
+	{
+		objName = 'hei_v_ilev_bk_gate2_pris', -- Door Name
+		objCoords  = vector3(261.83, 221.39, 106.41), -- Objective Cords
+		textCoords = vector3(261.83, 221.39, 106.41), -- Text for the lock message
+		authorizedJobs = { 'police' }, -- Job Access
+            authorizedGangs = { 'vagos' }, -- Gangs Access
+            authorizedCitizenID = { 'BUI05180' }, -- Citizen ID Access
+		objYaw = -110.0, -- Yaw of door
+		locking = false, -- True or False
+		locked = true, -- True or False | Locked by default
+		pickable = false, -- True or False | Can it be pickable?
+		distance = 1.5, -- When will it show the text?
+		size = 2 -- How big 
+	},
+    
 # License
 
     QBCore Framework
