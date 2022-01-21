@@ -7,14 +7,15 @@ local Translations = {
         door_not_lockpickable = "Cette porte ne peut pas être crochetée"
     },
     success = {
-        lockpick_success = "succès"    },
+        lockpick_success = "Succès"    
+    },
     general = {
-        locking = "~r~verrouillage..",
-        unlocking = "~g~déverrouillage..",
-        locked = "~r~verrouillé",
-        unlocked = "~g~déverrouillé",
-        locked_button = "[~g~E~w~] - verrouillé",
-        unlocked_button = "[~g~E~w~] - verrouillé"
+        locking = "~r~Verrouillage..",
+        unlocking = "~g~Déverrouillage..",
+        locked = "~r~Verrouillé",
+        unlocked = "~g~Déverrouillé",
+        locked_button = "[~g~E~w~] - Verrouillé",
+        unlocked_button = "[~g~E~w~] - Verrouillé"
     }
 }
 
