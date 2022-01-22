@@ -1,9 +1,14 @@
 local Translations = {
     error = {
-        not_authorized = "Not authorized"
+        not_authorized = "Not authorized",
+        lockpick_fail = "Failed",
+        screwdriverset_not_found = "You don't have a Screwdriver Set",
+        door_not_locked = "The door is not locked",
+        door_not_lockpickable = "This door can't be lockpicked"
     },
-    success = {},
-    info = {},
+    success = {
+        lockpick_success = "Success"
+    },
     general = {
         locking = "~r~Locking..",
         unlocking = "~g~Unlocking..",
