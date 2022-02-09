@@ -262,7 +262,7 @@ RegisterNetEvent('qb-doorlock:server:saveNewDoor', function(data, doubleDoor)
 	file:close()
 
 	Config.Doors[data.doorname] = configData
-	TriggerClientEvent('qb-doorlock:client:newDoorAdded', -1, data, data.doorname)
+	TriggerClientEvent('qb-doorlock:client:newDoorAdded', -1, configData, data.doorname)
 end)
 
 -- Commands
