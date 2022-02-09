@@ -115,15 +115,16 @@ local function updateDoors(specificDoor)
             if data.doors then
                 for k, v in pairs(data.doors) do
                     if #(playerCoords - v.objCoords) < 30 then
-						if v.doorType and v.doorType == "doublesliding" then
-							v.object = GetClosestObjectOfType(v.objCoords, 5.0, v.objName or v.objHash, false, false, false)
+						if not v.doorType then v.doorType = 'double' end
+						if v.doorType == "doublesliding" then
+							v.object = GetClosestObjectOfType(v.objCoords.x, v.objCoords.y, v.objCoords.z, 5.0, v.objName or v.objHash, false, false, false)
 						else
-                        	v.object = GetClosestObjectOfType(v.objCoords, 1.0, v.objName or v.objHash, false, false, false)
+                        	v.object = GetClosestObjectOfType(v.objCoords.x, v.objCoords.y, v.objCoords.z, 1.0, v.objName or v.objHash, false, false, false)
 						end
-                        if v.object then
+                        if v.object and v.object ~= 0 then
                             v.doorHash = 'door_'..doorID..'_'..k
                             if not IsDoorRegisteredWithSystem(v.doorHash) then
-                                AddDoorToSystem(v.doorHash, v.objName or v.objHash, v.objCoords, false, false, false)
+                                AddDoorToSystem(v.doorHash, v.objName or v.objHash, v.objCoords.x, v.objCoords.y, v.objCoords.z, false, false, false)
                                 nearbyDoors[doorID] = true
                                 if data.locked then
 									DoorSystemSetDoorState(v.doorHash, 4, false, false)
@@ -133,22 +134,23 @@ local function updateDoors(specificDoor)
                                 end
                             end
                         end
-                    elseif v.object then
+                    elseif v.object and v.object ~= 0 then
 						RemoveDoorFromSystem(v.doorHash)
 						nearbyDoors[doorID] = nil
 					end
                 end
             elseif not data.doors then
                 if #(playerCoords - data.objCoords) < 30 then
-                    if data.doorType and data.doorType == "sliding" or data.doorType == "garage" then
-						data.object = GetClosestObjectOfType(data.objCoords, 5.0, data.objName or data.objHash, false, false, false)
+					if not data.doorType then data.doorType = 'door' end
+                    if data.doorType == "sliding" or data.doorType == "garage" then
+						data.object = GetClosestObjectOfType(data.objCoords.x, data.objCoords.y, data.objCoords.z, 5.0, data.objName or data.objHash, false, false, false)
 					else
-                        data.object = GetClosestObjectOfType(data.objCoords, 1.0, data.objName or data.objHash, false, false, false)
+                        data.object = GetClosestObjectOfType(data.objCoords.x, data.objCoords.y, data.objCoords.z, 1.0, data.objName or data.objHash, false, false, false)
                     end
-                    if data.object then
+                    if data.object and data.object ~= 0 then
                         data.doorHash = 'door_'..doorID
                         if not IsDoorRegisteredWithSystem(data.doorHash) then
-                            AddDoorToSystem(data.doorHash, data.objName or data.objHash, data.objCoords, false, false, false)
+                            AddDoorToSystem(data.doorHash, data.objName or data.objHash, data.objCoords.x, data.objCoords.y, data.objCoords.z, false, false, false)
                             nearbyDoors[doorID] = true
                             if data.locked then
                                 DoorSystemSetDoorState(data.doorHash, 4, false, false)
@@ -158,7 +160,7 @@ local function updateDoors(specificDoor)
                             end
                         end
                     end
-                elseif data.object then
+                elseif data.object and data.object ~= 0 then
 					RemoveDoorFromSystem(data.doorHash)
 					nearbyDoors[doorID] = false
 				end
@@ -173,21 +175,21 @@ local function updateDoors(specificDoor)
                         data.textCoords = data.textCoords - (textDistance / 2)
                         data.setText = true
                     end
-                    if k == 2 and data.textCoords and (data.doorType and data.doorType == "sliding" or data.doorType == "garage") then
+                    if k == 2 and data.textCoords and (data.doorType == "sliding" or data.doorType == "garage") then
                         if GetEntityHeightAboveGround(v.object) < 1 then
                             data.textCoords = vec3(data.textCoords.x, data.textCoords.y, data.textCoords.z + 1.2)
                         end
                     end
                 end
             elseif not data.setText and not data.doors and DoesEntityExist(data.object) then
-                if data.doorType and data.doorType == "garage" then
+                if data.doorType == "garage" then
                     data.textCoords = data.objCoords
                     data.setText = true
                 else
                     data.textCoords = setTextCoords(data)
                     data.setText = true
                 end
-                if data.doorType and data.doorType == "sliding" or data.doorType == "garage" then
+                if data.doorType == "sliding" or data.doorType == "garage" then
                     if GetEntityHeightAboveGround(data.object) < 1 then
                         data.textCoords = vec3(data.textCoords.x, data.textCoords.y, data.textCoords.z + 1.6)
                     end
@@ -302,11 +304,12 @@ RegisterNetEvent('qb-doorlock:client:setState', function(serverId, doorID, state
 	local current = Config.Doors[doorID]
 	while true do
 		if current.doors then
+			if not current.doorType then current.doorType = 'double' end
 			for k, v in pairs(current.doors) do
 				if not IsDoorRegisteredWithSystem(v.doorHash) then return end
 				v.currentHeading = GetEntityHeading(v.object)
 				v.doorState = DoorSystemGetDoorState(v.doorHash)
-				if current.doorType and current.doorType == "doublesliding" then
+				if current.doorType == "doublesliding" then
 					DoorSystemSetAutomaticRate(v.doorHash, v.doorRate or 1.0, false, false)
 					if current.locked then
 						DoorSystemSetDoorState(v.doorHash, 1, false, false)
@@ -343,9 +346,10 @@ RegisterNetEvent('qb-doorlock:client:setState', function(serverId, doorID, state
 			end
 		else
 			if not IsDoorRegisteredWithSystem(current.doorHash) then return end
+			if not current.doorType then current.doorType = 'door' end
 			current.currentHeading = GetEntityHeading(current.object)
 			current.doorState = DoorSystemGetDoorState(current.doorHash)
-			if current.doorType and current.doorType == "sliding" or current.doorType == "garage" then
+			if current.doorType == "sliding" or current.doorType == "garage" then
 				DoorSystemSetAutomaticRate(current.doorHash, current.doorRate or 1.0, false, false)
 				if current.locked then
 					DoorSystemSetDoorState(current.doorHash, 1, false, false)
@@ -611,7 +615,7 @@ RegisterCommand('toggledoorlock', function()
         end
         local locked = not closestDoor.data.locked
         if closestDoor.data.audioRemote then src = NetworkGetNetworkIdFromEntity(playerPed) else src = false end
-        TriggerServerEvent('qb-doorlock:server:updateState', closestDoor.id, locked, src, false, false, true) -- Broadcast new state of the door to everyone
+        TriggerServerEvent('qb-doorlock:server:updateState', closestDoor.id, locked, src, false, false, true, true) -- Broadcast new state of the door to everyone
     end
 end)
 TriggerEvent("chat:removeSuggestion", "/toggledoorlock")
@@ -632,12 +636,11 @@ CreateThread(function()
 					updateDoors()
 					sleep = 1000
 				else
-					closestDoor.distance = 15
 					for k in pairs(nearbyDoors) do
 						local door = Config.Doors[k]
 						if door.setText and door.textCoords then
 							distance = #(playerCoords - door.textCoords)
-							if distance < closestDoor.distance then
+							if distance < (closestDoor.distance or 15) then
 								if distance < (door.distance or door.maxDistance) then
 									closestDoor = {distance = distance, id = k, data = door}
 									sleep = 0
