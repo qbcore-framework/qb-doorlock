@@ -14,7 +14,6 @@ local Translations = {
         locked_button = "[E] - Vergrendeld",
         unlocked_button = "[E] - Ontgrendeld",
         keymapping_description = "Deuren vergendelen/ontgrendelen",
-        warn_unknown_resource = "Onbekende resource triggerde qb-doorlock:client:newDoorAdded voor speler %{player} (source: %{source})",
         locked_menu = "Vergrendeld",
         pickable_menu = "Lockpickbaar",
         distance_menu = "Max Afstand",

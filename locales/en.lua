@@ -14,7 +14,6 @@ local Translations = {
         locked_button = "[E] - Locked",
         unlocked_button = "[E] - Unlocked",
         keymapping_description = "Interact with door locks",
-        warn_unknown_resource = "Unknown resource triggered qb-doorlock:client:newDoorAdded for player %{player} (source: %{source})",
         locked_menu = "Locked",
         pickable_menu = "Lockpickable",
         distance_menu = "Max Distance",

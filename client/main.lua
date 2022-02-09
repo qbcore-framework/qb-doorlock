@@ -585,12 +585,6 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 end)
 
 RegisterNetEvent('qb-doorlock:client:newDoorAdded', function(data, id)
-	if GetInvokingResource() ~= GetCurrentResourceName() then
-		if Config.Warnings then
-			TriggerServerEvent('qb-doorlock:server:showWarning', Lang:t("general.warn_unknown_resource", {player = PlayerData.name, source = PlayerData.source}))
-		end
-		return
-	end
 	Config.Doors[id] = data
 	TriggerEvent('qb-doorlock:client:setState', PlayerData.source, id, data.locked, false, true, true)
 end)
