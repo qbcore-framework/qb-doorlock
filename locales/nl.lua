@@ -39,7 +39,8 @@ local Translations = {
         warn_no_authorisation = "%{player} (%{license}) probeerde een deur te openen zonder autorisatie (Stuurde: %{doorID})",
         warn_wrong_doorid = "%{player} (%{license}) probeerde een ongeldige deur te updaten (Stuurde: %{doorID})",
         warn_wrong_state = "%{player} (%{license}) stuurde een ongelidge waarde door voor het ver-/ontgrendelen (Stuurde: %{state})",
-        warn_wrong_doorid_type = "%{player} (%{license}) stuurde een ongeldige deurID waarde (Stuurde: %{doorID})"
+        warn_wrong_doorid_type = "%{player} (%{license}) stuurde een ongeldige deurID waarde (Stuurde: %{doorID})",
+        warn_admin_privilege_used = "%{player} (%{license}) opende een deur met admin privileges"
     }
 }
 

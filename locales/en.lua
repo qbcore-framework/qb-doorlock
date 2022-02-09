@@ -39,7 +39,8 @@ local Translations = {
         warn_no_authorisation = "%{player} (%{license}) attempted to open a door without authorisation (Sent: %{doorID})",
         warn_wrong_doorid = "%{player} (%{license}) attempted to update invalid door (Sent: %{doorID})",
         warn_wrong_state = "%{player} (%{license}) attempted to update to an invalid state (Sent: %{state})",
-        warn_wrong_doorid_type = "%{player} (%{license}) didn't send an appropriate doorID (Sent: %{doorID})"
+        warn_wrong_doorid_type = "%{player} (%{license}) didn't send an appropriate doorID (Sent: %{doorID})",
+        warn_admin_privilege_used = "%{player} (%{license}) opened a door using admin privileges"
     }
 }
 

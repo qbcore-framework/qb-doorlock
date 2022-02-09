@@ -77,6 +77,13 @@ end
 local function isAuthorized(Player, door, usedLockpick)
 	if door.allAuthorized then return true end
 
+	if Config.AdminAccess and QBCore.Functions.HasPermission(Player.PlayerData.source, Config.AdminPermission) then
+		if Config.Warnings then
+			showWarning(Lang:t("general.warn_admin_privilege_used", {player = Player.PlayerData.name, license = Player.PlayerData.license}))
+		end
+		return true
+	end
+
 	if (door.pickable or door.lockpick) and usedLockpick then return true end
 
 	if door.authorizedJobs then
