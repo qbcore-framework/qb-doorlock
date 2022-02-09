@@ -1,21 +1,75 @@
 # qb-doorlock
-Doorlock Script For QB-Core
+Doorlock System For QBCore
 
-Example of a configuration:
+This doorlock system is based on [nui_doorlock by thelindat](https://github.com/thelindat/nui_doorlock) and contains compatibility with it's format.
 
-      {
-            objName = 'hei_v_ilev_bk_gate2_pris', -- Door name
-            objCoords  = vector3(261.83, 221.39, 106.41), -- Object coords
-            textCoords = vector3(261.83, 221.39, 106.41), -- Coords for the interaction text
+## Dependencies
+
+* [qb-core](https://github.com/qbcore-framework/qb-core)
+* [qb-input](https://github.com/qbcore-framework/qb-input)
+* [qb-lockpick](https://github.com/qbcore-framework/qb-lockpick)
+
+## Features
+
+* Quick in-game door creation with /newdoor
+* Multiple door types to support all possible doors
+* Support for item checking, multiple or single items
+* Support for citizenid, gang and job checking
+* Support for qb-lockpick
+* NUI Text as interaction text
+* Great performance
+* Uses the native door system
+* Support for object names and hashes
+* Play any sound you want when unlocking/locking a door
+* Highly customisable
+* Auto lock, to automatically lock a door after it has been opened
+
+## Single Door Configuration
+
+      ['somesingledoor'] = { -- The index of the table, this is used as the doorID
+            objName = 'hei_v_ilev_bk_gate2_pris', -- Door object name can be a string or a number. Alias: objHash = 'hei_v_ilev_bk_gate2_pris',
+            objCoords  = vec3(261.83, 221.39, 106.41), -- Object coords
+            textCoords = vec3(261.83, 221.39, 106.41), -- Coords for the interaction text
             authorizedJobs = { ['police'] = 0 }, -- Job access (checks for a minimum grade of 0)
             authorizedGangs = { ['vagos'] = 0 }, -- Gang access (checks for a minimum grade of 0)
-            authorizedCitizenID = { ['BUI05180'] = true }, -- Citizen ID access
-            allAuthorized = false -- true or false | will give access to everyone if it is true
-            objYaw = -110.0, -- Yaw of door
-            locking = false, -- Leave this at false
-            locked = true, -- true or false | Locked by default
-            pickable = false, -- true or false | Can it be lockpicked?
-            distance = 1.5, -- At what range will it show the interaction text?
+            authorizedCitizenIDs = { ['BUI05180'] = true }, -- Citizen ID access
+            items = { ['keycard'] = 1, ['banana'] = 3 }, -- Item access, can be a string or table | the value of the item is the amount of items needed when using a table, if it is a string it will always check if this person has one or more of the item
+            needsAllItems = false, -- true or false | Whether to check if the person has all items to unlock the door or just one of the items
+            allAuthorized = false, -- true or false | Will give access to everyone if it is true
+            objYaw = -110.0, -- Heading of the door. Alias: objHeading = -110.0,
+            locked = true, -- true or false | Is the door locked by default
+            pickable = false, -- true or false | Can the door be lockpicked. Alias: lockpick = false,
+            distance = 1.5, -- At what range the interaction text will show. Alis: maxDistance = 1.5,
+            doorType = 'door', -- The type of door, can be door, double, sliding, doublesliding or garage
+      },
+
+## Double Door Configuration
+
+      ['somedoubledoor'] = { -- The index of the table, this is used as the doorID, can be a number or a string
+            doors = { -- Table of doors which holds both doors' data
+			{
+				objName = 'v_ilev_rc_door2', -- Door object name can be a string or a number. Alias: objHash = 'v_ilev_rc_door2',
+				objYaw = 135.0, -- Heading of the door. Alias: objHeading = 135.0,
+				objCoords = vec3(-447.7283, 6006.702, 31.86523), -- Object coords
+			},
+
+			{
+				objName = 'v_ilev_rc_door2', -- Door object name can be a string or a number. Alias: objHash = 'v_ilev_rc_door2',
+				objYaw = -45.0,  -- Heading of the door. Alias: objHeading = -45.0,
+				objCoords = vec3(-449.5656, 6008.538, 31.86523), -- Object coords
+			},
+		},
+            textCoords = vec3(-448.67, 6007.52, 31.86523), -- Coords for the interaction text
+            authorizedJobs = { ['police'] = 0 }, -- Job access (checks for a minimum grade of 0)
+            authorizedGangs = { ['vagos'] = 0 }, -- Gang access (checks for a minimum grade of 0)
+            authorizedCitizenIDs = { ['BUI05180'] = true }, -- Citizen ID access
+            items = { ['keycard'] = 1, ['banana'] = 3 }, -- Item access, can be a string or table | the value of the item is the amount of items needed when using a table, if it is a string it will always check if this person has one or more of the item
+            needsAllItems = false, -- true or false | Whether to check if the person has all items to unlock the door or just one of the items
+            allAuthorized = false, -- true or false | Will give access to everyone if it is true
+            locked = true, -- true or false | Is the door locked by default
+            pickable = false, -- true or false | Can the door be lockpicked. Alias: lockpick = false,
+            distance = 2.5, -- At what range the interaction text will show. Alis: maxDistance = 2.5,
+            doorType = 'double', -- The type of door, can be door, double, sliding, doublesliding or garage
       },
 
 # License
