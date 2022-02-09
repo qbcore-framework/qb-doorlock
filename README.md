@@ -23,6 +23,8 @@ This doorlock system is based on [nui_doorlock by thelindat](https://github.com/
 * Play any sound you want when unlocking/locking a door
 * Highly customisable
 * Auto lock, to automatically lock a door after it has been opened
+* Admin access option
+* Change color based on locked state
 
 ## Single Door Configuration
 
