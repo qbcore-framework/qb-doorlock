@@ -231,7 +231,7 @@ RegisterNetEvent('qb-doorlock:server:saveNewDoor', function(data, doubleDoor)
 	end
 
 	local file = io.open(path, 'a+')
-	local label = "\n\n-- "..data.doorname.." ".. Lang:t("general.created_by") .." "..Player.PlayerData.name.."\nQB.Doors['"..data.doorname.."'] = {"
+	local label = "\n\n-- "..data.doorname.." ".. Lang:t("general.created_by") .." "..Player.PlayerData.name.."\nConfig.DoorList['"..data.doorname.."'] = {"
 	file:write(label)
 	for k, v in pairs(configData) do
 		if k == 'authorizedJobs' or k == 'authorizedGangs' or k == 'authorizedCitizenIDs' or k == 'items' then
