@@ -1,7 +1,7 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 local PlayerData = QBCore.Functions.GetPlayerData()
 local isLoggedIn = LocalPlayer.state['isLoggedIn']
-local Config = QB
+local Config = Config
 local canContinue = true
 local playerPed = PlayerPedId()
 local playerCoords = GetEntityCoords(playerPed)
@@ -110,7 +110,7 @@ end
 
 local function updateDoors(specificDoor)
     playerCoords = GetEntityCoords(playerPed)
-    for doorID, data in pairs(Config.Doors) do
+    for doorID, data in pairs(Config.DoorList) do
         if not specificDoor or doorID == specificDoor then
             if data.doors then
 				if not data.doorType then data.doorType = 'double' end
@@ -294,7 +294,7 @@ end
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
 	QBCore.Functions.TriggerCallback('qb-doorlock:server:setupDoors', function(result)
-		Config.Doors = result
+		Config.DoorList = result
 		PlayerData = QBCore.Functions.GetPlayerData()
 		isLoggedIn = true
 	end)
@@ -310,13 +310,13 @@ RegisterNetEvent('QBCore:Player:SetPlayerData', function(val)
 end)
 
 RegisterNetEvent('qb-doorlock:client:setState', function(serverId, doorID, state, src, enableAnimation, enableSounds)
-	if not Config.Doors[doorID] then return end
+	if not Config.DoorList[doorID] then return end
 	if enableAnimation == nil then enableAnimation = true end
 	if enableSounds == nil then enableSounds = true end
 	if serverId == PlayerData.source and enableAnimation then doorAnim() end
-	Config.Doors[doorID].locked = state
+	Config.DoorList[doorID].locked = state
 	updateDoors(doorID)
-	local current = Config.Doors[doorID]
+	local current = Config.DoorList[doorID]
 	while true do
 		if current.doors then
 			if not current.doorType then current.doorType = 'double' end
@@ -604,7 +604,7 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 end)
 
 RegisterNetEvent('qb-doorlock:client:newDoorAdded', function(data, id)
-	Config.Doors[id] = data
+	Config.DoorList[id] = data
 	TriggerEvent('qb-doorlock:client:setState', PlayerData.source, id, data.locked, false, true, true)
 end)
 
@@ -652,7 +652,7 @@ CreateThread(function()
 					sleep = 1000
 				else
 					for k in pairs(nearbyDoors) do
-						local door = Config.Doors[k]
+						local door = Config.DoorList[k]
 						if door.setText and door.textCoords then
 							distance = #(playerCoords - door.textCoords)
 							if distance < (closestDoor.distance or 15) then

@@ -1,21 +1,21 @@
-QB = {}
+Config = {}
 
-QB.CommandPermission = 'god' -- permission level for creating new doors
-QB.AdminAccess = false -- Enable admins to unlock any door
-QB.AdminPermission = 'god' -- The permission needed to get AdminAccess if it is enabled
-QB.Warnings = false -- if true it will show warnings in the console when certain requirements aren't met
-QB.FallbackDistance = 3.0 -- Distance to fall back on when it is not set
-QB.EnableSounds = true -- Enable sounds when unlocking/locking doors (doors triggered by scripts can have the sound manually disabled)
-QB.EnableAnimation = true -- Enable the animation when unlocking/locking doors (doors triggered by scripts can have the animation manually disabled)
+Config.CommandPermission = 'god' -- permission level for creating new doors
+Config.AdminAccess = false -- Enable admins to unlock any door
+Config.AdminPermission = 'god' -- The permission needed to get AdminAccess if it is enabled
+Config.Warnings = false -- if true it will show warnings in the console when certain requirements aren't met
+Config.FallbackDistance = 3.0 -- Distance to fall back on when it is not set
+Config.EnableSounds = true -- Enable sounds when unlocking/locking doors (doors triggered by scripts can have the sound manually disabled)
+Config.EnableAnimation = true -- Enable the animation when unlocking/locking doors (doors triggered by scripts can have the animation manually disabled)
 
-QB.ChangeColor = false -- Change the color of the box of the popup text based on if it is locked or not
-QB.DefaultColor = 'rgb(19, 28, 74)' -- The default color of the box of the popup text if QB.ChangeColor is false
-QB.LockedColor = 'rgb(219 58 58)' -- The color of the box of the popup text if QB.ChangeColor is true and the door is locked
-QB.UnlockedColor = 'rgb(27 195 63)' -- The color of the box of the popup text if QB.ChangeColor is true and the door is unlocked
+Config.ChangeColor = false -- Change the color of the box of the popup text based on if it is locked or not
+Config.DefaultColor = 'rgb(19, 28, 74)' -- The default color of the box of the popup text if Config.ChangeColor is false
+Config.LockedColor = 'rgb(219 58 58)' -- The color of the box of the popup text if Config.ChangeColor is true and the door is locked
+Config.UnlockedColor = 'rgb(27 195 63)' -- The color of the box of the popup text if Config.ChangeColor is true and the door is unlocked
 
-QB.Consumables = { ['ticket'] = 1, ['paperclip'] = 1 } -- The items will get removed once used on a door that has the item on it
+Config.Consumables = { ['ticket'] = 1, ['paperclip'] = 1 } -- The items will get removed once used on a door that has the item on it
 
-QB.Doors = {
+Config.DoorList = {
 	--- door1 for pacific opened with security card B
 	{
 		objName = 'hei_v_ilev_bk_gate2_pris',

@@ -1,5 +1,5 @@
 local QBCore = exports['qb-core']:GetCoreObject()
-local Config = QB
+local Config = Config
 
 -- Functions
 
@@ -128,7 +128,7 @@ end
 -- Callbacks
 
 QBCore.Functions.CreateCallback('qb-doorlock:server:setupDoors', function(_, cb)
-	cb(Config.Doors)
+	cb(Config.DoorList)
 end)
 
 QBCore.Functions.CreateCallback('qb-doorlock:server:checkItems', function(source, cb, items, needsAll)
@@ -156,27 +156,27 @@ RegisterNetEvent('qb-doorlock:server:updateState', function(doorID, locked, src,
 		return
 	end
 
-	if not Config.Doors[doorID] then
+	if not Config.DoorList[doorID] then
 		if Config.Warnings then
 			showWarning(Lang:t("general.warn_wrong_doorid", {player = Player.PlayerData.name, license = Player.PlayerData.license, doorID = doorID}))
 		end
 		return
 	end
 
-	if not unlockAnyway and not isAuthorized(Player, Config.Doors[doorID], usedLockpick) then
+	if not unlockAnyway and not isAuthorized(Player, Config.DoorList[doorID], usedLockpick) then
 		if Config.Warnings then
 			showWarning(Lang:t("general.warn_no_authorisation", {player = Player.PlayerData.name, license = Player.PlayerData.license, doorID = doorID}))
 		end
 		return
 	end
 
-	Config.Doors[doorID].locked = locked
+	Config.DoorList[doorID].locked = locked
 	TriggerClientEvent('qb-doorlock:client:setState', -1, playerId, doorID, locked, src or false, enableSounds, enableAnimation)
 
-	if not Config.Doors[doorID].autoLock then return end
-	SetTimeout(Config.Doors[doorID].autoLock, function()
-		if Config.Doors[doorID].locked then return end
-		Config.Doors[doorID].locked = true
+	if not Config.DoorList[doorID].autoLock then return end
+	SetTimeout(Config.DoorList[doorID].autoLock, function()
+		if Config.DoorList[doorID].locked then return end
+		Config.DoorList[doorID].locked = true
 		TriggerClientEvent('qb-doorlock:client:setState', -1, playerId, doorID, true, src or false, enableSounds, enableAnimation)
 	end)
 end)
@@ -263,7 +263,7 @@ RegisterNetEvent('qb-doorlock:server:saveNewDoor', function(data, doubleDoor)
 	file:write("\n    --audioLock = {[\'file\'] = \'metal-locker.ogg\', [\'volume\'] = 0.6},\n    --audioUnlock = {[\'file\'] = \'metallic-creak.ogg\', [\'volume\'] = 0.7},\n    --autoLock = 1000,\n}")
 	file:close()
 
-	Config.Doors[data.doorname] = configData
+	Config.DoorList[data.doorname] = configData
 	TriggerClientEvent('qb-doorlock:client:newDoorAdded', -1, configData, data.doorname)
 end)
 
