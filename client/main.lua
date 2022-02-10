@@ -126,10 +126,15 @@ local function updateDoors(specificDoor)
                             if not IsDoorRegisteredWithSystem(v.doorHash) then
 								local objCoords = GetEntityCoords(v.object)
 								local objHeading = GetEntityHeading(v.object)
+								local hasHeading = v.objYaw or v.objHeading or false
 								if v.objCoords ~= objCoords then v.objCoords = objCoords end -- Backwards compatibility fix
-								if (v.objYaw or v.objHeading) ~= objHeading then -- Backwards compatibility fix
-									v.objYaw = v.objYaw and objHeading or nil
-									v.objHeading = v.objHeading and objHeading or nil
+								if not hasHeading then
+									v.objYaw = objHeadingl
+								else
+									if hasHeading ~= objHeading then -- Backwards compatibility fix
+										v.objYaw = v.objYaw and objHeading or nil
+										v.objHeading = v.objHeading and objHeading or nil
+									end
 								end
                                 AddDoorToSystem(v.doorHash, v.objName or v.objHash, v.objCoords.x, v.objCoords.y, v.objCoords.z, false, false, false)
                                 nearbyDoors[doorID] = true
@@ -159,10 +164,15 @@ local function updateDoors(specificDoor)
                         if not IsDoorRegisteredWithSystem(data.doorHash) then
 							local objCoords = GetEntityCoords(data.object)
 							local objHeading = GetEntityHeading(data.object)
+							local hasHeading = data.objYaw or data.objHeading or false
 							if data.objCoords ~= objCoords then data.objCoords = objCoords end -- Backwards compatibility fix
-							if (data.objYaw or data.objHeading) ~= objHeading then -- Backwards compatibility fix
-								data.objYaw = data.objYaw and objHeading or nil
-								data.objHeading = data.objHeading and objHeading or nil
+							if not hasHeading then
+								data.objYaw = objHeading
+							else
+								if hasHeading ~= objHeading then -- Backwards compatibility fix
+									data.objYaw = data.objYaw and objHeading or nil
+									data.objHeading = data.objHeading and objHeading or nil
+								end
 							end
 							data.objCoords = GetEntityCoords(data.object)
                             AddDoorToSystem(data.doorHash, data.objName or data.objHash, data.objCoords.x, data.objCoords.y, data.objCoords.z, false, false, false)
