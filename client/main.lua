@@ -113,10 +113,10 @@ local function updateDoors(specificDoor)
     for doorID, data in pairs(Config.Doors) do
         if not specificDoor or doorID == specificDoor then
             if data.doors then
+				if not data.doorType then data.doorType = 'double' end
                 for k, v in pairs(data.doors) do
                     if #(playerCoords - v.objCoords) < 30 then
-						if not v.doorType then v.doorType = 'double' end
-						if v.doorType == "doublesliding" then
+						if data.doorType == "doublesliding" then
 							v.object = GetClosestObjectOfType(v.objCoords.x, v.objCoords.y, v.objCoords.z, 5.0, v.objName or v.objHash, false, false, false)
 						else
                         	v.object = GetClosestObjectOfType(v.objCoords.x, v.objCoords.y, v.objCoords.z, 1.0, v.objName or v.objHash, false, false, false)
@@ -124,6 +124,13 @@ local function updateDoors(specificDoor)
                         if v.object and v.object ~= 0 then
                             v.doorHash = 'door_'..doorID..'_'..k
                             if not IsDoorRegisteredWithSystem(v.doorHash) then
+								local objCoords = GetEntityCoords(v.object)
+								local objHeading = GetEntityHeading(v.object)
+								if v.objCoords ~= objCoords then v.objCoords = objCoords end -- Backwards compatibility fix
+								if (v.objYaw or v.objHeading) ~= objHeading then -- Backwards compatibility fix
+									v.objYaw = v.objYaw and objHeading or nil
+									v.objHeading = v.objHeading and objHeading or nil
+								end
                                 AddDoorToSystem(v.doorHash, v.objName or v.objHash, v.objCoords.x, v.objCoords.y, v.objCoords.z, false, false, false)
                                 nearbyDoors[doorID] = true
                                 if data.locked then
@@ -140,8 +147,8 @@ local function updateDoors(specificDoor)
 					end
                 end
             elseif not data.doors then
+				if not data.doorType then data.doorType = 'door' end
                 if #(playerCoords - data.objCoords) < 30 then
-					if not data.doorType then data.doorType = 'door' end
                     if data.doorType == "sliding" or data.doorType == "garage" then
 						data.object = GetClosestObjectOfType(data.objCoords.x, data.objCoords.y, data.objCoords.z, 5.0, data.objName or data.objHash, false, false, false)
 					else
@@ -150,6 +157,14 @@ local function updateDoors(specificDoor)
                     if data.object and data.object ~= 0 then
                         data.doorHash = 'door_'..doorID
                         if not IsDoorRegisteredWithSystem(data.doorHash) then
+							local objCoords = GetEntityCoords(data.object)
+							local objHeading = GetEntityHeading(data.object)
+							if data.objCoords ~= objCoords then data.objCoords = objCoords end -- Backwards compatibility fix
+							if (data.objYaw or data.objHeading) ~= objHeading then -- Backwards compatibility fix
+								data.objYaw = data.objYaw and objHeading or nil
+								data.objHeading = data.objHeading and objHeading or nil
+							end
+							data.objCoords = GetEntityCoords(data.object)
                             AddDoorToSystem(data.doorHash, data.objName or data.objHash, data.objCoords.x, data.objCoords.y, data.objCoords.z, false, false, false)
                             nearbyDoors[doorID] = true
                             if data.locked then

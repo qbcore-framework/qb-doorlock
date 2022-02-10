@@ -13,7 +13,7 @@ QB.DefaultColor = 'rgb(19, 28, 74)' -- The default color of the box of the popup
 QB.LockedColor = 'rgb(219 58 58)' -- The color of the box of the popup text if QB.ChangeColor is true and the door is locked
 QB.UnlockedColor = 'rgb(27 195 63)' -- The color of the box of the popup text if QB.ChangeColor is true and the door is unlocked
 
-QB.Consumables = { ['ticket'] = 1, ['paperclip'] = 1 } -- The items will get removed once used on a door that has the item on it, format: `['itemname'] = amount of items to remove`
+QB.Consumables = { ['ticket'] = 1, ['paperclip'] = 1 } -- The items will get removed once used on a door that has the item on it
 
 QB.Doors = {
 	--- door1 for pacific opened with security card B
@@ -25,7 +25,7 @@ QB.Doors = {
 		objYaw = -110.0,
 		locked = true,
 		pickable = false,
-		distance = 1.5
+		distance = 1.5,
 	},
 	--door2 for pacific opened with thermite right near the vault door
 	{
@@ -1154,15 +1154,5 @@ QB.Doors = {
 		locked = true,
 		pickable = false,
 		distance = 2.0
-	},
-	-- Garage door
-	{
-		objName = 'prop_com_gar_door_01',
-		objCoords  = vec3(-21.04025, -1410.734, 30.51094),
-		textCoords = vec3(-21.04025, -1410.734, 30.51094),
-		authorizedJobs = { 'cardealer' },
-		locked = true,
-		pickable = false,
-		distance = 15.0
 	},
 }

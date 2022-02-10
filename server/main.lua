@@ -7,7 +7,7 @@ local function showWarning(msg)
 	print(('^3%s: %s^0'):format(Lang:t("general.warning"), msg))
 end
 
-local function checkItems(Player, items, needsAll)
+local function checkItems(Player, items, needsAll, checkRemove)
 	if needsAll == nil then needsAll = true end
 	if type(items) == 'table' then
 		local count = 0
@@ -22,16 +22,18 @@ local function checkItems(Player, items, needsAll)
 						if needsAll then
 							count += 1
 							if count == finalcount then
-								for i in pairs(items) do
-									item = Player.Functions.GetItemByName(i)
-									if item and Config.Consumables[i] then
-										Player.Functions.RemoveItem(i, item.amount >= Config.Consumables[i] and Config.Consumables[i] or 1)
+								if checkRemove then
+									for i in pairs(items) do
+										item = Player.Functions.GetItemByName(i)
+										if item and Config.Consumables[i] then
+											Player.Functions.RemoveItem(i, item.amount >= Config.Consumables[i] and Config.Consumables[i] or 1)
+										end
 									end
 								end
 								return true
 							end
 						else
-							if Config.Consumables[item.name] then
+							if checkRemove and Config.Consumables[item.name] then
 								Player.Functions.RemoveItem(item.name, item.amount >= Config.Consumables[item.name] and Config.Consumables[item.name] or 1)
 							end
 							return true
@@ -45,16 +47,18 @@ local function checkItems(Player, items, needsAll)
 					if needsAll then
 						count += 1
 						if count == finalcount then
-							for _, j in pairs(items) do
-								item = Player.Functions.GetItemByName(j)
-								if item and Config.Consumables[j] then
-									Player.Functions.RemoveItem(j, item.amount >= Config.Consumables[j] and Config.Consumables[j] or 1)
+							if checkRemove then
+								for _, j in pairs(items) do
+									item = Player.Functions.GetItemByName(j)
+									if item and Config.Consumables[j] then
+										Player.Functions.RemoveItem(j, item.amount >= Config.Consumables[j] and Config.Consumables[j] or 1)
+									end
 								end
 							end
 							return true
 						end
 					else
-						if Config.Consumables[item.name] then
+						if checkRemove and Config.Consumables[item.name] then
 							Player.Functions.RemoveItem(item.name, item.amount >= Config.Consumables[item.name] and Config.Consumables[item.name] or 1)
 						end
 						return true
@@ -65,7 +69,7 @@ local function checkItems(Player, items, needsAll)
 	else
 		local item = Player.Functions.GetItemByName(items)
 		if item then
-			if Config.Consumables[item.name] then
+			if checkRemove and Config.Consumables[item.name] then
 				Player.Functions.RemoveItem(item.name, item.amount >= Config.Consumables[item.name] and Config.Consumables[item.name] or 1)
 			end
 			return true
@@ -116,7 +120,7 @@ local function isAuthorized(Player, door, usedLockpick)
 		end
 	end
 
-	if door.items then return checkItems(Player, door.items, door.needsAllItems) end
+	if door.items then return checkItems(Player, door.items, door.needsAllItems, true) end
 
 	return false
 end
@@ -129,12 +133,10 @@ end)
 
 QBCore.Functions.CreateCallback('qb-doorlock:server:checkItems', function(source, cb, items, needsAll)
 	local Player = QBCore.Functions.GetPlayer(source)
-	cb(checkItems(Player, items, needsAll))
+	cb(checkItems(Player, items, needsAll, false))
 end)
 
 -- Events
-
-RegisterNetEvent('qb-doorlock:server:showWarning', showWarning)
 
 RegisterNetEvent('qb-doorlock:server:updateState', function(doorID, locked, src, usedLockpick, unlockAnyway, enableSounds, enableAnimation, sentSource)
 	local playerId = sentSource or source
