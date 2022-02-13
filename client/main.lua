@@ -311,8 +311,8 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
-	PlayerData = {}
 	isLoggedIn = false
+	PlayerData = {}
 end)
 
 RegisterNetEvent('QBCore:Player:SetPlayerData', function(val)
@@ -621,27 +621,26 @@ end)
 -- Commands
 
 RegisterCommand('toggledoorlock', function()
-    if closestDoor.id and not PlayerData.metadata['isdead'] and not PlayerData.metadata['inlaststand'] and not PlayerData.metadata['ishandcuffed'] then
-        playerPed = PlayerPedId()
-        local veh = GetVehiclePedIsIn(playerPed)
-        if veh then
-            CreateThread(function()
-                local counter = 0
-                local siren = IsVehicleSirenOn(veh)
-                repeat
-                    DisableControlAction(0, 86, true)
-                    SetHornEnabled(veh, false)
-                    if not siren then SetVehicleSiren(veh, false) end
-                    counter += 1
-                    Wait(0)
-                until counter == 100
-                SetHornEnabled(veh, true)
-            end)
-        end
-        local locked = not closestDoor.data.locked
-        if closestDoor.data.audioRemote then src = NetworkGetNetworkIdFromEntity(playerPed) else src = false end
-        TriggerServerEvent('qb-doorlock:server:updateState', closestDoor.id, locked, src, false, false, true, true) -- Broadcast new state of the door to everyone
-    end
+    if not closestDoor.data or not next(closestDoor.data) or closestDoor.distance > (closestDoor.data.distance or closestDoor.data.maxDistance) or PlayerData.metadata['isdead'] or PlayerData.metadata['inlaststand'] or PlayerData.metadata['ishandcuffed'] then return end
+	playerPed = PlayerPedId()
+	local veh = GetVehiclePedIsIn(playerPed)
+	if veh then
+		CreateThread(function()
+			local counter = 0
+			local siren = IsVehicleSirenOn(veh)
+			repeat
+				DisableControlAction(0, 86, true)
+				SetHornEnabled(veh, false)
+				if not siren then SetVehicleSiren(veh, false) end
+				counter += 1
+				Wait(0)
+			until counter == 100
+			SetHornEnabled(veh, true)
+		end)
+	end
+	local locked = not closestDoor.data.locked
+	if closestDoor.data.audioRemote then src = NetworkGetNetworkIdFromEntity(playerPed) else src = false end
+	TriggerServerEvent('qb-doorlock:server:updateState', closestDoor.id, locked, src, false, false, true, true) -- Broadcast new state of the door to everyone
 end)
 TriggerEvent("chat:removeSuggestion", "/toggledoorlock")
 RegisterKeyMapping('toggledoorlock', Lang:t("general.keymapping_description"), 'keyboard', 'E')
@@ -676,7 +675,7 @@ CreateThread(function()
 				end
 			end
 			if closestDoor.id then
-				while true do
+				while isLoggedIn do
 					if not paused and IsPauseMenuActive() then
 						hideNUI()
 						paused = true
