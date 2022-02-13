@@ -129,7 +129,7 @@ local function updateDoors(specificDoor)
 								local hasHeading = v.objYaw or v.objHeading or false
 								if v.objCoords ~= objCoords then v.objCoords = objCoords end -- Backwards compatibility fix
 								if not hasHeading then
-									v.objYaw = objHeadingl
+									v.objYaw = objHeading
 								else
 									if hasHeading ~= objHeading then -- Backwards compatibility fix
 										v.objYaw = v.objYaw and objHeading or nil
