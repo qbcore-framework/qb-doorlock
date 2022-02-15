@@ -1,14 +1,12 @@
+local Config = Config
 local QBCore = exports['qb-core']:GetCoreObject()
 local PlayerData = QBCore.Functions.GetPlayerData()
 local isLoggedIn = LocalPlayer.state['isLoggedIn']
-local Config = Config
-local canContinue = true
 local playerPed = PlayerPedId()
 local playerCoords = GetEntityCoords(playerPed)
 local lastCoords = playerCoords
 local nearbyDoors, closestDoor = {}, {}
-local paused = false
-local usingAdvanced = false
+local canContinue, paused, usingAdvanced, ready = true, false, false, false
 
 -- Functions
 
@@ -223,12 +221,13 @@ local function updateDoors(specificDoor)
         end
     end
     lastCoords = playerCoords
+    ready = true
 end
 
 local function lockpickFinish(success)
 	if success then
 		QBCore.Functions.Notify(Lang:t("success.lockpick_success"), 'success', 2500)
-		if closestDoor.data.coords then
+		if closestDoor.data.doors then
 			TaskTurnPedToFaceCoord(playerPed, closestDoor.data.doors[1].objCoords.x, closestDoor.data.doors[1].objCoords.y, closestDoor.data.doors[1].objCoords.z, 0)
 		else
 			TaskTurnPedToFaceCoord(playerPed, closestDoor.data.objCoords.x, closestDoor.data.objCoords.y, closestDoor.data.objCoords.z, 0)
@@ -312,6 +311,7 @@ end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
 	isLoggedIn = false
+	ready = false
 	PlayerData = {}
 end)
 
@@ -486,11 +486,11 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 	})
 	if not dialog or not next(dialog) then canContinue = true return end
 	doorData = dialog
-	if doorData.configfile == '' then doorData.configfile = false end
-	if doorData.job == '' then doorData.job = false end
-	if doorData.gang == '' then doorData.gang = false end
-	if doorData.cid == '' then doorData.cid = false end
-	if doorData.item == '' then doorData.item = false end
+	doorData.configfile = doorData.configfile ~= '' and doorData.configfile or false
+	doorData.job = doorData.job ~= '' and doorData.job or false
+	doorData.gang = doorData.gang ~= '' and doorData.gang or false
+	doorData.cid = doorData.cid ~= '' and doorData.cid or false
+	doorData.item  = doorData.item ~= '' and doorData.item or false
 	doorData.distance = tonumber(doorData.distance)
 	if doorData.doortype == 'door' or doorData.doortype == 'sliding' or doorData.doortype == 'garage' then
 		SendNUIMessage({
@@ -639,7 +639,8 @@ RegisterCommand('toggledoorlock', function()
 		end)
 	end
 	local locked = not closestDoor.data.locked
-	if closestDoor.data.audioRemote then src = NetworkGetNetworkIdFromEntity(playerPed) else src = false end
+	local src = false
+	if closestDoor.data.audioRemote then src = NetworkGetNetworkIdFromEntity(playerPed) end
 	TriggerServerEvent('qb-doorlock:server:updateState', closestDoor.id, locked, src, false, false, true, true) -- Broadcast new state of the door to everyone
 end)
 TriggerEvent("chat:removeSuggestion", "/toggledoorlock")
@@ -651,7 +652,7 @@ CreateThread(function()
 	updateDoors()
 	while true do
 		local sleep = 100
-		if isLoggedIn and canContinue then
+		if isLoggedIn and canContinue and ready then
 			playerPed = PlayerPedId()
 			playerCoords = GetEntityCoords(playerPed)
 			if not closestDoor.id then
