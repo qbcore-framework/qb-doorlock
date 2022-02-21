@@ -720,7 +720,6 @@ CreateThread(function()
 						end
 					else
 						hideNUI()
-						break
 					end
 					Wait(100)
 				end
