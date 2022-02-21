@@ -475,13 +475,28 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 			},
 			{
 				text = "",
-				name = "checklock",
+				name = "locked",
 				type = "checkbox",
 				options = {
-					{ value = "locked", text = Lang:t("general.locked_menu") },
-					{ value = "pickable", text = Lang:t("general.pickable_menu") }
+					{ value = true, text = Lang:t("general.locked_menu") },
 				}
-			}
+			},
+			{
+				text = "",
+				name = "pickable",
+				type = "checkbox",
+				options = {
+					{ value = true, text = Lang:t("general.pickable_menu") },
+				}
+			},
+			{
+				text = "",
+				name = "hidenui",
+				type = "checkbox",
+				options = {
+					{ value = true, text = ("Hide NUI")}
+				}
+			},
 		}
 	})
 	if not dialog or not next(dialog) then canContinue = true return end
@@ -676,31 +691,36 @@ CreateThread(function()
 			end
 			if closestDoor.id then
 				while isLoggedIn do
-					if not paused and IsPauseMenuActive() then
-						hideNUI()
-						paused = true
-					elseif paused then
-						if not IsPauseMenuActive() then paused = false end
-					else
-						playerCoords = GetEntityCoords(playerPed)
-						closestDoor.distance = #(closestDoor.data.textCoords - playerCoords)
-						if closestDoor.distance < (closestDoor.data.distance or closestDoor.data.maxDistance) then
-							local authorized = isAuthorized(closestDoor.data)
-							local displayText = ""
-							if not closestDoor.data.locked and not authorized then
-								displayText = Lang:t("general.unlocked")
-							elseif not closestDoor.data.locked and authorized then
-								displayText = Lang:t("general.unlocked_button")
-							elseif closestDoor.data.locked and not authorized then
-								displayText = Lang:t("general.locked")
-							elseif closestDoor.data.locked and authorized then
-								displayText = Lang:t("general.locked_button")
-							end
-							if displayText ~= "" then displayNUIText(displayText) end
-						else
+					if not closestDoor.data.hideNUI then
+						if not paused and IsPauseMenuActive() then
 							hideNUI()
-							break
+							paused = true
+						elseif paused then
+							if not IsPauseMenuActive() then paused = false end
+						else
+							playerCoords = GetEntityCoords(playerPed)
+							closestDoor.distance = #(closestDoor.data.textCoords - playerCoords)
+							if closestDoor.distance < (closestDoor.data.distance or closestDoor.data.maxDistance) then
+								local authorized = isAuthorized(closestDoor.data)
+								local displayText = ""
+								if not closestDoor.data.locked and not authorized then
+									displayText = Lang:t("general.unlocked")
+								elseif not closestDoor.data.locked and authorized then
+									displayText = Lang:t("general.unlocked_button")
+								elseif closestDoor.data.locked and not authorized then
+									displayText = Lang:t("general.locked")
+								elseif closestDoor.data.locked and authorized then
+									displayText = Lang:t("general.locked_button")
+								end
+								if displayText ~= "" then displayNUIText(displayText) end
+							else
+								hideNUI()
+								break
+							end
 						end
+					else
+						hideNUI()
+						break
 					end
 					Wait(100)
 				end
