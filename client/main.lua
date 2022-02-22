@@ -475,28 +475,15 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 			},
 			{
 				text = "",
-				name = "locked",
+				name = "checklock",
 				type = "checkbox",
 				options = {
-					{ value = true, text = Lang:t("general.locked_menu") },
+					{ value = "locked", text = Lang:t("general.locked_menu") },
+					{ value = "pickable", text = Lang:t("general.pickable_menu") },
+					{ value = "hideNUI", text = "Hide NUI" },
+
 				}
-			},
-			{
-				text = "",
-				name = "pickable",
-				type = "checkbox",
-				options = {
-					{ value = true, text = Lang:t("general.pickable_menu") },
-				}
-			},
-			{
-				text = "",
-				name = "hidenui",
-				type = "checkbox",
-				options = {
-					{ value = true, text = ("Hide NUI")}
-				}
-			},
+			}
 		}
 	})
 	if not dialog or not next(dialog) then canContinue = true return end

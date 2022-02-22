@@ -201,9 +201,9 @@ RegisterNetEvent('qb-doorlock:server:saveNewDoor', function(data, doubleDoor)
 	configData.pickable = data.pickable
 	configData.distance = data.distance
 	configData.doorType = data.doortype
-	configData.hideNUI = data.hidenui
 	configData.doorRate = 1.0
 	configData.audioRemote = false
+	configData.hideNUI = data.hideNUI
 	doorType = "'"..data.doortype.."'"
 	if doubleDoor then
 		configData.doors = {
@@ -216,7 +216,9 @@ RegisterNetEvent('qb-doorlock:server:saveNewDoor', function(data, doubleDoor)
 		configData.objCoords = data.coords
 		configData.fixText = false
 	end
+
 	local path = GetResourcePath(GetCurrentResourceName())
+
 	if data.configfile then
 		local tempfile, err = io.open(path:gsub('//', '/')..'/configs/'..string.gsub(data.configfile, ".lua", "")..'.lua', 'a+')
 		if tempfile then
