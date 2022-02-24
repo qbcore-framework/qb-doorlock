@@ -1,6 +1,6 @@
 local Translations = {
     error = {
-        not_authorized = "Yetkili değil"
+        not_authorized = "Yetkili değil",
         lockpick_fail = "Başarısız",
         screwdriverset_not_found = "Tornavida setiniz yok",
         door_not_locked = "Kapı kilitli değil",
