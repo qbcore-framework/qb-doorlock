@@ -205,7 +205,7 @@ RegisterNetEvent('qb-doorlock:server:saveNewDoor', function(data, doubleDoor)
 	configData.doorType = data.doortype
 	configData.doorRate = 1.0
 	configData.audioRemote = false
-	configData.doorlabel = data.doorlabel
+	configData.doorLabel = data.doorlabel
 	doorType = "'"..data.doortype.."'"
 	identifier = data.configfile..'-'..data.dooridentifier
 	if doubleDoor then
@@ -259,7 +259,7 @@ RegisterNetEvent('qb-doorlock:server:saveNewDoor', function(data, doubleDoor)
 		elseif k == 'doorType' then
 			local str = ("\n    %s = %s,"):format(k, doorType)
 			file:write(str)
-		elseif k == 'doorlabel' then
+		elseif k == 'doorLabel' then
 			local str = ("\n    %s = '%s',"):format(k, v)
 			file:write(str)
 		else

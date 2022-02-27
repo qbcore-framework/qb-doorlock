@@ -55,7 +55,7 @@ local function HandleDoorDebug()
 	CreateThread(function()
 		while Config.DoorDebug do
 			if closestDoor.data then
-				Draw3DText(closestDoor.data.textCoords, closestDoor.data.doorlabel or 'Door Here')
+				Draw3DText(closestDoor.data.textCoords, closestDoor.data.doorLabel or 'Door Here')
 			end
 			Wait(0)
 		end
@@ -540,11 +540,12 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 	if doorData.gang == '' then doorData.gang = false end
 	if doorData.cid == '' then doorData.cid = false end
 	if doorData.item == '' then doorData.item = false end
-	if doorData.label == '' then doorData.label = nil end
+	if doorData.doorlabel == '' then doorData.doorlabel = nil end
 	if doorData.pickable ~= 'true' then doorData.pickable = nil end
 	if doorData.cantunlock ~= 'true' then doorData.cantunlock = nil end
 	if doorData.hidelabel ~= 'true' then doorData.hidelabel = nil end
-
+	
+	doorData.locked = doorData.locked == 'true'
 	doorData.distance = tonumber(doorData.distance)
 	if doorData.doortype == 'door' or doorData.doortype == 'sliding' or doorData.doortype == 'garage' then
 		SendNUIMessage({
@@ -755,8 +756,8 @@ CreateThread(function()
 
 							if closestDoor.data.hideLabel then
 								-- Do nothing
-							elseif Config.UseDoorLabelText and closestDoor.data.doorlabel then 
-								displayText = closestDoor.data.doorlabel
+							elseif Config.UseDoorLabelText and closestDoor.data.doorLabel then 
+								displayText = closestDoor.data.doorLabel
 							else
 								if not closestDoor.data.locked and not authorized then
 									displayText = Lang:t("general.unlocked")

@@ -27,7 +27,7 @@ Config.DoorList['configname-identifier'] = {
     lockpick = true, -- Alows for lockpicking
 	items = {'item_1','item_2'} -- Authorize based on items. Must have all items in this list.
 	authorizedJobs = {['police']=0, ['offpolice']=0} -- Authorize door access based on job grade
-    label = 'Cloakroom', -- Label of room that shows up when nearby
+    doorLabel = 'Cloakroom', -- Label of room that shows up when nearby
     locked = true, -- Default lock state
     audioRemote = true, -- Play sound from the player instead of the door
     audioLock = {['file'] = 'metal-locker.ogg', ['volume'] = 0.6}, -- Play sound on door lock
