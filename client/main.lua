@@ -86,7 +86,7 @@ local function raycastWeapon()
 end
 
 local function setTextCoords(data)
-    local minDimension, maxDimension = GetModelDimensions(data.objHash)
+    local minDimension, maxDimension = GetModelDimensions(v.objName or v.objHash)
     local dimensions = maxDimension - minDimension
     local dx, dy = tonumber(dimensions.x), tonumber(dimensions.y)
     if dy <= -1 or dy >= 1 then dx = dy end
