@@ -9,6 +9,7 @@ local lastCoords = playerCoords
 local nearbyDoors, closestDoor = {}, {}
 local paused = false
 local usingAdvanced = false
+local doorData = {}
 
 -- Functions
 
@@ -414,7 +415,7 @@ end)
 RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 	canContinue = false
 	hideNUI()
-	local doorData = {}
+	if not Config.SaveDoorDialog then doorData = {} end
 	local dialog = exports['qb-input']:ShowInput({
 		header = Lang:t("general.newdoor_menu_title"),
 		submitText = Lang:t("general.submit_text"),
@@ -423,13 +424,22 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 				text = Lang:t("general.configfile_title"),
 				name = "configfile",
 				type = "text",
-				isRequired = false
+				isRequired = true,
+				default = Config.SaveDoorDialog and doorData.configfile,
 			},
 			{
-				text = Lang:t("general.doorname_title"),
-				name = "doorname",
+				text = Lang:t("general.dooridentifier_title"),
+				name = "dooridentifier",
 				type = "text",
-				isRequired = true
+				isRequired = true,
+				default = Config.SaveDoorDialog and doorData.dooridentifier,
+			},
+			{
+				text = Lang:t("general.doorlabel_title"),
+				name = "doorlabel",
+				type = "text",
+				isRequired = true,
+				default = Config.SaveDoorDialog and doorData.doorlabel,
 			},
 			{
 				text = Lang:t("general.doortype_title"),
@@ -441,45 +451,51 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 					{ value = "sliding", text = Lang:t("general.doortype_sliding") },
 					{ value = "doublesliding", text = Lang:t("general.doortype_doublesliding") },
 					{ value = "garage", text = Lang:t("general.doortype_garage") }
-				}
+				},
+				default = Config.SaveDoorDialog and doorData.doortype,
 			},
 			{
 				text = Lang:t("general.job_authorisation_menu"),
 				name = "job",
 				type = "text",
-				isRequired = false
+				isRequired = false,
+				default = Config.SaveDoorDialog and doorData.job,
 			},
 			{
 				text = Lang:t("general.gang_authorisation_menu"),
 				name = "gang",
 				type = "text",
-				isRequired = false
+				isRequired = false,
+				default = Config.SaveDoorDialog and doorData.gang,
 			},
 			{
 				text = Lang:t("general.citizenid_authorisation_menu"),
 				name = "cid",
 				type = "text",
-				isRequired = false
+				isRequired = false,
+				default = Config.SaveDoorDialog and doorData.cid,
 			},
 			{
 				text = Lang:t("general.item_authorisation_menu"),
 				name = "item",
 				type = "text",
-				isRequired = false
+				isRequired = false,
+				default = Config.SaveDoorDialog and doorData.item,
 			},
 			{
 				text = Lang:t("general.distance_menu"),
 				name = "distance",
 				type = "number",
 				isRequired = true,
+				default = Config.SaveDoorDialog and doorData.distance,
 			},
 			{
 				text = "",
 				name = "checklock",
 				type = "checkbox",
 				options = {
-					{ value = "locked", text = Lang:t("general.locked_menu") },
-					{ value = "pickable", text = Lang:t("general.pickable_menu") }
+					{ value = "locked", text = Lang:t("general.locked_menu"), checked = (Config.SaveDoorDialog and doorData.locked == 'true') },
+					{ value = "pickable", text = Lang:t("general.pickable_menu"), checked = (Config.SaveDoorDialog and doorData.pickable == 'true') },
 				}
 			}
 		}
@@ -533,7 +549,7 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 		if not model or model == 0 then QBCore.Functions.Notify(Lang:t("error.door_not_found"), 'error') canContinue = true return end
 		result = DoorSystemFindExistingDoor(coords.x, coords.y, coords.z, model)
 		if result then QBCore.Functions.Notify(Lang:t("error.door_registered"), 'error') canContinue = true return end
-		doorData.doorHash = 'door_'..doorData.doorname
+		doorData.doorHash = 'door_'..doorData.dooridentifier
 		AddDoorToSystem(doorData.doorHash, model, coords, false, false, false)
 		DoorSystemSetDoorState(doorData.doorHash, 4, false, false)
 		coords = GetEntityCoords(entity)
@@ -597,7 +613,7 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 		for i = 1, 2 do
 			result = DoorSystemFindExistingDoor(coords[i].x, coords[i].y, coords[i].z, model[i])
 			if result then QBCore.Functions.Notify(Lang:t("error.door_registered"), 'error') canContinue = true return end
-			doorData.doorHash[i] = 'door_'..doorData.doorname..'_'..i
+			doorData.doorHash[i] = 'door_'..doorData.dooridentifier..'_'..i
 			AddDoorToSystem(doorData.doorHash[i], model[i], coords[i], false, false, false)
             DoorSystemSetDoorState(doorData.doorHash[i], 4, false, false)
             coords[i] = GetEntityCoords(entity[i])
@@ -621,7 +637,13 @@ end)
 -- Commands
 
 RegisterCommand('toggledoorlock', function()
-    if not closestDoor.data or not next(closestDoor.data) or closestDoor.distance > (closestDoor.data.distance or closestDoor.data.maxDistance) or PlayerData.metadata['isdead'] or PlayerData.metadata['inlaststand'] or PlayerData.metadata['ishandcuffed'] then return end
+	if not closestDoor.data or not next(closestDoor.data) then return end 
+
+	local distanceCheck = closestDoor.distance > (closestDoor.data.distance or closestDoor.data.maxDistance)
+	local unlockableCheck = (closestDoor.data.canUnlock == false and closestDoor.data.locked)
+	local busyCheck = PlayerData.metadata['isdead'] or PlayerData.metadata['inlaststand'] or PlayerData.metadata['ishandcuffed']
+    if distanceCheck or unlockableCheck or busyCheck then return end 
+
 	playerPed = PlayerPedId()
 	local veh = GetVehiclePedIsIn(playerPed)
 	if veh then
@@ -687,15 +709,20 @@ CreateThread(function()
 						if closestDoor.distance < (closestDoor.data.distance or closestDoor.data.maxDistance) then
 							local authorized = isAuthorized(closestDoor.data)
 							local displayText = ""
-							if not closestDoor.data.locked and not authorized then
-								displayText = Lang:t("general.unlocked")
-							elseif not closestDoor.data.locked and authorized then
-								displayText = Lang:t("general.unlocked_button")
-							elseif closestDoor.data.locked and not authorized then
-								displayText = Lang:t("general.locked")
-							elseif closestDoor.data.locked and authorized then
-								displayText = Lang:t("general.locked_button")
+							if Config.UseDoorLabelText and closestDoor.data.doorlabel then 
+								displayText = closestDoor.data.doorlabel
+							else
+								if not closestDoor.data.locked and not authorized then
+									displayText = Lang:t("general.unlocked")
+								elseif not closestDoor.data.locked and authorized then
+									displayText = Lang:t("general.unlocked_button")
+								elseif closestDoor.data.locked and not authorized then
+									displayText = Lang:t("general.locked")
+								elseif closestDoor.data.locked and authorized then
+									displayText = Lang:t("general.locked_button")
+								end
 							end
+
 							if displayText ~= "" then displayNUIText(displayText) end
 						else
 							hideNUI()
