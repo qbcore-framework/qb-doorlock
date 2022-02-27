@@ -16,6 +16,7 @@ local Translations = {
         keymapping_description = "Interact with door locks",
         locked_menu = "Locked",
         pickable_menu = "Lockpickable",
+        canunlock_menu = 'Can Unlock',
         distance_menu = "Max Distance",
         item_authorisation_menu = "Item Authorsation",
         citizenid_authorisation_menu = "CitizenID Authorisation",

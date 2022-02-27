@@ -199,6 +199,7 @@ RegisterNetEvent('qb-doorlock:server:saveNewDoor', function(data, doubleDoor)
 	if data.item then configData.items = { [data.item] = 1 } items = "['"..data.item.."'] = 1" end
 	configData.locked = data.locked
 	configData.pickable = data.pickable
+	configData.canUnlock = data.canunlock
 	configData.distance = data.distance
 	configData.doorType = data.doortype
 	configData.doorRate = 1.0

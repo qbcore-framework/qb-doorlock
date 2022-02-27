@@ -496,6 +496,7 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 				options = {
 					{ value = "locked", text = Lang:t("general.locked_menu"), checked = (Config.SaveDoorDialog and doorData.locked == 'true') },
 					{ value = "pickable", text = Lang:t("general.pickable_menu"), checked = (Config.SaveDoorDialog and doorData.pickable == 'true') },
+					{ value = "canunlock", text = Lang:t("general.canunlock_menu"), checked = (Config.SaveDoorDialog and doorData.canunlock == 'true') },
 				}
 			}
 		}
