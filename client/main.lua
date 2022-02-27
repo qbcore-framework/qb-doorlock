@@ -31,6 +31,37 @@ local function displayNUIText(text)
 	Wait(1)
 end
 
+local function Draw3DText(coords, str)
+    local onScreen, worldX, worldY = World3dToScreen2d(coords.x, coords.y, coords.z)
+	local camCoords = GetGameplayCamCoord()
+	local scale = 200 / (GetGameplayCamFov() * #(camCoords - coords))
+    if onScreen then
+        SetTextScale(1.0, 0.5 * scale)
+        SetTextFont(4)
+        SetTextColour(255, 255, 255, 255)
+        SetTextEdge(2, 0, 0, 0, 150)
+		SetTextProportional(1)
+		SetTextOutline()
+		SetTextCentre(1)
+        SetTextEntry("STRING")
+        AddTextComponentString(str)
+        DrawText(worldX, worldY)
+    end
+end
+
+local function HandleDoorDebug()
+	if not Config.DoorDebug then return end
+
+	CreateThread(function()
+		while Config.DoorDebug do
+			if closestDoor.data then
+				Draw3DText(closestDoor.data.textCoords, closestDoor.data.doorlabel or 'Door Here')
+			end
+			Wait(0)
+		end
+	end)
+end
+
 local function hideNUI()
 	SendNUIMessage({
 		type = "setDoorText",
@@ -438,7 +469,7 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 				text = Lang:t("general.doorlabel_title"),
 				name = "doorlabel",
 				type = "text",
-				isRequired = true,
+				isRequired = false,
 				default = Config.SaveDoorDialog and doorData.doorlabel,
 			},
 			{
@@ -496,7 +527,8 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 				options = {
 					{ value = "locked", text = Lang:t("general.locked_menu"), checked = (Config.SaveDoorDialog and doorData.locked == 'true') },
 					{ value = "pickable", text = Lang:t("general.pickable_menu"), checked = (Config.SaveDoorDialog and doorData.pickable == 'true') },
-					{ value = "canunlock", text = Lang:t("general.canunlock_menu"), checked = (Config.SaveDoorDialog and doorData.canunlock == 'true') },
+					{ value = "cantunlock", text = Lang:t("general.cantunlock_menu"), checked = (Config.SaveDoorDialog and doorData.cantunlock == 'true') },
+					{ value = "hidelabel", text = Lang:t("general.hidelabel_menu"), checked = (Config.SaveDoorDialog and doorData.hidelabel == 'true') },
 				}
 			}
 		}
@@ -508,6 +540,11 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 	if doorData.gang == '' then doorData.gang = false end
 	if doorData.cid == '' then doorData.cid = false end
 	if doorData.item == '' then doorData.item = false end
+	if doorData.label == '' then doorData.label = nil end
+	if doorData.pickable ~= 'true' then doorData.pickable = nil end
+	if doorData.cantunlock ~= 'true' then doorData.cantunlock = nil end
+	if doorData.hidelabel ~= 'true' then doorData.hidelabel = nil end
+
 	doorData.distance = tonumber(doorData.distance)
 	if doorData.doortype == 'door' or doorData.doortype == 'sliding' or doorData.doortype == 'garage' then
 		SendNUIMessage({
@@ -635,13 +672,17 @@ RegisterNetEvent('qb-doorlock:client:newDoorAdded', function(data, id)
 	TriggerEvent('qb-doorlock:client:setState', PlayerData.source, id, data.locked, false, true, true)
 end)
 
+RegisterNetEvent('qb-doorlock:client:ToggleDoorDebug', function()
+	Config.DoorDebug = not Config.DoorDebug
+	HandleDoorDebug()
+end)
 -- Commands
 
 RegisterCommand('toggledoorlock', function()
 	if not closestDoor.data or not next(closestDoor.data) then return end 
 
 	local distanceCheck = closestDoor.distance > (closestDoor.data.distance or closestDoor.data.maxDistance)
-	local unlockableCheck = (closestDoor.data.canUnlock == false and closestDoor.data.locked)
+	local unlockableCheck = (closestDoor.data.cantUnlock and closestDoor.data.locked)
 	local busyCheck = PlayerData.metadata['isdead'] or PlayerData.metadata['inlaststand'] or PlayerData.metadata['ishandcuffed']
     if distanceCheck or unlockableCheck or busyCheck then return end 
 
@@ -672,6 +713,7 @@ RegisterKeyMapping('toggledoorlock', Lang:t("general.keymapping_description"), '
 
 CreateThread(function()
 	updateDoors()
+	HandleDoorDebug()
 	while true do
 		local sleep = 100
 		if isLoggedIn and canContinue then
@@ -710,7 +752,10 @@ CreateThread(function()
 						if closestDoor.distance < (closestDoor.data.distance or closestDoor.data.maxDistance) then
 							local authorized = isAuthorized(closestDoor.data)
 							local displayText = ""
-							if Config.UseDoorLabelText and closestDoor.data.doorlabel then 
+
+							if closestDoor.data.hideLabel then
+								-- Do nothing
+							elseif Config.UseDoorLabelText and closestDoor.data.doorlabel then 
 								displayText = closestDoor.data.doorlabel
 							else
 								if not closestDoor.data.locked and not authorized then

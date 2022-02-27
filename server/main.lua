@@ -199,7 +199,8 @@ RegisterNetEvent('qb-doorlock:server:saveNewDoor', function(data, doubleDoor)
 	if data.item then configData.items = { [data.item] = 1 } items = "['"..data.item.."'] = 1" end
 	configData.locked = data.locked
 	configData.pickable = data.pickable
-	configData.canUnlock = data.canunlock
+	configData.cantUnlock = data.cantunlock
+	configData.hideLabel = data.hidelabel
 	configData.distance = data.distance
 	configData.doorType = data.doortype
 	configData.doorRate = 1.0
@@ -277,4 +278,8 @@ end)
 
 QBCore.Commands.Add('newdoor', Lang:t("general.newdoor_command_description"), {}, false, function(source)
 	TriggerClientEvent('qb-doorlock:client:addNewDoor', source)
+end, Config.CommandPermission)
+
+QBCore.Commands.Add('doordebug', Lang:t("general.doordebug_command_description"), {}, false, function(source)
+	TriggerClientEvent('qb-doorlock:client:ToggleDoorDebug', source)
 end, Config.CommandPermission)

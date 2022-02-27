@@ -14,6 +14,7 @@ Config.DefaultColor = 'rgb(19, 28, 74)' -- The default color of the box of the p
 Config.LockedColor = 'rgb(219 58 58)' -- The color of the box of the popup text if Config.ChangeColor is true and the door is locked
 Config.UnlockedColor = 'rgb(27 195 63)' -- The color of the box of the popup text if Config.ChangeColor is true and the door is unlocked
 Config.UseDoorLabelText = false -- Will use the LABEL field as the nui text instead of locked/unlocked
+Config.DoorDebug = false -- Enable DRAWTEXT in the world at the coords where the door 'center' is
 
 Config.Consumables = { ['ticket'] = 1, ['paperclip'] = 1 } -- The items will get removed once used on a door that has the item on it
 
@@ -33,8 +34,9 @@ Config.DoorList['configname-identifier'] = {
     audioUnlock = {['file'] = 'metallic-creak.ogg', ['volume'] = 0.7}, -- Play sound on door unlock
     autoLock = 1000, -- Auto lock after this many miliseconds
     doorRate = 1.0,  -- Time till auto closes? Needs more testing
-	canUnlock = false -- Set to false to not allow the player to unlock the door, only lock it. This means a script will have to trigger the unlock.
-	pickable = false, -- Can use a lockpick to unlock, only need if true
+	cantUnlock = true -- Set to false to not allow the player to unlock the door, only lock it. This means a script will have to trigger the unlock.
+	pickable = true, -- Can use a lockpick to unlock, only need if true
+	hideLabel = true, -- Set to true to hide the popup label, for hiding doors ;)
 } 
 ]]
 
