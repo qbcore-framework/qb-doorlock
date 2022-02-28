@@ -535,6 +535,14 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 	})
 	if not dialog or not next(dialog) then canContinue = true return end
 	doorData = dialog
+
+	local identifier = doorData.configfile..'-'..doorData.dooridentifier
+	if Config.DoorList[identifier] then 
+		QBCore.Functions.Notify((Lang:t("error.door_identifier_exists")):format(identifier), 'error') 
+		canContinue = true 
+		return 
+	end
+
 	if doorData.configfile == '' then doorData.configfile = false end
 	if doorData.job == '' then doorData.job = false end
 	if doorData.gang == '' then doorData.gang = false end

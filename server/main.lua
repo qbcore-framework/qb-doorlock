@@ -204,7 +204,6 @@ RegisterNetEvent('qb-doorlock:server:saveNewDoor', function(data, doubleDoor)
 	configData.distance = data.distance
 	configData.doorType = data.doortype
 	configData.doorRate = 1.0
-	configData.audioRemote = false
 	configData.doorLabel = data.doorlabel
 	doorType = "'"..data.doortype.."'"
 	identifier = data.configfile..'-'..data.dooridentifier
