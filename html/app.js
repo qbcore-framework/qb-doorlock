@@ -70,8 +70,8 @@ const app = Vue.createApp({
         },
         playAudio(data) {
             var volume = (data.audio['volume'] / 10) * data.sfx
-            if (volume > 1.0) volume = 1.0;
             if (data.distance !== 0) volume /= data.distance;
+            if (volume > 1.0) volume = 1.0;
             const sound = new Audio('sounds/' + data.audio['file']);
             sound.volume = volume;
             sound.play();
