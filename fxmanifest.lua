@@ -14,10 +14,7 @@ shared_scripts {
 }
 
 server_script 'server/main.lua'
-client_script {
-    'client/utils.lua',
-    'client/main.lua',
-}
+client_script 'client/main.lua'
 
 files {
 	'html/*.html',
