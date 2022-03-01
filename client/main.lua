@@ -31,24 +31,6 @@ local function displayNUIText(text)
 	Wait(1)
 end
 
-local function Draw3DText(coords, str)
-    local onScreen, worldX, worldY = World3dToScreen2d(coords.x, coords.y, coords.z)
-	local camCoords = GetGameplayCamCoord()
-	local scale = 200 / (GetGameplayCamFov() * #(camCoords - coords))
-    if onScreen then
-        SetTextScale(1.0, 0.5 * scale)
-        SetTextFont(4)
-        SetTextColour(255, 255, 255, 255)
-        SetTextEdge(2, 0, 0, 0, 150)
-		SetTextProportional(1)
-		SetTextOutline()
-		SetTextCentre(1)
-        SetTextEntry("STRING")
-        AddTextComponentString(str)
-        DrawText(worldX, worldY)
-    end
-end
-
 local function HandleDoorDebug()
 	if not Config.DoorDebug then return end
 
@@ -68,33 +50,6 @@ local function hideNUI()
 		enable = false
 	})
 	Wait(1)
-end
-
-local function raycastWeapon()
-    local offset = GetOffsetFromEntityInWorldCoords(GetCurrentPedWeaponEntityIndex(playerPed), 0, 0, -0.01)
-    local direction = GetGameplayCamRot()
-    direction = vec2(direction.x * math.pi / 180.0, direction.z * math.pi / 180.0)
-    local num = math.abs(math.cos(direction.x))
-    direction = vec3((-math.sin(direction.y) * num), (math.cos(direction.y) * num), math.sin(direction.x))
-    local destination = vec3(offset.x + direction.x * 30, offset.y + direction.y * 30, offset.z + direction.z * 30)
-    local rayHandle, result, hit, _, _, entityHit = StartShapeTestLosProbe(offset, destination, -1, playerPed, 0)
-    repeat
-        result, hit, _, _, entityHit = GetShapeTestResult(rayHandle)
-        Wait(0)
-    until result ~= 1
-    if GetEntityType(entityHit) == 3 then return hit, entityHit else return false end
-end
-
-local function setTextCoords(data)
-    local minDimension, maxDimension = GetModelDimensions(data.objName or data.objHash)
-    local dimensions = maxDimension - minDimension
-    local dx, dy = tonumber(dimensions.x), tonumber(dimensions.y)
-    if dy <= -1 or dy >= 1 then dx = dy end
-    if data.fixText then
-        return GetOffsetFromEntityInWorldCoords(data.object, dx / 2, 0, 0)
-    else
-        return GetOffsetFromEntityInWorldCoords(data.object, -dx / 2, 0, 0)
-    end
 end
 
 local function playSound(door, src, enableSounds)
@@ -132,12 +87,6 @@ local function doorAnim()
         Wait(550)
         ClearPedTasks(playerPed)
     end)
-end
-
-local function round(value, numDecimalPlaces)
-	if not numDecimalPlaces then return math.floor(value + 0.5) end
-    local power = 10 ^ numDecimalPlaces
-    return math.floor((value * power) + 0.5) / (power)
 end
 
 local function updateDoors(specificDoor)
@@ -219,7 +168,7 @@ local function updateDoors(specificDoor)
                     end
                 elseif data.object and data.object ~= 0 then
 					RemoveDoorFromSystem(data.doorHash)
-					nearbyDoors[doorID] = false
+					nearbyDoors[doorID] = nil
 				end
             end
             -- set text coords
@@ -256,6 +205,7 @@ local function updateDoors(specificDoor)
     end
     lastCoords = playerCoords
 end
+exports('updateDoors', updateDoors)
 
 local function lockpickFinish(success)
 	if success then
@@ -676,9 +626,9 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 	end
 end)
 
-RegisterNetEvent('qb-doorlock:client:newDoorAdded', function(data, id)
+RegisterNetEvent('qb-doorlock:client:newDoorAdded', function(data, id, creatorSrc)
 	Config.DoorList[id] = data
-	TriggerEvent('qb-doorlock:client:setState', PlayerData.source, id, data.locked, false, true, true)
+	TriggerEvent('qb-doorlock:client:setState', creatorSrc, id, data.locked, false, true, true)
 end)
 
 RegisterNetEvent('qb-doorlock:client:ToggleDoorDebug', function()
@@ -712,11 +662,57 @@ RegisterCommand('toggledoorlock', function()
 		end)
 	end
 	local locked = not closestDoor.data.locked
-	if closestDoor.data.audioRemote then src = NetworkGetNetworkIdFromEntity(playerPed) else src = false end
+	local src = false
+	if closestDoor.data.audioRemote then src = NetworkGetNetworkIdFromEntity(playerPed) end
+
 	TriggerServerEvent('qb-doorlock:server:updateState', closestDoor.id, locked, src, false, false, true, true) -- Broadcast new state of the door to everyone
 end)
 TriggerEvent("chat:removeSuggestion", "/toggledoorlock")
 RegisterKeyMapping('toggledoorlock', Lang:t("general.keymapping_description"), 'keyboard', 'E')
+
+
+RegisterCommand('remotetriggerdoor', function()
+	local hit, raycastCoords = RayCastGamePlayCamera(Config.RemoteTriggerDistance)
+	if not hit then return end
+
+	local nearestDoor = nil
+	for k in pairs(nearbyDoors) do
+		local door = Config.DoorList[k]
+		local canTrigger = door.remoteTrigger
+		local distance = #(raycastCoords - getTextCoords(door))
+
+		if canTrigger and (not nearestDoor or distance < nearestDoor.distance) and distance < math.max(door.distance,Config.RemoteTriggerMinDistance) then
+			nearestDoor = {
+				data = door,
+				id = k,
+				distance = distance
+			}
+		end
+	end
+
+	if not nearestDoor then return end
+
+	local unlockableCheck = (nearestDoor.data.cantUnlock and nearestDoor.data.locked)
+	local busyCheck = PlayerData.metadata['isdead'] or PlayerData.metadata['inlaststand'] or PlayerData.metadata['ishandcuffed']
+	if unlockableCheck or busycheck then return end
+
+	playerPed = PlayerPedId()
+	local veh = GetVehiclePedIsIn(playerPed)
+	if veh then
+		CreateThread(function()
+			local counter = 0
+			repeat
+				DisableControlAction(0, 74, true)
+				counter += 1
+				Wait(0)
+			until counter == 100
+		end)
+	end
+
+	TriggerServerEvent('qb-doorlock:server:updateState', nearestDoor.id, not nearestDoor.data.locked, NetworkGetNetworkIdFromEntity(playerPed), false, false, true, true) -- Broadcast new state of the door to everyone
+end)
+TriggerEvent("chat:removeSuggestion", "/remotetriggerdoor")
+RegisterKeyMapping('remotetriggerdoor', Lang:t("general.keymapping_remotetriggerdoor"), 'keyboard', 'H')
 
 -- Threads
 

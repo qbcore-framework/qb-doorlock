@@ -15,6 +15,8 @@ Config.LockedColor = 'rgb(219 58 58)' -- The color of the box of the popup text 
 Config.UnlockedColor = 'rgb(27 195 63)' -- The color of the box of the popup text if Config.ChangeColor is true and the door is unlocked
 Config.UseDoorLabelText = false -- Will use the LABEL field as the nui text instead of locked/unlocked
 Config.DoorDebug = false -- Enable DRAWTEXT in the world at the coords where the door 'center' is
+Config.RemoteTriggerDistance = 15.0 -- This is how far from your camera the raycast will go to try to hit something solid
+Config.RemoteTriggerMinDistance = 5.0 -- This is the minimum distance required for the raycast hit to count near a door. It will take the larger two between this and 'distance' option
 
 Config.Consumables = { ['ticket'] = 1, ['paperclip'] = 1 } -- The items will get removed once used on a door that has the item on it
 
@@ -37,6 +39,7 @@ Config.DoorList['configname-identifier'] = {
 	cantUnlock = true -- Set to false to not allow the player to unlock the door, only lock it. This means a script will have to trigger the unlock.
 	pickable = true, -- Can use a lockpick to unlock, only need if true
 	hideLabel = true, -- Set to true to hide the popup label, for hiding doors ;)
+    remoteTrigger = true, -- If you want to be able to remote trigger a door with H, put this here 
 } 
 ]]
 

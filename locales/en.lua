@@ -15,6 +15,7 @@ local Translations = {
         locked_button = "[E] - Locked",
         unlocked_button = "[E] - Unlocked",
         keymapping_description = "Interact with door locks",
+        keymapping_remotetriggerdoor = "Remote trigger a door",
         locked_menu = "Locked",
         pickable_menu = "Lockpickable",
         cantunlock_menu = 'Cant Unlock',
