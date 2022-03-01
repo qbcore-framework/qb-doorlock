@@ -1,4 +1,4 @@
-local function Draw3DText(coords, str)
+function Draw3DText(coords, str)
     local onScreen, worldX, worldY = World3dToScreen2d(coords.x, coords.y, coords.z)
 	local camCoords = GetGameplayCamCoord()
 	local scale = 200 / (GetGameplayCamFov() * #(camCoords - coords))
@@ -16,7 +16,7 @@ local function Draw3DText(coords, str)
     end
 end
 
-local function raycastWeapon()
+function raycastWeapon()
     local offset = GetOffsetFromEntityInWorldCoords(GetCurrentPedWeaponEntityIndex(playerPed), 0, 0, -0.01)
     local direction = GetGameplayCamRot()
     direction = vec2(direction.x * math.pi / 180.0, direction.z * math.pi / 180.0)
@@ -31,7 +31,7 @@ local function raycastWeapon()
     if GetEntityType(entityHit) == 3 then return hit, entityHit else return false end
 end
 
-local function RotationToDirection(rotation)
+function RotationToDirection(rotation)
 	local adjustedRotation =
 	{
 		x = (math.pi / 180) * rotation.x,
@@ -47,7 +47,7 @@ local function RotationToDirection(rotation)
 	return direction
 end
 
-local function RayCastGamePlayCamera(distance)
+function RayCastGamePlayCamera(distance)
     local cameraRotation = GetGameplayCamRot()
 	local cameraCoord = GetGameplayCamCoord()
 	local direction = RotationToDirection(cameraRotation)
@@ -62,7 +62,7 @@ local function RayCastGamePlayCamera(distance)
 end
 
 
-local function setTextCoords(data)
+function setTextCoords(data)
     local minDimension, maxDimension = GetModelDimensions(data.objName or data.objHash)
     local dimensions = maxDimension - minDimension
     local dx, dy = tonumber(dimensions.x), tonumber(dimensions.y)
@@ -74,12 +74,12 @@ local function setTextCoords(data)
     end
 end
 
-local function getTextCoords(door)
+function getTextCoords(door)
 	if door.setText then return door.textCoords end
 	return setTextCoords(door)
 end
 
-local function round(value, numDecimalPlaces)
+function round(value, numDecimalPlaces)
 	if not numDecimalPlaces then return math.floor(value + 0.5) end
     local power = 10 ^ numDecimalPlaces
     return math.floor((value * power) + 0.5) / (power)
