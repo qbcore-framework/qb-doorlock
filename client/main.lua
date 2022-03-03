@@ -12,7 +12,6 @@ local usingAdvanced = false
 local doorData = {}
 
 -- Functions
-
 function Draw3DText(coords, str)
     local onScreen, worldX, worldY = World3dToScreen2d(coords.x, coords.y, coords.z)
 	local camCoords = GetGameplayCamCoord()
@@ -31,7 +30,7 @@ function Draw3DText(coords, str)
     end
 end
 
-function raycastWeapon()
+local function raycastWeapon()
     local offset = GetOffsetFromEntityInWorldCoords(GetCurrentPedWeaponEntityIndex(playerPed), 0, 0, -0.01)
     local direction = GetGameplayCamRot()
     direction = vec2(direction.x * math.pi / 180.0, direction.z * math.pi / 180.0)
@@ -46,7 +45,7 @@ function raycastWeapon()
     if GetEntityType(entityHit) == 3 then return hit, entityHit else return false end
 end
 
-function RotationToDirection(rotation)
+local function RotationToDirection(rotation)
 	local adjustedRotation =
 	{
 		x = (math.pi / 180) * rotation.x,
@@ -62,7 +61,7 @@ function RotationToDirection(rotation)
 	return direction
 end
 
-function RayCastGamePlayCamera(distance)
+local function RayCastGamePlayCamera(distance)
     local cameraRotation = GetGameplayCamRot()
 	local cameraCoord = GetGameplayCamCoord()
 	local direction = RotationToDirection(cameraRotation)
@@ -77,7 +76,7 @@ function RayCastGamePlayCamera(distance)
 end
 
 
-function setTextCoords(data)
+local function setTextCoords(data)
     local minDimension, maxDimension = GetModelDimensions(data.objName or data.objHash)
     local dimensions = maxDimension - minDimension
     local dx, dy = tonumber(dimensions.x), tonumber(dimensions.y)
@@ -89,12 +88,12 @@ function setTextCoords(data)
     end
 end
 
-function getTextCoords(door)
+local function getTextCoords(door)
 	if door.setText then return door.textCoords end
 	return setTextCoords(door)
 end
 
-function round(value, numDecimalPlaces)
+local function round(value, numDecimalPlaces)
 	if not numDecimalPlaces then return math.floor(value + 0.5) end
     local power = 10 ^ numDecimalPlaces
     return math.floor((value * power) + 0.5) / (power)
@@ -292,7 +291,6 @@ local function updateDoors(specificDoor)
     end
     lastCoords = playerCoords
 end
-exports('updateDoors', updateDoors)
 
 local function lockpickFinish(success)
 	if success then
@@ -722,6 +720,8 @@ RegisterNetEvent('qb-doorlock:client:ToggleDoorDebug', function()
 	Config.DoorDebug = not Config.DoorDebug
 	HandleDoorDebug()
 end)
+
+RegisterNetEvent('qb-doorlock:client:UpdateDoors', function() updateDoors() end)
 -- Commands
 
 RegisterCommand('toggledoorlock', function()
