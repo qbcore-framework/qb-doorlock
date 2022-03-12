@@ -1,5 +1,4 @@
 local QBCore = exports['qb-core']:GetCoreObject()
-local Config = Config
 
 -- Functions
 
@@ -125,6 +124,25 @@ local function isAuthorized(Player, door, usedLockpick)
 	return false
 end
 
+local function SaveDoorStates()
+    SaveResourceFile(GetCurrentResourceName(), "./saves/doorstates.json", json.encode(Config.DoorStates), -1)
+end
+
+local function LoadDoorStates()
+	local DoorStates = LoadResourceFile(GetCurrentResourceName(), "./saves/doorstates.json")
+	if DoorStates then
+		DoorStates = json.decode(DoorStates)
+		if not next(DoorStates) then return end
+
+		for key,isLocked in pairs(DoorStates) do
+			if Config.DoorList[key] ~= nil then
+				Config.DoorList[key].locked = isLocked
+			end
+		end
+		Config.DoorStates = DoorStates
+	end
+end
+
 -- Callbacks
 
 QBCore.Functions.CreateCallback('qb-doorlock:server:setupDoors', function(_, cb)
@@ -171,12 +189,14 @@ RegisterNetEvent('qb-doorlock:server:updateState', function(doorID, locked, src,
 	end
 
 	Config.DoorList[doorID].locked = locked
+	if Config.DoorStates[doorID] == nil then Config.DoorStates[doorID] = locked elseif Config.DoorStates[doorID] ~= locked then Config.DoorStates[doorID] = nil end
 	TriggerClientEvent('qb-doorlock:client:setState', -1, playerId, doorID, locked, src or false, enableSounds, enableAnimation)
 
 	if not Config.DoorList[doorID].autoLock then return end
 	SetTimeout(Config.DoorList[doorID].autoLock, function()
 		if Config.DoorList[doorID].locked then return end
 		Config.DoorList[doorID].locked = true
+		if Config.DoorStates[doorID] == nil then Config.DoorStates[doorID] = locked elseif Config.DoorStates[doorID] ~= locked then Config.DoorStates[doorID] = nil end
 		TriggerClientEvent('qb-doorlock:client:setState', -1, playerId, doorID, true, src or false, enableSounds, enableAnimation)
 	end)
 end)
@@ -271,6 +291,36 @@ RegisterNetEvent('qb-doorlock:server:saveNewDoor', function(data, doubleDoor)
 
 	Config.DoorList[identifier] = configData
 	TriggerClientEvent('qb-doorlock:client:newDoorAdded', -1, configData, identifier, src)
+end)
+
+AddEventHandler('onResourceStart', function(resource)
+    if GetCurrentResourceName() == resource and Config.PersistentDoorStates then
+		CreateThread(function()
+			LoadDoorStates()
+			Wait(1000)
+			while true do
+				Wait(Config.PersistentSaveInternal)
+				SaveDoorStates()
+			end
+		end)
+    end
+end)
+
+AddEventHandler('onResourceStop', function(resource)
+    if GetCurrentResourceName() == resource and Config.PersistentDoorStates then
+		SaveDoorStates()
+    end
+end)
+
+RegisterServerEvent('txAdmin:events:scheduledRestart', function(eventData)
+    if eventData.secondsRemaining == 60 then
+        CreateThread(function()
+            Wait(45000)
+			SaveDoorStates()
+        end)
+	else
+		SaveDoorStates()
+    end
 end)
 
 -- Commands

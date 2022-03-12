@@ -176,6 +176,7 @@ local function doorAnim()
 end
 
 local function updateDoors(specificDoor)
+	if #(playerCoords - lastCoords) > 30 then Wait(1000) end
     playerCoords = GetEntityCoords(playerPed)
     for doorID, data in pairs(Config.DoorList) do
         if not specificDoor or doorID == specificDoor then
@@ -183,6 +184,7 @@ local function updateDoors(specificDoor)
 				if not data.doorType then data.doorType = 'double' end
                 for k, v in pairs(data.doors) do
                     if #(playerCoords - v.objCoords) < 30 then
+
 						if data.doorType == "doublesliding" then
 							v.object = GetClosestObjectOfType(v.objCoords.x, v.objCoords.y, v.objCoords.z, 5.0, v.objName or v.objHash, false, false, false)
 						else
@@ -213,7 +215,7 @@ local function updateDoors(specificDoor)
                                 end
                             end
                         end
-                    elseif v.object and v.object ~= 0 then
+                    elseif v.object then
 						RemoveDoorFromSystem(v.doorHash)
 						nearbyDoors[doorID] = nil
 					end
@@ -252,7 +254,7 @@ local function updateDoors(specificDoor)
                             end
                         end
                     end
-                elseif data.object and data.object ~= 0 then
+                elseif data.object then
 					RemoveDoorFromSystem(data.doorHash)
 					nearbyDoors[doorID] = nil
 				end
@@ -365,6 +367,14 @@ local function isAuthorized(door)
 	end
 
 	return false
+end
+
+function SetupDoors()
+	local p = promise.new()
+	QBCore.Functions.TriggerCallback('qb-doorlock:server:setupDoors', function(result)
+		p:resolve(result)
+	end)
+	Config.DoorList = Citizen.Await(p)
 end
 
 -- Events
@@ -721,7 +731,6 @@ RegisterNetEvent('qb-doorlock:client:ToggleDoorDebug', function()
 	HandleDoorDebug()
 end)
 
-RegisterNetEvent('qb-doorlock:client:UpdateDoors', function() updateDoors() end)
 -- Commands
 
 RegisterCommand('toggledoorlock', function()
@@ -730,7 +739,7 @@ RegisterCommand('toggledoorlock', function()
 	local distanceCheck = closestDoor.distance > (closestDoor.data.distance or closestDoor.data.maxDistance)
 	local unlockableCheck = (closestDoor.data.cantUnlock and closestDoor.data.locked)
 	local busyCheck = PlayerData.metadata['isdead'] or PlayerData.metadata['inlaststand'] or PlayerData.metadata['ishandcuffed']
-    if distanceCheck or unlockableCheck or busyCheck then return end 
+    if distanceCheck or unlockableCheck or busyCheck then return end
 
 	playerPed = PlayerPedId()
 	local veh = GetVehiclePedIsIn(playerPed)
@@ -781,7 +790,7 @@ RegisterCommand('remotetriggerdoor', function()
 
 	local unlockableCheck = (nearestDoor.data.cantUnlock and nearestDoor.data.locked)
 	local busyCheck = PlayerData.metadata['isdead'] or PlayerData.metadata['inlaststand'] or PlayerData.metadata['ishandcuffed']
-	if unlockableCheck or busycheck then return end
+	if unlockableCheck or busyCheck then return end
 
 	playerPed = PlayerPedId()
 	local veh = GetVehiclePedIsIn(playerPed)
@@ -804,6 +813,8 @@ RegisterKeyMapping('remotetriggerdoor', Lang:t("general.keymapping_remotetrigger
 -- Threads
 
 CreateThread(function()
+	if Config.PersistentDoorStates and isLoggedIn then Wait(1000) SetupDoors() end -- Required for pulling in door states properly from live ensures
+
 	updateDoors()
 	HandleDoorDebug()
 	while true do
