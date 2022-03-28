@@ -48,8 +48,8 @@ Config.DoorList['configname-identifier'] = {
 } 
 ]]
 
-Config.DoorList = {
 Config.DoorStates = {}
+Config.DoorList = {
 	{
 		objName = 'hei_v_ilev_bk_gate2_pris',
 		objCoords  = vec3(261.83, 221.39, 106.41),
