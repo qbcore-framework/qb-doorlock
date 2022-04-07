@@ -6,8 +6,8 @@ This doorlock system is based on [nui_doorlock by thelindat](https://github.com/
 ## Dependencies
 
 * [qb-core](https://github.com/qbcore-framework/qb-core)
-* [qb-input](https://github.com/qbcore-framework/qb-input)
-* [qb-lockpick](https://github.com/qbcore-framework/qb-lockpick)
+* [qb-input](https://github.com/qbcore-framework/qb-input) - For Making New Doors
+* [qb-lockpick](https://github.com/qbcore-framework/qb-lockpick) - For Lockpicking Doors
 
 ## Features
 
@@ -43,6 +43,16 @@ This doorlock system is based on [nui_doorlock by thelindat](https://github.com/
             pickable = false, -- true or false | Can the door be lockpicked. Alias: lockpick = false,
             distance = 1.5, -- At what range the interaction text will show. Alis: maxDistance = 1.5,
             doorType = 'door', -- The type of door, can be door, double, sliding, doublesliding or garage
+            fixText = true, -- true or false | fix the text to the center of the door
+            doorLabel = 'Cloakroom', -- Label of the door that shows up when nearby
+            audioRemote = true, -- true or false | Play sound from the player instead of the door
+            audioLock = {['file'] = 'metal-locker.ogg', ['volume'] = 0.6}, -- Play sound on door lock
+            audioUnlock = {['file'] = 'metallic-creak.ogg', ['volume'] = 0.7}, -- Play sound on door unlock
+            autoLock = 1000, -- Auto lock after this many miliseconds
+            doorRate = 1.0,  -- The rate of the animation to lock/unlock the door
+            cantUnlock = true -- true or false | Set to true to not allow the player to unlock the door, only lock it. This means a script will have to trigger the unlock
+            hideLabel = true, -- Set to true to hide the popup label, for hiding doors
+            remoteTrigger = true, -- true or false | If you want to be able to remote trigger a door with H, put this here
       },
 
 ## Double Door Configuration
@@ -72,6 +82,16 @@ This doorlock system is based on [nui_doorlock by thelindat](https://github.com/
             pickable = false, -- true or false | Can the door be lockpicked. Alias: lockpick = false,
             distance = 2.5, -- At what range the interaction text will show. Alis: maxDistance = 2.5,
             doorType = 'double', -- The type of door, can be door, double, sliding, doublesliding or garage
+                        fixText = true, -- true or false | fix the text to the center of the door
+            doorLabel = 'Cloakroom', -- Label of the door that shows up when nearby
+            audioRemote = true, -- true or false | Play sound from the player instead of the door
+            audioLock = {['file'] = 'metal-locker.ogg', ['volume'] = 0.6}, -- Play sound on door lock
+            audioUnlock = {['file'] = 'metallic-creak.ogg', ['volume'] = 0.7}, -- Play sound on door unlock
+            autoLock = 1000, -- Auto lock after this many miliseconds
+            doorRate = 1.0,  -- The rate of the animation to lock/unlock the door
+            cantUnlock = true -- true or false | Set to true to not allow the player to unlock the door, only lock it. This means a script will have to trigger the unlock
+            hideLabel = true, -- Set to true to hide the popup label, for hiding doors
+            remoteTrigger = true, -- true or false | If you want to be able to remote trigger a door with H, put this here
       },
 
 # License

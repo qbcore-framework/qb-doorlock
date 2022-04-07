@@ -9,8 +9,95 @@ local lastCoords = playerCoords
 local nearbyDoors, closestDoor = {}, {}
 local paused = false
 local usingAdvanced = false
+local doorData = {}
 
 -- Functions
+function Draw3DText(coords, str)
+    local onScreen, worldX, worldY = World3dToScreen2d(coords.x, coords.y, coords.z)
+	local camCoords = GetGameplayCamCoord()
+	local scale = 200 / (GetGameplayCamFov() * #(camCoords - coords))
+    if onScreen then
+        SetTextScale(1.0, 0.5 * scale)
+        SetTextFont(4)
+        SetTextColour(255, 255, 255, 255)
+        SetTextEdge(2, 0, 0, 0, 150)
+		SetTextProportional(1)
+		SetTextOutline()
+		SetTextCentre(1)
+        SetTextEntry("STRING")
+        AddTextComponentString(str)
+        DrawText(worldX, worldY)
+    end
+end
+
+local function raycastWeapon()
+    local offset = GetOffsetFromEntityInWorldCoords(GetCurrentPedWeaponEntityIndex(playerPed), 0, 0, -0.01)
+    local direction = GetGameplayCamRot()
+    direction = vec2(direction.x * math.pi / 180.0, direction.z * math.pi / 180.0)
+    local num = math.abs(math.cos(direction.x))
+    direction = vec3((-math.sin(direction.y) * num), (math.cos(direction.y) * num), math.sin(direction.x))
+    local destination = vec3(offset.x + direction.x * 30, offset.y + direction.y * 30, offset.z + direction.z * 30)
+    local rayHandle, result, hit, _, _, entityHit = StartShapeTestLosProbe(offset, destination, -1, playerPed, 0)
+    repeat
+        result, hit, _, _, entityHit = GetShapeTestResult(rayHandle)
+        Wait(0)
+    until result ~= 1
+    if GetEntityType(entityHit) == 3 then return hit, entityHit else return false end
+end
+
+local function RotationToDirection(rotation)
+	local adjustedRotation =
+	{
+		x = (math.pi / 180) * rotation.x,
+		y = (math.pi / 180) * rotation.y,
+		z = (math.pi / 180) * rotation.z
+	}
+	local direction =
+	{
+		x = -math.sin(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)),
+		y = math.cos(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)),
+		z = math.sin(adjustedRotation.x)
+	}
+	return direction
+end
+
+local function RayCastGamePlayCamera(distance)
+    local cameraRotation = GetGameplayCamRot()
+	local cameraCoord = GetGameplayCamCoord()
+	local direction = RotationToDirection(cameraRotation)
+	local destination =
+	{
+		x = cameraCoord.x + direction.x * distance,
+		y = cameraCoord.y + direction.y * distance,
+		z = cameraCoord.z + direction.z * distance
+	}
+	local _, hit, endCoords, _, _ = GetShapeTestResult(StartShapeTestRay(cameraCoord.x, cameraCoord.y, cameraCoord.z, destination.x, destination.y, destination.z, -1, PlayerPedId(), 0))
+	return hit == 1, endCoords
+end
+
+
+local function setTextCoords(data)
+    local minDimension, maxDimension = GetModelDimensions(data.objName or data.objHash)
+    local dimensions = maxDimension - minDimension
+    local dx, dy = tonumber(dimensions.x), tonumber(dimensions.y)
+    if dy <= -1 or dy >= 1 then dx = dy end
+    if data.fixText then
+        return GetOffsetFromEntityInWorldCoords(data.object, dx / 2, 0, 0)
+    else
+        return GetOffsetFromEntityInWorldCoords(data.object, -dx / 2, 0, 0)
+    end
+end
+
+local function getTextCoords(door)
+	if door.setText then return door.textCoords end
+	return setTextCoords(door)
+end
+
+local function round(value, numDecimalPlaces)
+	if not numDecimalPlaces then return math.floor(value + 0.5) end
+    local power = 10 ^ numDecimalPlaces
+    return math.floor((value * power) + 0.5) / (power)
+end
 
 local function loadAnimDict(dict)
 	RequestAnimDict(dict)
@@ -30,39 +117,25 @@ local function displayNUIText(text)
 	Wait(1)
 end
 
+local function HandleDoorDebug()
+	if not Config.DoorDebug then return end
+
+	CreateThread(function()
+		while Config.DoorDebug do
+			if closestDoor.data then
+				Draw3DText(closestDoor.data.textCoords, closestDoor.data.doorLabel or 'Door Here')
+			end
+			Wait(0)
+		end
+	end)
+end
+
 local function hideNUI()
 	SendNUIMessage({
 		type = "setDoorText",
 		enable = false
 	})
 	Wait(1)
-end
-
-local function raycastWeapon()
-    local offset = GetOffsetFromEntityInWorldCoords(GetCurrentPedWeaponEntityIndex(playerPed), 0, 0, -0.01)
-    local direction = GetGameplayCamRot()
-    direction = vec2(direction.x * math.pi / 180.0, direction.z * math.pi / 180.0)
-    local num = math.abs(math.cos(direction.x))
-    direction = vec3((-math.sin(direction.y) * num), (math.cos(direction.y) * num), math.sin(direction.x))
-    local destination = vec3(offset.x + direction.x * 30, offset.y + direction.y * 30, offset.z + direction.z * 30)
-    local rayHandle, result, hit, _, _, entityHit = StartShapeTestLosProbe(offset, destination, -1, playerPed, 0)
-    repeat
-        result, hit, _, _, entityHit = GetShapeTestResult(rayHandle)
-        Wait(0)
-    until result ~= 1
-    if GetEntityType(entityHit) == 3 then return hit, entityHit else return false end
-end
-
-local function setTextCoords(data)
-    local minDimension, maxDimension = GetModelDimensions(data.objHash)
-    local dimensions = maxDimension - minDimension
-    local dx, dy = tonumber(dimensions.x), tonumber(dimensions.y)
-    if dy <= -1 or dy >= 1 then dx = dy end
-    if data.fixText then
-        return GetOffsetFromEntityInWorldCoords(data.object, dx / 2, 0, 0)
-    else
-        return GetOffsetFromEntityInWorldCoords(data.object, -dx / 2, 0, 0)
-    end
 end
 
 local function playSound(door, src, enableSounds)
@@ -102,13 +175,8 @@ local function doorAnim()
     end)
 end
 
-local function round(value, numDecimalPlaces)
-	if not numDecimalPlaces then return math.floor(value + 0.5) end
-    local power = 10 ^ numDecimalPlaces
-    return math.floor((value * power) + 0.5) / (power)
-end
-
 local function updateDoors(specificDoor)
+	if #(playerCoords - lastCoords) > 30 then Wait(1000) end
     playerCoords = GetEntityCoords(playerPed)
     for doorID, data in pairs(Config.DoorList) do
         if not specificDoor or doorID == specificDoor then
@@ -116,6 +184,7 @@ local function updateDoors(specificDoor)
 				if not data.doorType then data.doorType = 'double' end
                 for k, v in pairs(data.doors) do
                     if #(playerCoords - v.objCoords) < 30 then
+
 						if data.doorType == "doublesliding" then
 							v.object = GetClosestObjectOfType(v.objCoords.x, v.objCoords.y, v.objCoords.z, 5.0, v.objName or v.objHash, false, false, false)
 						else
@@ -146,7 +215,7 @@ local function updateDoors(specificDoor)
                                 end
                             end
                         end
-                    elseif v.object and v.object ~= 0 then
+                    elseif v.object then
 						RemoveDoorFromSystem(v.doorHash)
 						nearbyDoors[doorID] = nil
 					end
@@ -185,9 +254,9 @@ local function updateDoors(specificDoor)
                             end
                         end
                     end
-                elseif data.object and data.object ~= 0 then
+                elseif data.object then
 					RemoveDoorFromSystem(data.doorHash)
-					nearbyDoors[doorID] = false
+					nearbyDoors[doorID] = nil
 				end
             end
             -- set text coords
@@ -298,6 +367,14 @@ local function isAuthorized(door)
 	end
 
 	return false
+end
+
+function SetupDoors()
+	local p = promise.new()
+	QBCore.Functions.TriggerCallback('qb-doorlock:server:setupDoors', function(result)
+		p:resolve(result)
+	end)
+	Config.DoorList = Citizen.Await(p)
 end
 
 -- Events
@@ -414,7 +491,7 @@ end)
 RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 	canContinue = false
 	hideNUI()
-	local doorData = {}
+	if not Config.SaveDoorDialog then doorData = {} end
 	local dialog = exports['qb-input']:ShowInput({
 		header = Lang:t("general.newdoor_menu_title"),
 		submitText = Lang:t("general.submit_text"),
@@ -423,13 +500,22 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 				text = Lang:t("general.configfile_title"),
 				name = "configfile",
 				type = "text",
-				isRequired = false
+				isRequired = true,
+				default = Config.SaveDoorDialog and doorData.configfile,
 			},
 			{
-				text = Lang:t("general.doorname_title"),
-				name = "doorname",
+				text = Lang:t("general.dooridentifier_title"),
+				name = "dooridentifier",
 				type = "text",
-				isRequired = true
+				isRequired = true,
+				default = Config.SaveDoorDialog and doorData.dooridentifier,
+			},
+			{
+				text = Lang:t("general.doorlabel_title"),
+				name = "doorlabel",
+				type = "text",
+				isRequired = false,
+				default = Config.SaveDoorDialog and doorData.doorlabel,
 			},
 			{
 				text = Lang:t("general.doortype_title"),
@@ -441,56 +527,78 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 					{ value = "sliding", text = Lang:t("general.doortype_sliding") },
 					{ value = "doublesliding", text = Lang:t("general.doortype_doublesliding") },
 					{ value = "garage", text = Lang:t("general.doortype_garage") }
-				}
+				},
+				default = Config.SaveDoorDialog and doorData.doortype,
 			},
 			{
 				text = Lang:t("general.job_authorisation_menu"),
 				name = "job",
 				type = "text",
-				isRequired = false
+				isRequired = false,
+				default = Config.SaveDoorDialog and doorData.job,
 			},
 			{
 				text = Lang:t("general.gang_authorisation_menu"),
 				name = "gang",
 				type = "text",
-				isRequired = false
+				isRequired = false,
+				default = Config.SaveDoorDialog and doorData.gang,
 			},
 			{
 				text = Lang:t("general.citizenid_authorisation_menu"),
 				name = "cid",
 				type = "text",
-				isRequired = false
+				isRequired = false,
+				default = Config.SaveDoorDialog and doorData.cid,
 			},
 			{
 				text = Lang:t("general.item_authorisation_menu"),
 				name = "item",
 				type = "text",
-				isRequired = false
+				isRequired = false,
+				default = Config.SaveDoorDialog and doorData.item,
 			},
 			{
 				text = Lang:t("general.distance_menu"),
 				name = "distance",
 				type = "number",
 				isRequired = true,
+				default = Config.SaveDoorDialog and doorData.distance,
 			},
 			{
 				text = "",
 				name = "checklock",
 				type = "checkbox",
 				options = {
-					{ value = "locked", text = Lang:t("general.locked_menu") },
-					{ value = "pickable", text = Lang:t("general.pickable_menu") }
+					{ value = "locked", text = Lang:t("general.locked_menu"), checked = (Config.SaveDoorDialog and doorData.locked) },
+					{ value = "pickable", text = Lang:t("general.pickable_menu"), checked = (Config.SaveDoorDialog and doorData.pickable == 'true') },
+					{ value = "cantunlock", text = Lang:t("general.cantunlock_menu"), checked = (Config.SaveDoorDialog and doorData.cantunlock == 'true') },
+					{ value = "hidelabel", text = Lang:t("general.hidelabel_menu"), checked = (Config.SaveDoorDialog and doorData.hidelabel == 'true') },
 				}
 			}
 		}
 	})
 	if not dialog or not next(dialog) then canContinue = true return end
 	doorData = dialog
+
+	local identifier = doorData.configfile..'-'..doorData.dooridentifier
+	if Config.DoorList[identifier] then 
+		QBCore.Functions.Notify((Lang:t("error.door_identifier_exists")):format(identifier), 'error') 
+		canContinue = true 
+		return 
+	end
+
 	if doorData.configfile == '' then doorData.configfile = false end
 	if doorData.job == '' then doorData.job = false end
 	if doorData.gang == '' then doorData.gang = false end
 	if doorData.cid == '' then doorData.cid = false end
 	if doorData.item == '' then doorData.item = false end
+	if doorData.doorlabel == '' then doorData.doorlabel = nil end
+	if doorData.pickable ~= 'true' then doorData.pickable = nil end
+	if doorData.cantunlock ~= 'true' then doorData.cantunlock = nil end
+	if doorData.hidelabel ~= 'true' then doorData.hidelabel = nil end
+	
+	doorData.locked = doorData.locked == 'true'
 	doorData.distance = tonumber(doorData.distance)
 	if doorData.doortype == 'door' or doorData.doortype == 'sliding' or doorData.doortype == 'garage' then
 		SendNUIMessage({
@@ -533,7 +641,7 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 		if not model or model == 0 then QBCore.Functions.Notify(Lang:t("error.door_not_found"), 'error') canContinue = true return end
 		result = DoorSystemFindExistingDoor(coords.x, coords.y, coords.z, model)
 		if result then QBCore.Functions.Notify(Lang:t("error.door_registered"), 'error') canContinue = true return end
-		doorData.doorHash = 'door_'..doorData.doorname
+		doorData.doorHash = 'door_'..doorData.dooridentifier
 		AddDoorToSystem(doorData.doorHash, model, coords, false, false, false)
 		DoorSystemSetDoorState(doorData.doorHash, 4, false, false)
 		coords = GetEntityCoords(entity)
@@ -597,7 +705,7 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 		for i = 1, 2 do
 			result = DoorSystemFindExistingDoor(coords[i].x, coords[i].y, coords[i].z, model[i])
 			if result then QBCore.Functions.Notify(Lang:t("error.door_registered"), 'error') canContinue = true return end
-			doorData.doorHash[i] = 'door_'..doorData.doorname..'_'..i
+			doorData.doorHash[i] = 'door_'..doorData.dooridentifier..'_'..i
 			AddDoorToSystem(doorData.doorHash[i], model[i], coords[i], false, false, false)
             DoorSystemSetDoorState(doorData.doorHash[i], 4, false, false)
             coords[i] = GetEntityCoords(entity[i])
@@ -613,15 +721,26 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 	end
 end)
 
-RegisterNetEvent('qb-doorlock:client:newDoorAdded', function(data, id)
+RegisterNetEvent('qb-doorlock:client:newDoorAdded', function(data, id, creatorSrc)
 	Config.DoorList[id] = data
-	TriggerEvent('qb-doorlock:client:setState', PlayerData.source, id, data.locked, false, true, true)
+	TriggerEvent('qb-doorlock:client:setState', creatorSrc, id, data.locked, false, true, true)
+end)
+
+RegisterNetEvent('qb-doorlock:client:ToggleDoorDebug', function()
+	Config.DoorDebug = not Config.DoorDebug
+	HandleDoorDebug()
 end)
 
 -- Commands
 
 RegisterCommand('toggledoorlock', function()
-    if not closestDoor.data or not next(closestDoor.data) or closestDoor.distance > (closestDoor.data.distance or closestDoor.data.maxDistance) or PlayerData.metadata['isdead'] or PlayerData.metadata['inlaststand'] or PlayerData.metadata['ishandcuffed'] then return end
+	if not closestDoor.data or not next(closestDoor.data) then return end 
+
+	local distanceCheck = closestDoor.distance > (closestDoor.data.distance or closestDoor.data.maxDistance)
+	local unlockableCheck = (closestDoor.data.cantUnlock and closestDoor.data.locked)
+	local busyCheck = PlayerData.metadata['isdead'] or PlayerData.metadata['inlaststand'] or PlayerData.metadata['ishandcuffed']
+    if distanceCheck or unlockableCheck or busyCheck then return end
+
 	playerPed = PlayerPedId()
 	local veh = GetVehiclePedIsIn(playerPed)
 	if veh then
@@ -639,16 +758,65 @@ RegisterCommand('toggledoorlock', function()
 		end)
 	end
 	local locked = not closestDoor.data.locked
-	if closestDoor.data.audioRemote then src = NetworkGetNetworkIdFromEntity(playerPed) else src = false end
+	local src = false
+	if closestDoor.data.audioRemote then src = NetworkGetNetworkIdFromEntity(playerPed) end
+
 	TriggerServerEvent('qb-doorlock:server:updateState', closestDoor.id, locked, src, false, false, true, true) -- Broadcast new state of the door to everyone
 end)
 TriggerEvent("chat:removeSuggestion", "/toggledoorlock")
 RegisterKeyMapping('toggledoorlock', Lang:t("general.keymapping_description"), 'keyboard', 'E')
 
+
+RegisterCommand('remotetriggerdoor', function()
+	local hit, raycastCoords = RayCastGamePlayCamera(Config.RemoteTriggerDistance)
+	if not hit then return end
+
+	local nearestDoor = nil
+	for k in pairs(nearbyDoors) do
+		local door = Config.DoorList[k]
+		local canTrigger = door.remoteTrigger
+		local distance = #(raycastCoords - getTextCoords(door))
+
+		if canTrigger and (not nearestDoor or distance < nearestDoor.distance) and distance < math.max(door.distance,Config.RemoteTriggerMinDistance) then
+			nearestDoor = {
+				data = door,
+				id = k,
+				distance = distance
+			}
+		end
+	end
+
+	if not nearestDoor then return end
+
+	local unlockableCheck = (nearestDoor.data.cantUnlock and nearestDoor.data.locked)
+	local busyCheck = PlayerData.metadata['isdead'] or PlayerData.metadata['inlaststand'] or PlayerData.metadata['ishandcuffed']
+	if unlockableCheck or busyCheck then return end
+
+	playerPed = PlayerPedId()
+	local veh = GetVehiclePedIsIn(playerPed)
+	if veh then
+		CreateThread(function()
+			local counter = 0
+			repeat
+				DisableControlAction(0, 74, true)
+				counter += 1
+				Wait(0)
+			until counter == 100
+		end)
+	end
+
+	TriggerServerEvent('qb-doorlock:server:updateState', nearestDoor.id, not nearestDoor.data.locked, NetworkGetNetworkIdFromEntity(playerPed), false, false, true, true) -- Broadcast new state of the door to everyone
+end)
+TriggerEvent("chat:removeSuggestion", "/remotetriggerdoor")
+RegisterKeyMapping('remotetriggerdoor', Lang:t("general.keymapping_remotetriggerdoor"), 'keyboard', 'H')
+
 -- Threads
 
 CreateThread(function()
+	if Config.PersistentDoorStates and isLoggedIn then Wait(1000) SetupDoors() end -- Required for pulling in door states properly from live ensures
+
 	updateDoors()
+	HandleDoorDebug()
 	while true do
 		local sleep = 100
 		if isLoggedIn and canContinue then
@@ -687,15 +855,23 @@ CreateThread(function()
 						if closestDoor.distance < (closestDoor.data.distance or closestDoor.data.maxDistance) then
 							local authorized = isAuthorized(closestDoor.data)
 							local displayText = ""
-							if not closestDoor.data.locked and not authorized then
-								displayText = Lang:t("general.unlocked")
-							elseif not closestDoor.data.locked and authorized then
-								displayText = Lang:t("general.unlocked_button")
-							elseif closestDoor.data.locked and not authorized then
-								displayText = Lang:t("general.locked")
-							elseif closestDoor.data.locked and authorized then
-								displayText = Lang:t("general.locked_button")
+
+							if closestDoor.data.hideLabel then
+								-- Do nothing
+							elseif Config.UseDoorLabelText and closestDoor.data.doorLabel then 
+								displayText = closestDoor.data.doorLabel
+							else
+								if not closestDoor.data.locked and not authorized then
+									displayText = Lang:t("general.unlocked")
+								elseif not closestDoor.data.locked and authorized then
+									displayText = Lang:t("general.unlocked_button")
+								elseif closestDoor.data.locked and not authorized then
+									displayText = Lang:t("general.locked")
+								elseif closestDoor.data.locked and authorized then
+									displayText = Lang:t("general.locked_button")
+								end
 							end
+
 							if displayText ~= "" then displayNUIText(displayText) end
 						else
 							hideNUI()
