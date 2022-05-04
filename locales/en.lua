@@ -4,7 +4,7 @@ local Translations = {
         door_not_found = "Did not receive a model hash, if the door is transparent, make sure you aim at the frame of the door",
         same_entity = "Both doors can't be the same entity",
         door_registered = "This door is already registered",
-        door_identifier_exists = "A door with this identifier already exists in the config. (%s)",
+        door_identifier_exists = "A door with this identifier already exists in the config. (%{value})",
     },
     success = {
         lockpick_success = "Success"
