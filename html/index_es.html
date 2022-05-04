@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+    <head>
+        <link href="style.css" rel="stylesheet" type="text/css"/>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.29/vue.global.prod.js"></script>
+    </head>
+
+    <body>
+        <div id="mainContainer">
+            <audio id="sounds"><source type="audio/ogg"></audio>
+            <div id="doorlock-container" :class="doorlockClassObject" :style="doorlockStyleObject">{{ doorText }}</div>
+            <div class="textInfo">
+                <p id="aim" style="display: none;">Apunta a la puerta deseada.<br>Presiona el botón derecho del ratón para confirmar la puerta seleccionada</p>
+                <div id="textDetails" style="display: none;">
+                    <p id="coords">Coordenadas: {{ coords }}</p>
+                    <p id="heading">Título: {{ heading }}</p>
+                    <p id="hash">Hash: {{ hash }}</p>
+                </div>
+            </div>
+        </div>
+        <script src="app.js" type="text/javascript"></script>
+    </body>
+</html>
