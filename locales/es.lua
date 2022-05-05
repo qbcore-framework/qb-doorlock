@@ -1,20 +1,20 @@
 local Translations = {
     error = {
-        lockpick_fail = "Falló",
+        lockpick_fail = "Intento de abrir cerradura falló",
         door_not_found = "No recibí el hash del modelo, si la puerta es transparente, asegurate de apuntar al marco de la puerta",
         same_entity = "Ambas puertas no pueden ser la misma entidad",
         door_registered = "Esta puerta ya está registrada",
         door_identifier_exists = "Una puerta con este identificador ya existe en esta configuración. (%{value})",
     },
     success = {
-        lockpick_success = "Éxito"
+        lockpick_success = "Intento de abrir cerradura exitoso"
     },
     general = {
-        locked = "Cerrada",
-        unlocked = "Abierta",
-        locked_button = "[E] - Cerrada",
-        unlocked_button = "[E] - Abierta",
-        keymapping_description = "Interactúa con el llavín de la puerta",
+        locked = "Puerta cerrada",
+        unlocked = "Puerta abierta",
+        locked_button = "[E] - Puerta cerrada",
+        unlocked_button = "[E] - Puerta abierta",
+        keymapping_description = "Interactúa con la cerradura de la puerta",
         keymapping_remotetriggerdoor = "Activa una puerta remotamente",
         locked_menu = "Cerrada",
         pickable_menu = "Abrible",
