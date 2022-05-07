@@ -10,9 +10,11 @@ local function checkItems(Player, items, needsAll, checkRemove)
 	if needsAll == nil then needsAll = true end
 	if type(items) == 'table' then
 		local count = 0
-		local finalcount = #items
+		local finalcount
 		for k, v in pairs(items) do
 			if type(k) == 'string' then
+				finalcount = 0
+				for _ in pairs(items) do finalcount += 1 end
 				local item = Player.Functions.GetItemByName(k)
 				if item then
 					if item.amount >= v then
@@ -40,6 +42,7 @@ local function checkItems(Player, items, needsAll, checkRemove)
 					end
 				end
 			else
+				finalcount = #items
 				local item = Player.Functions.GetItemByName(v)
 				if item then
 					if needsAll then

@@ -38,12 +38,12 @@ local function raycastWeapon()
     direction = vec3((-math.sin(direction.y) * num), (math.cos(direction.y) * num), math.sin(direction.x))
     local destination = vec3(offset.x + direction.x * 30, offset.y + direction.y * 30, offset.z + direction.z * 30)
 	local hit, entityHit, result
-    local rayHandle, _, _, _, _, _ = StartShapeTestLosProbe(offset, destination, -1, playerPed, 0)
+    local rayHandle = StartShapeTestLosProbe(offset, destination, -1, playerPed, 0)
     repeat
         result, hit, _, _, entityHit = GetShapeTestResult(rayHandle)
         Wait(0)
     until result ~= 1
-    if GetEntityType(entityHit) == 3 then return hit, entityHit else return false end
+    if GetEntityType(entityHit) == 3 then return hit, entityHit else return false, 0 end
 end
 
 local function RotationToDirection(rotation)
