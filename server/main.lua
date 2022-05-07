@@ -10,27 +10,14 @@ local function checkItems(Player, items, needsAll, checkRemove)
 	if needsAll == nil then needsAll = true end
 	if type(items) == 'table' then
 		local count = 0
-		local finalcount = 0
+		local finalcount = #items
 		for k, v in pairs(items) do
 			if type(k) == 'string' then
-				finalcount = 0
-				for _ in pairs(items) do finalcount += 1 end
 				local item = Player.Functions.GetItemByName(k)
 				if item then
 					if item.amount >= v then
 						if needsAll then
 							count += 1
-							if count == finalcount then
-								if checkRemove then
-									for i in pairs(items) do
-										item = Player.Functions.GetItemByName(i)
-										if item and Config.Consumables[i] then
-											Player.Functions.RemoveItem(i, item.amount >= Config.Consumables[i] and Config.Consumables[i] or 1)
-										end
-									end
-								end
-								return true
-							end
 						else
 							if checkRemove and Config.Consumables[item.name] then
 								Player.Functions.RemoveItem(item.name, item.amount >= Config.Consumables[item.name] and Config.Consumables[item.name] or 1)
@@ -38,13 +25,32 @@ local function checkItems(Player, items, needsAll, checkRemove)
 							return true
 						end
 					end
+					if needsAll then
+						if count == finalcount then
+							if checkRemove then
+								for i in pairs(items) do
+									item = Player.Functions.GetItemByName(i)
+									if item and Config.Consumables[i] then
+										Player.Functions.RemoveItem(i, item.amount >= Config.Consumables[i] and Config.Consumables[i] or 1)
+									end
+								end
+							end
+							return true
+						end
+					end
 				end
 			else
-				finalcount = #items
 				local item = Player.Functions.GetItemByName(v)
 				if item then
 					if needsAll then
 						count += 1
+					else
+						if checkRemove and Config.Consumables[item.name] then
+							Player.Functions.RemoveItem(item.name, item.amount >= Config.Consumables[item.name] and Config.Consumables[item.name] or 1)
+						end
+						return true
+					end
+					if needsAll then
 						if count == finalcount then
 							if checkRemove then
 								for _, j in pairs(items) do
@@ -56,11 +62,6 @@ local function checkItems(Player, items, needsAll, checkRemove)
 							end
 							return true
 						end
-					else
-						if checkRemove and Config.Consumables[item.name] then
-							Player.Functions.RemoveItem(item.name, item.amount >= Config.Consumables[item.name] and Config.Consumables[item.name] or 1)
-						end
-						return true
 					end
 				end
 			end

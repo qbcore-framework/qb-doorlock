@@ -27,24 +27,24 @@ Config.DoorList['configname-identifier'] = {
 	fixText = false, -- Adjusts guess of center of door
 	textCoords = vector3(x, y, z) -- Set the text coordinates to a specific location
 	setText = true -- Use with above setting
-    	distance = 2.0, -- Max interact distance
-    	lockpick = true, -- Alows for lockpicking
+		distance = 2.0, -- Max interact distance
+		lockpick = true, -- Alows for lockpicking
 	allAuthorized = true, -- Anyone can use door
 	authorizedJobs = { ['police']=0, ['bcso']=0, ['sasp]=0 } -- Authorize door access based on job grade
 	authorizedGangs = { ['vagos']=0, ['ballas']=0 } -- Authorize door access based on gang grade
 	authorizedCitizenIDs = { 'ABC123', 'DEF456' } -- Authorize door access based on citizenid
 	items = {'item_1','item_2'} -- Authorize based on items. Must have all items in this list.
-    	doorLabel = 'Cloakroom', -- Label of room that shows up when nearby
-    	locked = true, -- Default lock state
-    	audioRemote = true, -- Play sound from the player instead of the door
-    	audioLock = {['file'] = 'metal-locker.ogg', ['volume'] = 0.6}, -- Play sound on door lock
-    	audioUnlock = {['file'] = 'metallic-creak.ogg', ['volume'] = 0.7}, -- Play sound on door unlock
-    	autoLock = 1000, -- Auto lock after this many miliseconds
-    	doorRate = 1.0,  -- Time till auto closes? Needs more testing
+		doorLabel = 'Cloakroom', -- Label of room that shows up when nearby
+		locked = true, -- Default lock state
+		audioRemote = true, -- Play sound from the player instead of the door
+		audioLock = {['file'] = 'metal-locker.ogg', ['volume'] = 0.6}, -- Play sound on door lock
+		audioUnlock = {['file'] = 'metallic-creak.ogg', ['volume'] = 0.7}, -- Play sound on door unlock
+		autoLock = 1000, -- Auto lock after this many miliseconds
+		doorRate = 1.0,  -- Time till auto closes? Needs more testing
 	cantUnlock = true -- Set to true to not allow the player to unlock the door, only lock it. This means a script will have to trigger the unlock.
 	pickable = true, -- Can use a lockpick to unlock, only need if true
 	hideLabel = true, -- Set to true to hide the popup label, for hiding doors ;)
-    	remoteTrigger = true, -- If you want to be able to remote trigger a door with H, put this here 
+		remoteTrigger = true, -- If you want to be able to remote trigger a door with H, put this here 
 } 
 ]]
 
@@ -264,7 +264,7 @@ Config.DoorList = {
 	{
 		objName = 'v_ilev_arm_secdoor',
 		objYaw = -90.0,
-		objCoords  = vec3(452.6, -982.7, 30.6), 
+		objCoords  = vec3(452.6, -982.7, 30.6),
 		textCoords = vec3(452.95, -982.16, 30.99),
 		authorizedJobs = { 'police' },
 		locked = true,
