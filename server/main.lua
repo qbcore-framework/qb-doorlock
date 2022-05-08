@@ -30,7 +30,7 @@ local function checkItems(Player, items, needsAll, checkRemove)
 	local count = 0
 	if isTable then for _ in pairs(items) do totalItems += 1 end else totalItems = #items end
 	local kvIndex
-	if isArray then kvIndex = 1 else kvIndex = 0 end
+	if isArray then kvIndex = 2 else kvIndex = 1 end
 	if isTable then
 		for k, v in pairs(items) do
 			local itemKV = {k, v}
