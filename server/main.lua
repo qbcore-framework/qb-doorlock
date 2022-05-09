@@ -13,13 +13,11 @@ local function removeItem(Player, item)
 end
 
 local function checkAndRemoveItem(Player, item, checkRemove)
-	if item then
-		if checkRemove then
-			removeItem(Player, item)
-		end
-		return true
+	if not item then return false end
+	if checkRemove then
+		removeItem(Player, item)
 	end
-	return false
+	return true
 end
 
 local function checkItems(Player, items, needsAll, checkRemove)
