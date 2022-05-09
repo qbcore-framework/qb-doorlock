@@ -12,15 +12,15 @@ local function removeItem(Player, item)
 	end
 end
 
-local function checkAndRemoveItem(Player, item, checkRemove)
+local function checkAndRemoveItem(Player, item, shouldRemove)
 	if not item then return false end
-	if checkRemove then
+	if shouldRemove then
 		removeItem(Player, item)
 	end
 	return true
 end
 
-local function checkItems(Player, items, needsAll, checkRemove)
+local function checkItems(Player, items, needsAll, shouldRemove)
 	if needsAll == nil then needsAll = true end
 	local isTable = type(items) == 'table'
 	local isArray = isTable and table.type(items) == 'array' or false
@@ -38,7 +38,7 @@ local function checkItems(Player, items, needsAll, checkRemove)
 					count += 1
 				end
 			else
-				if checkAndRemoveItem(Player, item, checkRemove) then
+				if checkAndRemoveItem(Player, item, shouldRemove) then
 					return true
 				end
 			end
@@ -47,13 +47,13 @@ local function checkItems(Player, items, needsAll, checkRemove)
 			for k, v in pairs(items) do
 				local itemKV = {k, v}
 				local item = Player.Functions.GetItemByName(itemKV[kvIndex])
-				checkAndRemoveItem(Player, item, checkRemove)
+				checkAndRemoveItem(Player, item, shouldRemove)
 			end
 			return true
 		end
 	else -- Single item as string
 		local item = Player.Functions.GetItemByName(items)
-		return checkAndRemoveItem(Player, item, checkRemove)
+		return checkAndRemoveItem(Player, item, shouldRemove)
 	end
 	return false
 end
