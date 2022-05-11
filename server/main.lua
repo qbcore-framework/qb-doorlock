@@ -6,73 +6,54 @@ local function showWarning(msg)
 	print(('^3%s: %s^0'):format(Lang:t("general.warning"), msg))
 end
 
-local function checkItems(Player, items, needsAll, checkRemove)
+local function removeItem(Player, item)
+	if Config.Consumables[item.name] then
+		Player.Functions.RemoveItem(item.name, item.amount >= Config.Consumables[item.name] and Config.Consumables[item.name] or 1)
+	end
+end
+
+local function checkAndRemoveItem(Player, item, shouldRemove)
+	if not item then return false end
+	if shouldRemove then
+		removeItem(Player, item)
+	end
+	return true
+end
+
+local function checkItems(Player, items, needsAll, shouldRemove)
 	if needsAll == nil then needsAll = true end
-	if type(items) == 'table' then
-		local count = 0
-		local finalcount = 0
+	local isTable = type(items) == 'table'
+	local isArray = isTable and table.type(items) == 'array' or false
+	local totalItems = 0
+	local count = 0
+	if isTable then for _ in pairs(items) do totalItems += 1 end else totalItems = #items end
+	local kvIndex
+	if isArray then kvIndex = 2 else kvIndex = 1 end
+	if isTable then
 		for k, v in pairs(items) do
-			if type(k) == 'string' then
-				finalcount = 0
-				for _ in pairs(items) do finalcount += 1 end
-				local item = Player.Functions.GetItemByName(k)
-				if item then
-					if item.amount >= v then
-						if needsAll then
-							count += 1
-							if count == finalcount then
-								if checkRemove then
-									for i in pairs(items) do
-										item = Player.Functions.GetItemByName(i)
-										if item and Config.Consumables[i] then
-											Player.Functions.RemoveItem(i, item.amount >= Config.Consumables[i] and Config.Consumables[i] or 1)
-										end
-									end
-								end
-								return true
-							end
-						else
-							if checkRemove and Config.Consumables[item.name] then
-								Player.Functions.RemoveItem(item.name, item.amount >= Config.Consumables[item.name] and Config.Consumables[item.name] or 1)
-							end
-							return true
-						end
-					end
+			local itemKV = {k, v}
+			local item = Player.Functions.GetItemByName(itemKV[kvIndex])
+			if needsAll then
+				if checkAndRemoveItem(Player, item, false) then
+					count += 1
 				end
 			else
-				finalcount = #items
-				local item = Player.Functions.GetItemByName(v)
-				if item then
-					if needsAll then
-						count += 1
-						if count == finalcount then
-							if checkRemove then
-								for _, j in pairs(items) do
-									item = Player.Functions.GetItemByName(j)
-									if item and Config.Consumables[j] then
-										Player.Functions.RemoveItem(j, item.amount >= Config.Consumables[j] and Config.Consumables[j] or 1)
-									end
-								end
-							end
-							return true
-						end
-					else
-						if checkRemove and Config.Consumables[item.name] then
-							Player.Functions.RemoveItem(item.name, item.amount >= Config.Consumables[item.name] and Config.Consumables[item.name] or 1)
-						end
-						return true
-					end
+				if checkAndRemoveItem(Player, item, shouldRemove) then
+					return true
 				end
 			end
 		end
-	else
-		local item = Player.Functions.GetItemByName(items)
-		if item then
-			if checkRemove and Config.Consumables[item.name] then
-				Player.Functions.RemoveItem(item.name, item.amount >= Config.Consumables[item.name] and Config.Consumables[item.name] or 1)
+		if count == totalItems then
+			for k, v in pairs(items) do
+				local itemKV = {k, v}
+				local item = Player.Functions.GetItemByName(itemKV[kvIndex])
+				checkAndRemoveItem(Player, item, shouldRemove)
 			end
 			return true
 		end
+	else -- Single item as string
+		local item = Player.Functions.GetItemByName(items)
+		return checkAndRemoveItem(Player, item, shouldRemove)
 	end
 	return false
 end
