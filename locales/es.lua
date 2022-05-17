@@ -4,7 +4,7 @@ local Translations = {
         door_not_found = "No recibí el hash del modelo, si la puerta es transparente, asegurate de apuntar al marco de la puerta",
         same_entity = "Ambas puertas no pueden ser la misma entidad",
         door_registered = "Esta puerta ya está registrada",
-        door_identifier_exists = "Una puerta con este identificador ya existe en esta configuración. (%{value})",
+        door_identifier_exists = "Una puerta con este identificador ya existe en esta configuración. (%{identifier})",
     },
     success = {
         lockpick_success = "Intento de abrir cerradura exitoso"
