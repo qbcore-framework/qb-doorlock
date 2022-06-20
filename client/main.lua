@@ -869,7 +869,7 @@ CreateThread(function()
 								end
 							end
 
-							if displayText ~= "" then displayNUIText(displayText) end
+							if displayText ~= "" and (closestDoor.data.hideLabel == nil or not closestDoor.data.hideLabel) then displayNUIText(displayText) end
 						else
 							hideNUI()
 							break
