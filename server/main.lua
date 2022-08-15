@@ -71,7 +71,7 @@ local function isAuthorized(Player, door, usedLockpick)
 	if (door.pickable or door.lockpick) and usedLockpick then return true end
 
 	if door.authorizedJobs then
-		if door.authorizedJobs[Player.PlayerData.job.name] and Player.PlayerData.job.grade.level >= door.authorizedJobs[Player.PlayerData.job.name] then
+		if (door.authorizedJobs[PlayerData.job.name] or door.authorizedJobs[PlayerData.job.type]) and Player.PlayerData.job.grade.level >= door.authorizedJobs[Player.PlayerData.job.name] then
 			return true
 		elseif type(door.authorizedJobs[1]) == 'string' then
 			for _, job in pairs(door.authorizedJobs) do -- Support for old format

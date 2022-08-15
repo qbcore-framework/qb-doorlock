@@ -330,7 +330,7 @@ local function isAuthorized(door)
 	if door.allAuthorized then return true end
 
 	if door.authorizedJobs then
-		if door.authorizedJobs[PlayerData.job.name] and PlayerData.job.grade.level >= door.authorizedJobs[PlayerData.job.name] then
+		if (door.authorizedJobs[PlayerData.job.name] or door.authorizedJobs[PlayerData.job.type]) and PlayerData.job.grade.level >= door.authorizedJobs[PlayerData.job.name] then
 			return true
 		elseif type(door.authorizedJobs[1]) == 'string' then
 			for _, job in pairs(door.authorizedJobs) do -- Support for old format
