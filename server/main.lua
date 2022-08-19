@@ -309,10 +309,8 @@ RegisterNetEvent('qb-doorlock:server:removeLockpick', function(_type)
 
 	if not Player then return end
 
-	if _type == "advancedlockpick" then
-		Player.Functions.RemoveItem("advancedlockpick", 1)
-	elseif _type == "lockpick" then
-		Player.Functions.RemoveItem("lockpick", 1)
+	if _type == "advancedlockpick" or _type == "lockpick" then
+		Player.Functions.RemoveItem(_type, 1)
 	end
 end)
 
