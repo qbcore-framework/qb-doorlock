@@ -304,13 +304,13 @@ RegisterNetEvent('txAdmin:events:scheduledRestart', function(eventData)
     end
 end)
 
-RegisterNetEvent('qb-doorlock:server:removeLockpick', function(_type)
+RegisterNetEvent('qb-doorlock:server:removeLockpick', function(type)
 	local Player = QBCore.Functions.GetPlayer(source)
 
 	if not Player then return end
 
-	if _type == "advancedlockpick" or _type == "lockpick" then
-		Player.Functions.RemoveItem(_type, 1)
+	if type == "advancedlockpick" or type == "lockpick" then
+		Player.Functions.RemoveItem(type, 1)
 	end
 end)
 
