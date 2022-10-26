@@ -80,6 +80,16 @@ local function isAuthorized(Player, door, usedLockpick)
 		end
 	end
 
+	if door.authorizedJobTypes then
+		if door.authorizedJobTypes[Player.PlayerData.job.type] and Player.PlayerData.job.grade.level >= door.authorizedJobTypes[Player.PlayerData.job.type] then
+			return true
+		elseif type(door.authorizedJobTypes[1]) == 'string' then
+			for _, jobType in pairs(door.authorizedJobTypes) do -- Support for old format
+				if jobType == Player.PlayerData.job.type then return true end
+			end
+		end
+	end
+
 	if door.authorizedGangs then
 		if door.authorizedGangs[Player.PlayerData.gang.name] and Player.PlayerData.gang.grade.level >= door.authorizedGangs[Player.PlayerData.gang.name] then
 			return true
@@ -164,7 +174,7 @@ RegisterNetEvent('qb-doorlock:server:updateState', function(doorID, locked, src,
 
 	if not unlockAnyway and not isAuthorized(Player, Config.DoorList[doorID], usedLockpick) then
 		if Config.Warnings then
-			showWarning(Lang:t("general.warn_no_authorisation", {player = Player.PlayerData.name, license = Player.PlayerData.license, doorID = doorID}))
+			showWarning(Lang:t("general.warn_no_authorization", {player = Player.PlayerData.name, license = Player.PlayerData.license, doorID = doorID}))
 		end
 		return
 	end
@@ -193,9 +203,10 @@ RegisterNetEvent('qb-doorlock:server:saveNewDoor', function(data, doubleDoor)
 	local Player = QBCore.Functions.GetPlayer(src)
 	if not Player then return end
 	local configData = {}
-	local jobs, gangs, cids, items, doorType, identifier
-	if data.job then configData.authorizedJobs = { [data.job] = 0 } jobs = "['"..data.job.."'] = 0" end
-	if data.gang then configData.authorizedGangs = { [data.gang] = 0 } gangs = "['"..data.gang.."'] = 0" end
+	local jobs, jobTypes, gangs, cids, items, doorType, identifier
+	if data.job then configData.authorizedJobs = { [data.job] = data.jobGrade } jobs = "['"..data.job.."'] = " .. data.jobGrade end
+	if data.jobType then configData.authorizedJobTypes = { [data.jobType] = data.jobGrade } jobTypes = "['"..data.jobType.."'] = " .. data.jobGrade end
+	if data.gang then configData.authorizedGangs = { [data.gang] = data.jobGrade } gangs = "['"..data.gang.."'] = " .. data.jobGrade end
 	if data.cid then configData.authorizedCitizenIDs = { [data.cid] = true } cids = "['"..data.cid.."'] = true" end
 	if data.item then configData.items = { [data.item] = 1 } items = "['"..data.item.."'] = 1" end
 	configData.locked = data.locked
@@ -238,9 +249,11 @@ RegisterNetEvent('qb-doorlock:server:saveNewDoor', function(data, doubleDoor)
 	local label = "\n\n-- "..data.dooridentifier.." ".. Lang:t("general.created_by") .." "..Player.PlayerData.name.."\nConfig.DoorList['"..identifier.."'] = {"
 	file:write(label)
 	for k, v in pairs(configData) do
-		if k == 'authorizedJobs' or k == 'authorizedGangs' or k == 'authorizedCitizenIDs' or k == 'items' then
+		if k == 'authorizedJobs' or k == 'authorizedJobTypes' or k == 'authorizedGangs' or k == 'authorizedCitizenIDs' or k == 'items' then
 			local auth = jobs
-			if k == 'authorizedGangs' then
+			if k == 'authorizedJobTypes' then
+				auth = jobTypes
+			elseif k == 'authorizedGangs' then
 				auth = gangs
 			elseif k == 'authorizedCitizenIDs' then
 				auth = cids

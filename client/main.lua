@@ -339,6 +339,16 @@ local function isAuthorized(door)
 		end
 	end
 
+	if door.authorizedJobTypes then
+		if door.authorizedJobTypes[PlayerData.job.type] and PlayerData.job.grade.level >= door.authorizedJobTypes[PlayerData.job.type] then
+			return true
+		elseif type(door.authorizedJobTypes[1]) == 'string' then
+			for _, jobType in pairs(door.authorizedJobTypes) do -- Support for old format
+				if jobType == PlayerData.job.type then return true end
+			end
+		end
+	end
+
 	if door.authorizedGangs then
 		if door.authorizedGangs[PlayerData.gang.name] and PlayerData.gang.grade.level >= door.authorizedGangs[PlayerData.gang.name] then
 			return true
@@ -532,28 +542,42 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 				default = Config.SaveDoorDialog and doorData.doortype,
 			},
 			{
-				text = Lang:t("general.job_authorisation_menu"),
+				text = Lang:t("general.job_authorization_menu"),
 				name = "job",
 				type = "text",
 				isRequired = false,
 				default = Config.SaveDoorDialog and doorData.job,
 			},
 			{
-				text = Lang:t("general.gang_authorisation_menu"),
+				text = Lang:t("general.job_type_authorization_menu"),
+				name = "jobType",
+				type = "text",
+				isRequired = false,
+				default = Config.SaveDoorDialog and doorData.jobType,
+			},
+			{
+				text = Lang:t("general.gang_authorization_menu"),
 				name = "gang",
 				type = "text",
 				isRequired = false,
 				default = Config.SaveDoorDialog and doorData.gang,
 			},
 			{
-				text = Lang:t("general.citizenid_authorisation_menu"),
+				text = Lang:t("general.job_grade_authorization_menu"),
+				name = "jobGrade",
+				type = "number",
+				isRequired = false,
+				default = Config.SaveDoorDialog and doorData.jobGrade,
+			},
+			{
+				text = Lang:t("general.citizenid_authorization_menu"),
 				name = "cid",
 				type = "text",
 				isRequired = false,
 				default = Config.SaveDoorDialog and doorData.cid,
 			},
 			{
-				text = Lang:t("general.item_authorisation_menu"),
+				text = Lang:t("general.item_authorization_menu"),
 				name = "item",
 				type = "text",
 				isRequired = false,
@@ -591,6 +615,8 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 
 	if doorData.configfile == '' then doorData.configfile = false end
 	if doorData.job == '' then doorData.job = false end
+	if doorData.jobType == '' then doorData.jobType = false end
+	if doorData.jobGrade == '' then doorData.jobGrade = 0 end
 	if doorData.gang == '' then doorData.gang = false end
 	if doorData.cid == '' then doorData.cid = false end
 	if doorData.item == '' then doorData.item = false end

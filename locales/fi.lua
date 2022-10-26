@@ -10,6 +10,8 @@ local Translations = {
         lockpick_success = "Onnistui!"
     },
     general = {
+        job_grade_authorization_menu = "Job Grade (Req for Job, Type & Gang)", -- English Must Change to Language
+        job_type_authorization_menu = "Job Type Authorization", -- English Must Change to Language
         locking = "~r~Lukitaan..",
         unlocking = "~g~Avataan..",
         locked = "~r~Lukittu",
