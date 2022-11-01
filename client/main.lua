@@ -23,7 +23,7 @@ function Draw3DText(coords, str)
         SetTextEdge(2, 0, 0, 0, 150)
 		SetTextProportional(1)
 		SetTextOutline()
-		SetTextCentre(1)
+		SetTextCenter(1)
         SetTextEntry("STRING")
         AddTextComponentString(str)
         DrawText(worldX, worldY)
@@ -328,7 +328,6 @@ end
 
 local function isAuthorized(door)
 	if door.allAuthorized then return true end
-
 	if door.authorizedJobs then
 		if door.authorizedJobs[PlayerData.job.name] and PlayerData.job.grade.level >= door.authorizedJobs[PlayerData.job.name] then
 			return true
@@ -338,16 +337,15 @@ local function isAuthorized(door)
 			end
 		end
 	end
-
-	if door.authorizedJobTypes then
-		if door.authorizedJobTypes[PlayerData.job.type] and PlayerData.job.grade.level >= door.authorizedJobTypes[PlayerData.job.type] then
-			return true
-		elseif type(door.authorizedJobTypes[1]) == 'string' then
-			for _, jobType in pairs(door.authorizedJobTypes) do -- Support for old format
-				if jobType == PlayerData.job.type then return true end
-			end
-		end
-	end
+    if door.authorizedJobTypes then
+    	if door.authorizedJobTypes[PlayerData.job.type] and PlayerData.job.grade.level >= door.authorizedJobTypes[PlayerData.job.type] then
+    		return true
+    	elseif type(door.authorizedJobTypes[1]) == 'string' then
+    		for _, job in pairs(door.authorizedJobs) do -- Support for old format
+    			if job == PlayerData.job.type then return true end
+    		end
+    	end
+    end
 
 	if door.authorizedGangs then
 		if door.authorizedGangs[PlayerData.gang.name] and PlayerData.gang.grade.level >= door.authorizedGangs[PlayerData.gang.name] then

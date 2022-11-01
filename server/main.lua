@@ -193,6 +193,7 @@ RegisterNetEvent('qb-doorlock:server:updateState', function(doorID, locked, src,
 end)
 
 RegisterNetEvent('qb-doorlock:server:saveNewDoor', function(data, doubleDoor)
+	data.jobGrade = tonumber(data.jobGrade)
 	local src = source
 	if not QBCore.Functions.HasPermission(src, Config.CommandPermission) and not IsPlayerAceAllowed(src, 'command') then
 		if Config.Warnings then
@@ -204,9 +205,9 @@ RegisterNetEvent('qb-doorlock:server:saveNewDoor', function(data, doubleDoor)
 	if not Player then return end
 	local configData = {}
 	local jobs, jobTypes, gangs, cids, items, doorType, identifier
-	if data.job then configData.authorizedJobs = { [data.job] = data.jobGrade } jobs = "['"..data.job.."'] = " .. data.jobGrade end
-	if data.jobType then configData.authorizedJobTypes = { [data.jobType] = data.jobGrade } jobTypes = "['"..data.jobType.."'] = " .. data.jobGrade end
-	if data.gang then configData.authorizedGangs = { [data.gang] = data.jobGrade } gangs = "['"..data.gang.."'] = " .. data.jobGrade end
+	if data.job then configData.authorizedJobs = { [data.job] = data.jobGrade } jobs = "{['"..data.job.."'] = "..data.jobGrade.."}" end
+	if data.jobType then configData.authorizedJobTypes = { [data.jobType] = data.jobGrade } jobTypes = "['"..data.jobType.."'] = "..data.jobGrade.."}" end
+	if data.gang then configData.authorizedGangs = { [data.gang] = data.jobGrade } gangs = "['"..data.gang.."'] = "..data.jobGrade.."}" end
 	if data.cid then configData.authorizedCitizenIDs = { [data.cid] = true } cids = "['"..data.cid.."'] = true" end
 	if data.item then configData.items = { [data.item] = 1 } items = "['"..data.item.."'] = 1" end
 	configData.locked = data.locked
@@ -246,7 +247,7 @@ RegisterNetEvent('qb-doorlock:server:saveNewDoor', function(data, doubleDoor)
 	end
 
 	local file = io.open(path, 'a+')
-	local label = "\n\n-- "..data.dooridentifier.." ".. Lang:t("general.created_by") .." "..Player.PlayerData.name.."\nConfig.DoorList['"..identifier.."'] = {"
+	local label = "\r\n\r\n-- "..data.dooridentifier.." ".. Lang:t("general.created_by") .." "..Player.PlayerData.name.."\r\nConfig.DoorList['"..identifier.."'] = {"
 	file:write(label)
 	for k, v in pairs(configData) do
 		if k == 'authorizedJobs' or k == 'authorizedJobTypes' or k == 'authorizedGangs' or k == 'authorizedCitizenIDs' or k == 'items' then
@@ -260,27 +261,27 @@ RegisterNetEvent('qb-doorlock:server:saveNewDoor', function(data, doubleDoor)
 			elseif k == 'items' then
 				auth = items
 			end
-			local str = ("\n    %s = { %s },"):format(k, auth)
+			local str = ("\r\n    %s = { %s },"):format(k, auth)
 			file:write(str)
 		elseif k == 'doors' then
 			local doors = {}
 			for i = 1, 2 do
 				doors[i] = ("    {objName = %s, objYaw = %s, objCoords = %s}"):format(configData.doors[i].objName, configData.doors[i].objYaw, configData.doors[i].objCoords)
 			end
-			local str = ("\n    %s = {\n    %s,\n    %s\n    },"):format(k, doors[1], doors[2])
+			local str = ("\r\n    %s = {\r\n    %s,\r\n    %s\r\n    },"):format(k, doors[1], doors[2])
 			file:write(str)
 		elseif k == 'doorType' then
-			local str = ("\n    %s = %s,"):format(k, doorType)
+			local str = ("\r\n    %s = %s,"):format(k, doorType)
 			file:write(str)
 		elseif k == 'doorLabel' then
-			local str = ("\n    %s = '%s',"):format(k, v)
+			local str = ("\r\n    %s = '%s',"):format(k, v)
 			file:write(str)
 		else
-			local str = ("\n    %s = %s,"):format(k, v)
+			local str = ("\r\n    %s = %s,"):format(k, v)
 			file:write(str)
 		end
 	end
-	file:write("\n}")
+	file:write("\r\n}")
 	file:close()
 
 	Config.DoorList[identifier] = configData
