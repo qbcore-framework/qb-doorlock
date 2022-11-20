@@ -1,7 +1,7 @@
 local Translations = {
     error = {
-        lockpick_fail = "Échoué",
-        door_not_found = "N'a pas reçu de Hash pour le modèle, Si la porte est transparente assurez vous de pointer au cadre de la porte",
+        lockpick_fail = "Échec",
+        door_not_found = "N'a pas reçu de Hash pour le modèle, Si la porte est transparente, assurez vous de pointer au cadre de la porte",
         same_entity = "Les deux portes ne peuvent pas être la même entitée",
         door_registered = "Cette porte est déjà enregistrée",
         door_identifier_exists = "Une porte avec cet identifier existe déjà dans la config (%s)",
