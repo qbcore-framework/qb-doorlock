@@ -85,7 +85,7 @@ local function setTextCoords(data)
     if data.fixText then
         return GetOffsetFromEntityInWorldCoords(data.object, dx / 2, 0, 0)
     else
-        return GetOffsetFromEntityInWorldCoords(data.object, -dx / 2, 0, 0)
+        return GetOffsetFromEntityInWorldCoords(data.object, dx / 2, 0, 0)
     end
 end
 

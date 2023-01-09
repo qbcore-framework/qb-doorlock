@@ -126,7 +126,7 @@ Config.DoorList = {
 		pickable = true,
 		distance = 1.5
 	},
-	-- Fleeca Door opened with lockpick
+	-- Pink Cage Fleeca Door opened with lockpick
 	{
 		objName = 'v_ilev_gb_vaubar',
 		objCoords  = vec3(314.61, -285.82, 54.49),
@@ -136,7 +136,7 @@ Config.DoorList = {
 		pickable = true,
 		distance = 1.5
 	},
-	-- Fleeca Door opened with lockpick
+	-- legion Square Fleeca Door opened with lockpick
 	{
 		objName = 'v_ilev_gb_vaubar',
 		objCoords  = vec3(148.96, -1047.12, 29.7),
