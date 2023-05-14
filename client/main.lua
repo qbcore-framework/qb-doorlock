@@ -397,7 +397,7 @@ RegisterNetEvent('QBCore:Player:SetPlayerData', function(val)
 	PlayerData = val
 end)
 
-RegisterNetEvent('qb-doorlock:client:setState', function(serverId, doorID, state, src, enableAnimation, enableSounds)
+RegisterNetEvent('qb-doorlock:client:setState', function(serverId, doorID, state, src, enableSounds, enableAnimation)
 	if not Config.DoorList[doorID] then return end
 	if enableAnimation == nil then enableAnimation = true end
 	if enableSounds == nil then enableSounds = true end
