@@ -126,56 +126,6 @@ Config.DoorList = {
 		pickable = true,
 		distance = 1.5
 	},
-	-- Fleeca Door opened with lockpick
-	{
-		objName = 'v_ilev_gb_vaubar',
-		objCoords  = vec3(314.61, -285.82, 54.49),
-		textCoords = vec3(313.3, -285.45, 54.49),
-		authorizedJobs = { 'police' },
-		locked = true,
-		pickable = true,
-		distance = 1.5
-	},
-	-- Fleeca Door opened with lockpick
-	{
-		objName = 'v_ilev_gb_vaubar',
-		objCoords  = vec3(148.96, -1047.12, 29.7),
-		textCoords = vec3(148.96, -1047.12, 29.7),
-		authorizedJobs = { 'police' },
-		locked = true,
-		pickable = true,
-		distance = 1.5
-	},
-	-- Fleeca Door opened with lockpick
-	{
-		objName = 'v_ilev_gb_vaubar',
-		objCoords  = vec3(-351.7, -56.28, 49.38),
-		textCoords = vec3(-351.7, -56.28, 49.38),
-		authorizedJobs = { 'police' },
-		locked = true,
-		pickable = true,
-		distance = 1.5
-	},
-	-- Fleeca Door opened with lockpick
-	{
-		objName = 'v_ilev_gb_vaubar',
-		objCoords  = vec3(-1208.12, -335.586, 37.759),
-		textCoords = vec3(-1208.12, -335.586, 37.759),
-		authorizedJobs = { 'police' },
-		locked = true,
-		pickable = true,
-		distance = 1.5
-	},
-	-- Fleeca Door opened with lockpick
-	{
-		objName = 'v_ilev_gb_vaubar',
-		objCoords  = vec3(-2956.18, 483.96, 16.02),
-		textCoords = vec3(-2956.18, 483.96, 16.02),
-		authorizedJobs = { 'police' },
-		locked = true,
-		pickable = true,
-		distance = 1.5
-	},
 	-- Prison Door 1
 	{
 		objName = 'prop_gate_prison_01',
