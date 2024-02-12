@@ -295,7 +295,8 @@ local function updateDoors(specificDoor)
     lastCoords = playerCoords
 end
 
-local function lockpickFinish(success)
+local function lockpickFinish()
+	local success = exports['qb-minigames']:Skillbar() -- number of tries
 	if success then
 		QBCore.Functions.Notify(Lang:t("success.lockpick_success"), 'success', 2500)
 		if closestDoor.data.doors then
@@ -486,7 +487,7 @@ end)
 RegisterNetEvent('lockpicks:UseLockpick', function(isAdvanced)
 	if not closestDoor.data or not next(closestDoor.data) or PlayerData.metadata['isdead'] or PlayerData.metadata['ishandcuffed'] or (not closestDoor.data.pickable and not closestDoor.data.lockpick) or not closestDoor.data.locked then return end
 	usingAdvanced = isAdvanced
-	TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
+	lockpickFinish()
 end)
 
 RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
