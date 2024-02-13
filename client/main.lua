@@ -8,7 +8,6 @@ local playerCoords = GetEntityCoords(playerPed)
 local lastCoords = playerCoords
 local nearbyDoors, closestDoor = {}, {}
 local paused = false
-local usingAdvanced = false
 local doorData = {}
 
 -- Functions
