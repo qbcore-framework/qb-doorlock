@@ -296,7 +296,7 @@ local function updateDoors(specificDoor)
 end
 
 local function lockpickFinish()
-	local success = exports['qb-minigames']:Lockpick(5) -- number of tries
+	local success = exports['qb-minigames']:Skillbar() -- calling like this will use default easy difficulty with 1234
 	if success then
 		QBCore.Functions.Notify(Lang:t("success.lockpick_success"), 'success', 2500)
 		if closestDoor.data.doors then
