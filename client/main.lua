@@ -479,11 +479,11 @@ RegisterNetEvent('lockpicks:UseLockpick', function(isAdvanced)
             local chanceToRemove = math.random(1,100) <= 17
             if chanceToRemove then
                 TriggerServerEvent("qb-doorlock:server:removeLockpick", "advancedlockpick")
-                TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items["advancedlockpick"], "remove")
+                TriggerEvent('qb-inventory:client:ItemBox', QBCore.Shared.Items["advancedlockpick"], "remove")
             end
         else
             TriggerServerEvent("qb-doorlock:server:removeLockpick", "lockpick")
-            TriggerEvent('inventory:client:ItemBox', QBCore.Shared.Items["lockpick"], "remove")
+            TriggerEvent('qb-inventory:client:ItemBox', QBCore.Shared.Items["lockpick"], "remove")
         end
     end
 end)
