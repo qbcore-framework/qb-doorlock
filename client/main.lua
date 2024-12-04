@@ -93,12 +93,6 @@ local function getTextCoords(door)
 	return setTextCoords(door)
 end
 
-local function round(value, numDecimalPlaces)
-	if not numDecimalPlaces then return math.floor(value + 0.5) end
-    local power = 10 ^ numDecimalPlaces
-    return math.floor((value * power) + 0.5) / (power)
-end
-
 local function loadAnimDict(dict)
 	RequestAnimDict(dict)
 	while not HasAnimDictLoaded(dict) do
@@ -410,7 +404,7 @@ RegisterNetEvent('qb-doorlock:client:setState', function(serverId, doorID, state
 						return
 					end
 				else
-					if round(v.currentHeading, 0) == round(v.objYaw or v.objHeading, 0) then
+					if QBCore.Shared.Round(v.currentHeading, 0) == QBCore.Shared.Round(v.objYaw or v.objHeading, 0) then
 						DoorSystemSetDoorState(v.doorHash, 4, false, false)
 					end
 				end
@@ -442,7 +436,7 @@ RegisterNetEvent('qb-doorlock:client:setState', function(serverId, doorID, state
 				playSound(current, src, enableSounds)
 				return
 			else
-				if round(current.currentHeading, 0) == round(current.objYaw or current.objHeading, 0) then
+				if QBCore.Shared.Round(current.currentHeading, 0) == QBCore.Shared.Round(current.objYaw or current.objHeading, 0) then
 					DoorSystemSetDoorState(current.doorHash, 4, false, false)
 				end
 			end
