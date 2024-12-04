@@ -877,3 +877,19 @@ CreateThread(function()
 		Wait(sleep)
 	end
 end)
+
+exports('GetClosestDoor', function()
+	return closestDoor
+end)
+
+exports('GetNearbyDoors', function()
+	return nearbyDoors
+end)
+
+exports('GetDoorList', function()
+	return Config.DoorList
+end)
+
+exports('GetDoorStates', function()
+	return Config.DoorStates
+end)
