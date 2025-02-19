@@ -532,6 +532,14 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 				default = Config.SaveDoorDialog and doorData.job,
 			},
 			{
+				text = Lang:t("general.jobgrade_authorisation_menu"),
+				name = "jobgrade",
+				type = "number",
+				isRequired = false,
+				default = Config.SaveDoorDialog and doorData.jobgrade,
+
+			},
+			{
 				text = Lang:t("general.gang_authorisation_menu"),
 				name = "gang",
 				type = "text",
