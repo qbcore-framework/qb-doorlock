@@ -25,6 +25,7 @@ local Translations = {
         citizenid_authorisation_menu = "تصريح المواطن",
         gang_authorisation_menu = "العصابة",
         job_authorisation_menu = "الوظيفة",
+        jobgrade_authorisation_menu = "درجة الوظيفة (اختياري)",
         doortype_title = "نوع الباب",
         doortype_door = "باب",
         doortype_double = "بابين",

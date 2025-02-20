@@ -21,6 +21,7 @@ local Translations = {
         citizenid_authorisation_menu = "CitizenID Autorisatie",
         gang_authorisation_menu = "Gang Autorisatie",
         job_authorisation_menu = "Baan Autorisatie",
+        jobgrade_authorisation_menu = "Functieniveau (optioneel)",
         doortype_title = "Deurtype",
         doortype_door = "Enkele Deur",
         doortype_double = "Dubbele Deur",
