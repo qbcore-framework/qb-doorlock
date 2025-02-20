@@ -25,6 +25,7 @@ local Translations = {
         citizenid_authorisation_menu = "CitizenID Authorisation",
         gang_authorisation_menu = "Gang Authorisation",
         job_authorisation_menu = "Job Authorisation",
+        jobgrade_authorisation_menu = "Job Grade (optional)",
         doortype_title = "Door Type",
         doortype_door = "Single Door",
         doortype_double = "Double Door",
