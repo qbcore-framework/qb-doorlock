@@ -551,7 +551,7 @@ RegisterNetEvent('qb-doorlock:client:addNewDoor', function()
 				type = "number",
 				isRequired = false,
 				default = Config.SaveDoorDialog and doorData.gangGrade,
-			},			
+			},
 			{
 				text = Lang:t("general.citizenid_authorisation_menu"),
 				name = "cid",
