@@ -193,9 +193,9 @@ RegisterNetEvent('qb-doorlock:server:saveNewDoor', function(data, doubleDoor)
 	local Player = QBCore.Functions.GetPlayer(src)
 	if not Player then return end
 	local configData = {}
-	local jobs, gangs, cids, items, doorType, identifier
-	if data.job then configData.authorizedJobs = { [data.job] = 0 } jobs = "['"..data.job.."'] = 0" end
-	if data.gang then configData.authorizedGangs = { [data.gang] = 0 } gangs = "['"..data.gang.."'] = 0" end
+	local jobs, jobGrade, gangs, gangGrade, cids, items, doorType, identifier
+	if data.job then jobGrade = tonumber(data.jobGrade) or 0 configData.authorizedJobs = { [data.job] = jobGrade } jobs = "['"..data.job.."'] = "..jobGrade end
+	if data.gang then gangGrade = tonumber(data.gangGrade) or 0 configData.authorizedGangs = { [data.gang] = gangGrade } gangs = "['"..data.gang.."'] = "..gangGrade end
 	if data.cid then configData.authorizedCitizenIDs = { [data.cid] = true } cids = "['"..data.cid.."'] = true" end
 	if data.item then configData.items = { [data.item] = 1 } items = "['"..data.item.."'] = 1" end
 	configData.locked = data.locked
