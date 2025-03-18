@@ -97,7 +97,7 @@ This doorlock system is based on [nui_doorlock by thelindat](https://github.com/
 # License
 
     QBCore Framework
-    Copyright (C) 2021 Joshua Eger
+    Copyright (C) 2021 Hawaii_Beach, Linden, Joshua Eger
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
