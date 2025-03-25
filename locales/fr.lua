@@ -34,6 +34,7 @@ local Translations = {
         submit_text = "Soummetre",
         newdoor_menu_title = "Ajouter une nouvelle porte",
         newdoor_command_description = "Ajouter une porte au système Doorlock",
+        doordebug_command_description = "Activer le mode debug",
         warning = "Attention",
         created_by = "créer par",
         warn_no_permission_newdoor = "%{player} (%{license}) à essayé d'ajouter une porte sans permission (source: %{source})",
